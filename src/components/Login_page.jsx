@@ -16,17 +16,15 @@ const Login_page = () => {
             <img id='shadow-01' src={shadow01} alt="shadow-01" />
             <img id='shadow-02' src={shadow02} alt="shadow-02" />
             <div id='login-page-cnt-div'>
-                <div id='logo'>
-                <img id='logo' src={logo} alt="logo" />
-                </div>
+                <div id='logo'><img id='logo' src={logo} alt="logo" /></div>
                 <div id='login-cnt'>
                     <h2>Log In</h2>
                     <p>Login to your existing account by entering your details.</p>
                     <Input style={{backgroundColor: "#EEEEEE", 
-                    // margin: '20px 0'
+                    margin: '15px 0'
                     }} placeholder="User Name" prefix={<FontAwesomeIcon icon={faUser} style={{color:"#9D9D9D" , margin: '0 10px',fontSize: '18px'}}/>} />
                     <Input style={{backgroundColor: "#EEEEEE",
-                    //  margin: '20px 0'
+                     margin: '15px 0'
                      }} placeholder="Password" prefix={<LockOutlined style={{color:"#9D9D9D" , margin: '0 10px', fontSize: '18px'}} />} />
                     <h5>Forgot Password</h5>
                     <Button id='login-btn' type="primary">Login</Button>
