@@ -1,24 +1,26 @@
 import logo from './logo.svg';
 import './App.css';
-
+import Router from './router/Router';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+          <head>
+              <title>SCHINDLER</title>
+              <meta name="description" content="SCHINDLER"/>
+              <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no"/>
+              <link rel="icon" href="/favicon.ico"/>
+
+              <link rel="preconnect" href="https://fonts.googleapis.com"/>
+              <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+              <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+          </head>
+
+
+          <main>
+              <Router/>
+          </main>
+      
+    </>
   );
 }
 
