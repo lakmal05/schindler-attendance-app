@@ -4,9 +4,6 @@ import { FileExportController } from './file-export.controller';
 
 @Module({
   providers: [FileExportService],
-  controllers: [FileExportController]
+  controllers: [FileExportController],
 })
-
-
-
 export class FileExportModule {}

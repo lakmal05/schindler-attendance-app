@@ -32,3 +32,17 @@ model User {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 }
+
+model Attendance {
+  id           String   @id
+  leader       Json
+  team_members Json
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+}
+
+model pdf {
+  id         String   @id
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
