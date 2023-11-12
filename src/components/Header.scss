@@ -1,0 +1,35 @@
+#header {
+    height: 70px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+
+    #header-cnt{
+        height: auto;
+        width: auto;
+        display: flex;
+        justify-content: center;
+        padding: 20px 20px 0 20px;
+       
+
+        #logo{
+            height: 50px;
+            width: auto;
+            object-fit: cover;
+            margin: 0 20px 0 0;
+        }
+        #text-wrapper {
+            color: #1e1e1e;
+            font-family: 'Passion One', sans-serif !important;
+            font-size: 22px;
+            font-weight: 400;
+            margin: 26px 10px 0 0;
+            line-height: normal;
+            text-align: center;
+            white-space: nowrap;
+        }
+    }
+}
+
+
+

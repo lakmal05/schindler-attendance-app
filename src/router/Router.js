@@ -1,12 +1,16 @@
 import React from "react";
-import Login_page from "../components/Login_page";
-import Leader_form from "../components/leader_form";
+import Login_page from "../views/login/Login_page";
+import Dashboard from "../views/dashboard/Dashboard";
+
 
 const Router = () => {
   return (
     <>
       {/* <Login_page/> */}
-      <Leader_form />
+      <Dashboard/>
+     
+
+      
     </>
   );
 };

@@ -1,0 +1,98 @@
+#nav-bar {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    #nav-bar-cnt-div{
+        height: auto;
+        width: auto;
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        gap: 25px;
+
+        .nav-bar-item-divs{
+            align-items: center;
+            display: flex;
+            flex-grow: 1;
+            gap: 8px;
+            justify-content: center;
+            padding: 12px;
+            position: relative;
+
+            #text-wrapper {
+                color: #ff3d3da6;
+                font-family: "Nunito-Bold", Helvetica;
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 0;
+                line-height: normal;
+                position: relative;
+                width: fit-content;
+                display: none;
+            }
+        }
+    }
+}
+
+.active{
+    align-items: center;
+    background-color: #ff868640;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 12px;
+    position: relative;
+
+    div{
+        display: inline-flex;
+        gap: 8px;
+        
+        :nth-child(1){
+            color: #ff3e3ec0;
+        }
+
+        #text-wrapper {
+            display: block !important;
+        }
+    }
+}
+
+#nav-bar #vuesax-linear {
+    height: 24px !important;
+    position: relative !important;
+    width: 24px !important;
+}
+
+#nav-bar #div {
+    align-items: center;
+    background-color: #ff868640;
+    border-radius: 12px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    overflow: hidden;
+    padding: 12px;
+    position: relative;
+}
+
+#nav-bar #text-wrapper {
+    color: #ff3d3da6;
+    font-family: "Nunito-Bold", Helvetica;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    width: fit-content;
+}
+
+#nav-bar #img {
+    flex: 1;
+    flex-grow: 1;
+    position: relative;
+}
