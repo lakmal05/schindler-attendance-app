@@ -1,8 +1,10 @@
 #header {
-    height: 70px;
+    height: 80px;
     width: 100%;
     position: fixed;
     top: 0;
+    background-color: white;
+    z-index: 2;
 
     #header-cnt{
         height: auto;
@@ -10,8 +12,7 @@
         display: flex;
         justify-content: center;
         padding: 20px 20px 0 20px;
-       
-
+    
         #logo{
             height: 50px;
             width: auto;

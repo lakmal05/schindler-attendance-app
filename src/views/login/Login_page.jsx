@@ -2,9 +2,7 @@ import React from "react";
 import "./Login_page.scss";
 import { Button } from "antd";
 import { Input } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { LockOutlined } from "@ant-design/icons";
+import { HiOutlineUser,HiOutlineLockClosed } from "react-icons/hi";
 import shadow01 from "../../assets/login-shadow-01.png";
 import shadow02 from "../../assets/login-shadow-02.png";
 import logo from "../../assets/logo.png";
@@ -27,8 +25,7 @@ const Login_page = () => {
                 style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
                 placeholder="User Name"
                 prefix={
-                  <FontAwesomeIcon
-                    icon={faUser}
+                  <HiOutlineUser
                     style={{
                       color: "#9D9D9D",
                       margin: "0 10px",
@@ -41,7 +38,7 @@ const Login_page = () => {
                 style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
                 placeholder="Password"
                 prefix={
-                  <LockOutlined
+                  <HiOutlineLockClosed
                     style={{
                       color: "#9D9D9D",
                       margin: "0 10px",
