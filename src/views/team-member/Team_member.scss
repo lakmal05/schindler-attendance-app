@@ -1,28 +1,23 @@
-#team-leader {
+#team-member {
   width: 100%;
   height: auto;
   margin-top: 6rem;
   margin-bottom: 6rem;
   display: flex;
   justify-content: center;
-  // background-color: rgb(192, 252, 232);
 
-  #team-leader-form {
+  #team-member-form {
     width: 85%;
     height: auto;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    // background-color: rgba(240, 128, 128, 0.452);
 
     h2 {
       font-size: 22px;
       font-weight: 600;
       margin: 0;
-    }
-    #tl-id {
-      font-size: 18px;
     }
 
     h3 {
@@ -45,20 +40,23 @@
       background-color: #eeeeee;
     }
 
-    #date-picker {
-      font-size: 15px;
-      height: 40px;
-      color: #3b3b3b;
-      background-color: #eeeeee;
+    #team-member-radio-btn {
+      width: 100%;
+      margin: 10px 0;
+      span {
+        color: #a0aabc;
+        font-size: 15px;
+        font-weight: 300;
+      }
+    }
+    :where(.css-dev-only-do-not-override-1adbn6x).ant-radio-wrapper
+      .ant-radio-checked
+      .ant-radio-inner {
+      border-color: #ff5252;
+      background-color: #ff5252;
     }
 
-    #time-picker {
-      font-size: 15px;
-      height: 40px;
-      color: #3b3b3b;
-      background-color: #eeeeee;
-    }
-    #signature {
+    #signature-member {
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -86,7 +84,7 @@
       }
     }
 
-    #team-leader-btn {
+    #team-member-btn {
       font-size: 18px;
       background-color: #ff5252;
       width: 100%;

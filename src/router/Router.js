@@ -2,7 +2,8 @@ import React from "react";
 import Login_page from "../views/login/Login_page";
 import Dashboard from "../views/dashboard/Dashboard";
 import Team_leader from "../views/team-leader/Team_leader";
-import Test from "../components/Test";
+import Team_member from "../views/team-member/Team_member";
+
 
 
 
@@ -11,8 +12,9 @@ const Router = () => {
     <>
       {/* <Login_page/> */}
       {/* <Dashboard/> */}
-      <Team_leader/>
-      {/* <Test/> */}
+      {/* <Team_leader/> */}
+      <Team_member/>
+    
 
      
 
