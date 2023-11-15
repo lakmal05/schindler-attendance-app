@@ -36,7 +36,7 @@ const Team_leader = () => {
   };
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div id="team-leader">
         <div id="team-leader-form">
           <h2 id="tl-name">Lakmal Jayawardhana </h2>
@@ -111,7 +111,7 @@ const Team_leader = () => {
         </div>
       </div>
       {/* <img src={url} /> */}
-      <NavBar />
+      {/* <NavBar /> */}
     </>
   );
 };

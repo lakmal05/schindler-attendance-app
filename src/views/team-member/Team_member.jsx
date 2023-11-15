@@ -35,7 +35,7 @@ const Team_member = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div id="team-member">
         <div id="team-member-form">
           <h2 id="tm-name">{tMemberName ? tMemberName : "Team Member"}</h2>
@@ -99,7 +99,7 @@ const Team_member = () => {
         </div>
       </div>
       {/* <img src={url} /> */}
-      <NavBar />
+      {/* <NavBar /> */}
     </>
   );
 };

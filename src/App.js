@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import Router from './router/Router';
+import RouterHandler from './router/Router';
+
 function App() {
   return (
     <>
@@ -17,7 +19,7 @@ function App() {
 
 
           <main>
-              <Router/>
+            <RouterHandler/>
           </main>
       
     </>

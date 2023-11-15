@@ -8,7 +8,7 @@ import Header from '../../components/Header'
 const Dashboard = () => {
   return (
     <>
-    <Header/>
+    {/* <Header/> */}
       <div id='dashboard'>
 
         <div id='dashboard-profile-div'>
@@ -64,7 +64,7 @@ const Dashboard = () => {
         </div>
       </div>
       </div>
-      <NavBar/>
+      {/* <NavBar/> */}
     </>
   )
 }
