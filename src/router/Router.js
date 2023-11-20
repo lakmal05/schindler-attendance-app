@@ -10,9 +10,10 @@ import Team_member from "../views/team-member/Team_member";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import NotAuthorized from "../views/NotAuthorized";
+import Team_Member_List from "../views/team-member-list/Team_Member_List";
 
 const RouterHandler = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   //   useEffect(() => {
   //     let temp = Cookies.get("userDetails") !== undefined;
@@ -42,6 +43,7 @@ const RouterHandler = () => {
                 <Route path="/Dashboard" element={<Dashboard />} />
                 <Route path="/TeamLeader" element={<Team_leader />} />
                 <Route path="/TeamMember" element={<Team_member />} />
+                <Route path="/TeamMemberList" element={<Team_Member_List/>} />
               </Routes>
               <NavBar />
             </div>

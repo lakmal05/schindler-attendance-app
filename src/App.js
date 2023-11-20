@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import Router from './router/Router';
 import RouterHandler from './router/Router';
+import Team_Member_List from './views/team-member-list/Team_Member_List';
+import TeamMemberDrower from './components/TeamMemberDrower';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
 
           <main>
             <RouterHandler/>
+            {/* <Team_Member_List/> */}
+            {/* <TeamMemberDrower/> */}
           </main>
       
     </>

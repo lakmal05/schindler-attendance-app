@@ -33,6 +33,7 @@ const Team_leader = () => {
   };
   const handleGenerate = () => {
     setUrl(sign.getTrimmedCanvas().toDataURL("image/png"));
+     window.location.href = '/TeamMember'
   };
   return (
     <>

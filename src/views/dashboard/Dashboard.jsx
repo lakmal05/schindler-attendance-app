@@ -55,7 +55,7 @@ const Dashboard = () => {
       <div id='mark-attendance'>
         <div id='mt-cnt-div'>
           <h3 id='mt-heading'>Let’s Check-in</h3>
-          <Button id="mt-btn" type="primary">Mark Attendance</Button>
+          <Button id="mt-btn" type="primary" onClick={(e)=> window.location.href = '/TeamLeader'}>Mark Attendance</Button>
         </div>
         <div id='mt-icon-div'>
             <div id='mt-inner-div'>

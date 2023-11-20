@@ -1,15 +1,23 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import { Input } from "antd";
-import { Radio } from "antd";
+import React, { useState } from 'react';
+import { Button, Drawer, Radio, Space ,Input } from 'antd';
 import SignatureCanvas from "react-signature-canvas";
 import { HiOutlineIdentification } from "react-icons/hi2";
 import { FaRegUserCircle } from "react-icons/fa";
+import "../components/TeamMemberDrover.scss";
+import Header from './Header';
 
-import "./Team_member.scss";
+function TeamMemberDrower(){
+    const [open, setOpen] = useState(false);
+    const [placement, setPlacement] = useState('top');
+    
+    const showDrawer = () => {
+      setOpen(true);
+    };
+    const onClose = () => {
+      setOpen(false);
+    };
 
-const Team_member = () => {
-  const [sign, setSign] = useState();
+    const [sign, setSign] = useState();
   const [url, setUrl] = useState();
   const [tMemberName, setTMemberName] = useState("");
 
@@ -29,12 +37,33 @@ const Team_member = () => {
   };
   const handleGenerate = () => {
     setUrl(sign.getTrimmedCanvas().toDataURL("image/png"));
-    window.location.href = '/TeamMemberList'
+    onClose();
   };
 
-  return (
-    <>
-      <div id="team-member">
+    return (
+      <>
+      <Header/>
+        <Space>
+          <Button type="primary" onClick={showDrawer} style={{margin : "6rem"}}>
+            Open
+          </Button>
+        </Space>
+        <Drawer
+          placement={placement}
+          width={"100%"}
+          height={"100%"}
+          onClose={onClose}
+          open={open}
+          // extra={
+          //   <Space>
+          //     <Button onClick={onClose}>Cancel</Button>
+          //     <Button type="primary" onClick={onClose}>
+          //       OK
+          //     </Button>
+          //   </Space>
+          // }
+        >
+         <div id="team-member-drower">
         <div id="team-member-form">
           <h2 id="tm-name">{tMemberName ? tMemberName : "Team Member"}</h2>
           <h3>Team Member</h3>
@@ -97,8 +126,8 @@ const Team_member = () => {
         </div>
       </div>
       {/* <img src={url} /> */}
-    </>
+        </Drawer>
+      </>
   );
 };
-
-export default Team_member;
+export default TeamMemberDrower;
