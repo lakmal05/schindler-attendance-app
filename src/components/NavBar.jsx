@@ -28,7 +28,7 @@ const NavBar = () => {
               <div id="text-wrapper">Profile</div>
             </div>
           </div>
-          <div className="nav-bar-item-divs active  ">
+          <div className="nav-bar-item-divs active " onClick={(e)=> window.location.href = '/Dashboard'}>
             <div>
               <AiFillHome
                 className="active-icon"
