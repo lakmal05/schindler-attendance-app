@@ -43,7 +43,7 @@ const RouterHandler = () => {
                 <Route path="/Dashboard" element={<Dashboard />} />
                 <Route path="/TeamLeader" element={<Team_leader />} />
                 <Route path="/TeamMember" element={<Team_member />} />
-                <Route path="/TeamMemberList" element={<Team_Member_List/>} />
+                <Route path="/TeamMemberList" element={<Team_Member_List />} />
               </Routes>
               <NavBar />
             </div>

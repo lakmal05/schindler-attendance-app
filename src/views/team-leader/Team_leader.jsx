@@ -11,11 +11,12 @@ import { TimePicker } from "antd";
 import { LiaToolboxSolid } from "react-icons/lia";
 import { SlLocationPin } from "react-icons/sl";
 import "./Team_leader.scss";
+import { useNavigate } from "react-router-dom";
 
 const Team_leader = () => {
   const [sign, setSign] = useState();
   const [url, setUrl] = useState();
-
+  const navigate = useNavigate();
   const handleWheel = (e) => {
     e.preventDefault(); // Prevent default scrolling behavior
   };
@@ -33,7 +34,8 @@ const Team_leader = () => {
   };
   const handleGenerate = () => {
     setUrl(sign.getTrimmedCanvas().toDataURL("image/png"));
-     window.location.href = '/TeamMember'
+    //window.location.href = "/TeamMember";
+    navigate("/TeamMember");
   };
   return (
     <>

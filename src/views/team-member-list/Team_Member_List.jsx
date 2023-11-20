@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Team_Member_List.scss";
 import { GoDotFill } from "react-icons/go";
 import { IoCaretDown } from "react-icons/io5";
@@ -7,28 +7,35 @@ import { Button } from "antd";
 import { FaPlus } from "react-icons/fa6";
 
 const Team_Member_List = () => {
+  const [teamMembers, setTeamMembers] = useState(2);
 
-    const appendTeamMember = () =>{
+  const appendTeamMember = () => {
+    setTeamMembers((prevMembers) => prevMembers + 1);
+  };
 
+  const prependTeamMember = () => {
+    setTeamMembers((prevMembers) => Math.max(1, prevMembers - 1));
+  };
+
+  const renderTeamMembers = () => {
+    const members = [];
+    for (let i = 0; i < teamMembers; i++) {
+      members.push(
+        <div id="team-member-div" key={i}>
+          <h4>Team Member {i + 1}</h4>
+          <IoCaretDown id="down-arrow" />
+          <GoDotFill id="online-offline" />
+        </div>
+      );
     }
-    const prependTeamMember = () =>{
-
-    }
+    return members;
+  };
 
   return (
     <>
       <div id="team-member-list">
         <div id="team-member-cnt">
-          <div id="team-member-div">
-            <h4>Team Member</h4>
-            <IoCaretDown id="down-arrow" />
-            <GoDotFill id="online-offline" />
-          </div>
-          <div id="team-member-div">
-            <h4>Team Member</h4>
-            <IoCaretDown id="down-arrow" />
-            <GoDotFill id="online-offline" />
-          </div>
+          {renderTeamMembers()}
 
           <Button id="get-pdf-btn" type="primary">
             {" "}
