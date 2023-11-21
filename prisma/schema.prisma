@@ -15,9 +15,7 @@ model Employee {
   first_name String
   last_name  String
   nic        String
-  address    String
   contact_no String
-  gender     String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   User       User?
@@ -39,10 +37,36 @@ model Attendance {
   team_members Json
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
+  pdf          Pdf[]
 }
 
-model pdf {
+model Pdf {
+  id            String     @id
+  attendance    Attendance @relation(fields: [attendance_id], references: [id])
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  attendance_id String
+}
+
+model Leader {
   id         String   @id
+  leader_id  String
+  name       String
+  signature  String
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt()
+}
+
+model Member {
+  id            String       @id
+  member_id     String
+  signature     String
+  contract_type ContractType
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt()
+}
+
+enum ContractType {
+  EMP
+  SUBCON
 }
