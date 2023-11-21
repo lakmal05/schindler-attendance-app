@@ -11,6 +11,7 @@ import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import NotAuthorized from "../views/NotAuthorized";
 import Team_Member_List from "../views/team-member-list/Team_Member_List";
+import { ScrollToTop } from "../utility/CommonFun";
 
 const RouterHandler = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -29,6 +30,7 @@ const RouterHandler = () => {
       <ToastContainer />
 
       <Router>
+        <ScrollToTop/>
         <Routes>
           <Route path="/" element={<Login_page />} />
         </Routes>
@@ -37,6 +39,7 @@ const RouterHandler = () => {
       {isLogin ? (
         <>
           <Router>
+          <ScrollToTop/>
             <div>
               <Header />
               <Routes>

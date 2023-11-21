@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FaRegUser ,FaUser} from "react-icons/fa";
 import { AiFillHome ,AiOutlineHome} from "react-icons/ai";
 import { RiSettings4Line,RiSettings4Fill } from "react-icons/ri";
@@ -6,6 +7,8 @@ import { RiSettings4Line,RiSettings4Fill } from "react-icons/ri";
 import "./NavBar.scss";
 
 const NavBar = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <div id="nav-bar">
@@ -28,7 +31,7 @@ const NavBar = () => {
               <div id="text-wrapper">Profile</div>
             </div>
           </div>
-          <div className="nav-bar-item-divs active " onClick={(e)=> window.location.href = '/Dashboard'}>
+          <div className="nav-bar-item-divs active " onClick={(e)=> navigate("/Dashboard")}>
             <div>
               <AiFillHome
                 className="active-icon"

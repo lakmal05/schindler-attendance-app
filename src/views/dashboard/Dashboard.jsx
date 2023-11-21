@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { Button } from "antd";
 import "./Dashboard.scss"
@@ -6,6 +7,7 @@ import NavBar from '../../components/NavBar'
 import Header from '../../components/Header'
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   return (
     <>
     {/* <Header/> */}
@@ -55,7 +57,7 @@ const Dashboard = () => {
       <div id='mark-attendance'>
         <div id='mt-cnt-div'>
           <h3 id='mt-heading'>Let’s Check-in</h3>
-          <Button id="mt-btn" type="primary" onClick={(e)=> window.location.href = '/TeamLeader'}>Mark Attendance</Button>
+          <Button id="mt-btn" type="primary" onClick={(e)=> navigate("/TeamLeader")}>Mark Attendance</Button>
         </div>
         <div id='mt-icon-div'>
             <div id='mt-inner-div'>

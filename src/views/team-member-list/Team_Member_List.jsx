@@ -22,7 +22,7 @@ const Team_Member_List = () => {
     for (let i = 0; i < teamMembers; i++) {
       members.push(
         <div id="team-member-div" key={i}>
-          <h4>Team Member {i + 1}</h4>
+          <h4>Team Member</h4>
           <IoCaretDown id="down-arrow" />
           <GoDotFill id="online-offline" />
         </div>

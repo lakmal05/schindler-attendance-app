@@ -1,5 +1,8 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router";
 import Cookies from "js-cookie";
-import * as constant from "../constatnts/constants";
+import * as constant from "../constant/constants";
+
 
 // export const debounce = (func, delay) => {
 //     let debounceHandler;
@@ -15,6 +18,16 @@ import * as constant from "../constatnts/constants";
 export const isEmpty = (str) => {
     return (!str || str.length === 0)
 };
+
+export const ScrollToTop = ({ children }) => {
+    const { pathname } = useLocation();
+  
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+  
+    return null;
+  };
 
 // export const getUserStatus = (type) => {
 //     let labelText;

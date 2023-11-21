@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { Input } from "antd";
 import { Radio } from "antd";
@@ -12,6 +13,8 @@ const Team_member = () => {
   const [sign, setSign] = useState();
   const [url, setUrl] = useState();
   const [tMemberName, setTMemberName] = useState("");
+
+  const navigate = useNavigate();
 
   const handleWheel = (e) => {
     e.preventDefault(); // Prevent default scrolling behavior
@@ -29,7 +32,8 @@ const Team_member = () => {
   };
   const handleGenerate = () => {
     setUrl(sign.getTrimmedCanvas().toDataURL("image/png"));
-    window.location.href = '/TeamMemberList'
+    // window.location.href = '/TeamMemberList'
+    navigate("/TeamMemberList")
   };
 
   return (
