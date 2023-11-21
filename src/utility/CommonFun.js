@@ -126,7 +126,7 @@ export const checkPermission = (permissionType) => {
         let pp = [];
         let permissionDecode = currentPermissions;
 
-        if (permissionDecode !== []) {
+        if (permissionDecode != []) {
             permissionDecode?.map((p, index) => {
                 pp.push(atob(p));
             });

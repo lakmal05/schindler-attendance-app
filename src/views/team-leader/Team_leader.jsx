@@ -28,11 +28,14 @@ const Team_leader = () => {
 
   const handleWheel = (e) => {
     e.preventDefault(); // Prevent default scrolling behavior
-    const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
-     setSignUrl(generatedUrl);
-    // console.log(signurl, "usestate url");
-    // console.log(generatedUrl, "generate url");
   };
+
+  const handleGenerate = () => {
+    const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
+    setSignUrl(generatedUrl);
+   // console.log(signurl, "usestate url");
+   // console.log(generatedUrl, "generate url");
+  }
 
   const onChangeDate = async (date, dateString) => {
     console.log(date, dateString);
@@ -60,10 +63,10 @@ const Team_leader = () => {
       ? customToastMsg("Please Enter Time!", 0)
       : // : sign.trim() === ""
         // ? customToastMsg("Please Enter your Signature!", 0)
-        MarkTeamLeaderAttendance();
+        markTeamLeaderAttendance();
   };
 
-  const MarkTeamLeaderAttendance = () => {
+  const markTeamLeaderAttendance = () => {
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
 
@@ -153,7 +156,7 @@ const Team_leader = () => {
             placeholder="Time"
           />
 
-          <div id="signature" onWheel={handleWheel}>
+          <div id="signature" onWheel={handleWheel}  onClick={handleGenerate}>
             <div id="signature-div">
               <SignatureCanvas
                 canvasProps={{ className: "sigCanvas" }}
