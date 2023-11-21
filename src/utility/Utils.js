@@ -12,7 +12,7 @@ import { RxCross2 } from "react-icons/rx";
 // export const MySwal = withReactContent(Swal)
 
 import Cookies from "js-cookie";
-import * as constant from '../constatnts/constants'
+import * as constant from '../constant/constants'
 
 // export const isObjEmpty = obj => Object.keys(obj).length === 0
 

@@ -1,26 +1,29 @@
 import React, { useState } from "react";
+import { GoDotFill } from "react-icons/go";
+import { IoCaretDown } from "react-icons/io5";
+import "./TeamMemberCard.scss";
+
 import { Button, Drawer, Radio, Space, Input } from "antd";
 import SignatureCanvas from "react-signature-canvas";
 import { HiOutlineIdentification } from "react-icons/hi2";
 import { FaRegUserCircle } from "react-icons/fa";
 import "../components/TeamMemberDrover.scss";
-import Header from "./Header";
+import { ScrollToTop } from "../utility/CommonFun";
 
-function TeamMemberDrower(props) {
+const TeamMemberCard = () => {
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState("top");
-
-  const showDrawer = () => {
-    setOpen(true);
-    console.log("toggle result : ",props.toggleTeamMemberModal);
-  };
-  const onClose = () => {
-    setOpen(props.closeModel);
-  };
 
   const [sign, setSign] = useState();
   const [url, setUrl] = useState();
   const [tMemberName, setTMemberName] = useState("");
+
+  
+  const handleOnClickArrow = () => {
+    setOpen(true)
+   };
+  const onClose = () => {
+    setOpen(false);
+  };
 
   const handleWheel = (e) => {
     e.preventDefault(); // Prevent default scrolling behavior
@@ -41,20 +44,31 @@ function TeamMemberDrower(props) {
     onClose();
   };
 
+
+
   return (
     <>
-      <Header />
-      <Space>
-        {/* <Button type="primary" onClick={showDrawer} style={{ margin: "6rem" }}>
-          Open
-        </Button> */}
-      </Space>
+      <ScrollToTop/>
+      <div id="team-member-div">
+        <h4>Team Member</h4>
+        <IoCaretDown id="down-arrow" onClick={handleOnClickArrow} />
+        <GoDotFill id="online-offline" />
+
+        {/* <TeamMemberDrower
+          isOpen={TeamMemberModal}
+          toggleTeamMemberModal={toggleTeamMemberModal}
+          closeModel={TeamMemberModal}
+        /> */}
+        
+      </div>
+
+    {/* ---------------------drower ---------------------------------------------------*/}
       <Drawer
         placement={"top"}
         width={"100%"}
         height={"100%"}
-        onClose={props.closeModel}
-        open={props.toggleTeamMemberModal}
+        onClose={onClose}
+        open={open}
         // extra={
         //   <Space>
         //     <Button onClick={onClose}>Cancel</Button>
@@ -64,6 +78,7 @@ function TeamMemberDrower(props) {
         //   </Space>
         // }
       >
+      
         <div id="team-member-drower">
           <div id="team-member-form">
             <h2 id="tm-name">{tMemberName ? tMemberName : "Team Member"}</h2>
@@ -132,7 +147,9 @@ function TeamMemberDrower(props) {
         </div>
         {/* <img src={url} /> */}
       </Drawer>
+
     </>
   );
-}
-export default TeamMemberDrower;
+};
+
+export default TeamMemberCard;

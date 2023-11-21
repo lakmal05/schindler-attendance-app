@@ -9,32 +9,7 @@
     height: auto;
     width: auto;
     // padding-bottom: 2rem;
-    #team-member-div {
-      width: 100%;
-      height: 50px;
-      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-      margin-bottom: 12px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-
-      h4 {
-        font-size: 18px;
-        font-weight: 600;
-        margin: 0 15px 0 20px;
-        color: #434343;
-      }
-      #down-arrow {
-        color: #9d9d9d;
-        margin: 0 20px;
-        font-size: 20px;
-      }
-      #online-offline {
-        color: red;
-        margin: 0 20px 0 0;
-        font-size: 20px;
-      }
-    }
+   
     #get-pdf-btn {
       font-size: 18px;
       background-color: #ff5252;

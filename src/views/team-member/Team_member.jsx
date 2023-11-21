@@ -33,7 +33,7 @@ const Team_member = () => {
   const handleGenerate = () => {
     setUrl(sign.getTrimmedCanvas().toDataURL("image/png"));
     // window.location.href = '/TeamMemberList'
-    navigate("/TeamMemberList")
+    // navigate("/TeamMemberList")
   };
 
   return (
@@ -100,7 +100,7 @@ const Team_member = () => {
           </Button>
         </div>
       </div>
-      {/* <img src={url} /> */}
+      <img src={url} />
     </>
   );
 };

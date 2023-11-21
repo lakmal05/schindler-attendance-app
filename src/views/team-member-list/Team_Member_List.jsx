@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./Team_Member_List.scss";
-import { GoDotFill } from "react-icons/go";
-import { IoCaretDown } from "react-icons/io5";
+
 import { BiSolidRightArrow } from "react-icons/bi";
 import { Button } from "antd";
 import { FaPlus } from "react-icons/fa6";
+import TeamMemberDrower from "../../components/TeamMemberDrower";
+import TeamMemberCard from "../../components/TeamMemberCard";
 
 const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(2);
@@ -21,11 +22,12 @@ const Team_Member_List = () => {
     const members = [];
     for (let i = 0; i < teamMembers; i++) {
       members.push(
-        <div id="team-member-div" key={i}>
-          <h4>Team Member</h4>
-          <IoCaretDown id="down-arrow" />
-          <GoDotFill id="online-offline" />
-        </div>
+        // <div id="team-member-div" key={i}>
+        //   <h4>Team Member</h4>
+        //   <IoCaretDown id="down-arrow" onClick={toggleTeamMemberModal}/>
+        //   <GoDotFill id="online-offline" />
+        // </div>
+        <TeamMemberCard key={i}/>
       );
     }
     return members;
@@ -53,6 +55,8 @@ const Team_Member_List = () => {
             </Button>
           </div>
         </div>
+
+       
       </div>
     </>
   );
