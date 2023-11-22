@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+
+import { baseUrl } from "../../services/apiConfig";
+import axios from "axios";
+
 import "./Login_page.scss";
 import { Button } from "antd";
 import { Input } from "antd";
@@ -8,6 +12,7 @@ import { RiLoader2Line } from "react-icons/ri";
 import shadow01 from "../../assets/login-shadow-01.png";
 import shadow02 from "../../assets/login-shadow-02.png";
 import logo from "../../assets/logo.png";
+import { userLogin } from "../../services/auth";
 
 const Login_page = () => {
   const [username, setUsername] = useState("");
@@ -27,43 +32,50 @@ const Login_page = () => {
   const loginUser = () => {
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
-    let data = {
+    let creditionals = {
       username: username,
       password: password,
     };
 
-    console.log("Login deails",data);
-    // loginUser(data)
-    //   .then((res) => {
-    //     Cookies.set(constant.ACCESS_TOKEN, res.access_token);
-    //     Cookies.set(constant.REFRESH_TOKEN, res.refresh_token);
-    //     Cookies.set("expires_in", res.expires_in);
+    const a =  axios
+      .post(`http://192.168.1.42:3005/auth/login`, creditionals)
+      .then((res) => {
+        // customToastMsg("login", 0);
+        console.log(res, "resoinse");
+      //  alert("login");
+        // Cookies.set(constant.ACCESS_TOKEN, res.access_token);
+        // Cookies.set(constant.REFRESH_TOKEN, res.refresh_token);
+        // Cookies.set("expires_in", res.expires_in);
 
-    //     getUserDetails()
-    //       .then((res) => {
-    //         Cookies.set("userDetails", JSON.stringify(res.data));
-    //         window.location.href = "/Dashboard";
-    //       })
-    //       .catch((c) => {
-    //         Cookies.remove(constant.ACCESS_TOKEN);
-    //         Cookies.remove(constant.REFRESH_TOKEN);
-    //         Cookies.remove("expires_in");
-    //         Cookies.remove("userDetails");
-    //       })
-    //       .finally((f) => {
-    //         // dispatch(actionLoaderCreator.loaderHandler(false));
-    //         setLoader(false);
-    //       });
-    //   })
-    //   .catch((c) => {
-    //     // dispatch(actionLoaderCreator.loaderHandler(false));
-    //     setLoader(false);
-    //     customToastMsg("Your User Name or password incorrect! Try Again ", 0);
-    //   })
-    //   .finally((f) => {
-    //     // dispatch(actionLoaderCreator.loaderHandler(false));
-    //     setLoader(false);
-    //   });
+        // getUserDetails()
+        //   .then((res) => {
+        //     Cookies.set("userDetails", JSON.stringify(res.data));
+        //     window.location.href = "/Dashboard";
+        //   })
+        //   .catch((c) => {
+        //     Cookies.remove(constant.ACCESS_TOKEN);
+        //     Cookies.remove(constant.REFRESH_TOKEN);
+        //     Cookies.remove("expires_in");
+        //     Cookies.remove("userDetails");
+        //   })
+        //   .finally((f) => {
+        //     // dispatch(actionLoaderCreator.loaderHandler(false));
+        //     setLoader(false);
+        //   });
+      })
+      .catch((c) => {
+        console.log(c);
+        // dispatch(actionLoaderCreator.loaderHandler(false));
+        setLoader(false);
+      //  alert("Your User Name or password incorrect! Try Again ");
+        // customToastMsg("Your User Name or password incorrect! Try Again ", 0);
+      })
+      .finally((f) => {
+        // dispatch(actionLoaderCreator.loaderHandler(false));
+        setLoader(false);
+      });
+
+      console.log(a,"aaaaaaaaa");
   };
 
   return (

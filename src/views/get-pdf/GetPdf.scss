@@ -1,0 +1,44 @@
+#get-pdf {
+  width: 100%;
+  height: auto;
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+  display: flex;
+  justify-content: center;
+  background-color: aquamarine;
+
+  #get-pdf-cnt {
+    width: 85%;
+    height: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(240, 128, 128, 0.452);
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    p {
+      font-size: 15px;
+      color: #9d9d9d;
+      margin: 6px 0;
+    }
+    #genarate-pdf-btn {
+      font-size: 18px;
+      background-color: #ff5252;
+      width: 100%;
+      height: 45px;
+      margin: 15px 0 0 0;
+    }
+
+    #pdf-viewe{
+        background-color: greenyellow;
+        height: 80% !important;
+        width: 100% !important;
+    }
+  }
+}
