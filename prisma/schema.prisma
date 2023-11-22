@@ -33,7 +33,8 @@ model User {
 
 model Attendance {
   id           String   @id
-  leader       Json
+  leader       Leader   @relation(fields: [leader_id], references: [id])
+  leader_id    String
   team_members Json
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
@@ -49,12 +50,13 @@ model Pdf {
 }
 
 model Leader {
-  id         String   @id
+  id         String       @id
   leader_id  String
   name       String
   signature  String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt()
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt()
+  Attendance Attendance[]
 }
 
 model Member {
