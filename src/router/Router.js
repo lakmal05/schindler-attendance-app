@@ -31,7 +31,7 @@ const RouterHandler = () => {
       <ToastContainer />
 
       <Router>
-        <ScrollToTop/>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Login_page />} />
         </Routes>
@@ -40,7 +40,7 @@ const RouterHandler = () => {
       {isLogin ? (
         <>
           <Router>
-          <ScrollToTop/>
+            <ScrollToTop />
             <div>
               <Header />
               <Routes>
@@ -48,7 +48,7 @@ const RouterHandler = () => {
                 <Route path="/TeamLeader" element={<Team_leader />} />
                 <Route path="/TeamMember" element={<Team_member />} />
                 <Route path="/TeamMemberList" element={<Team_Member_List />} />
-                <Route path="/GetPdf" element={<GetPdf/>} />
+                <Route path="/GetPdf" element={<GetPdf />} />
               </Routes>
               <NavBar />
             </div>

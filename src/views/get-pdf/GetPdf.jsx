@@ -80,7 +80,7 @@ const GetPdf = () => {
       age: 32,
       address: "New York No. 1 Lake Park",
       tags: ["nice", "developer"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "2",
@@ -88,7 +88,7 @@ const GetPdf = () => {
       age: 42,
       address: "London No. 1 Lake Park",
       tags: ["loser"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "3",
@@ -96,7 +96,7 @@ const GetPdf = () => {
       age: 32,
       address: "Sydney No. 1 Lake Park",
       tags: ["cool", "teacher"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "4",
@@ -104,7 +104,7 @@ const GetPdf = () => {
       age: 32,
       address: "New York No. 1 Lake Park",
       tags: ["nice", "developer"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "5",
@@ -112,7 +112,7 @@ const GetPdf = () => {
       age: 42,
       address: "London No. 1 Lake Park",
       tags: ["loser"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "6",
@@ -120,7 +120,7 @@ const GetPdf = () => {
       age: 42,
       address: "London No. 1 Lake Park",
       tags: ["loser"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "7",
@@ -128,14 +128,14 @@ const GetPdf = () => {
       age: 42,
       address: "London No. 1 Lake Park",
       tags: ["loser"],
-      action: "hansika",
+      action: "active",
     },{
       key: "1",
       name: "John Brown",
       age: 32,
       address: "New York No. 1 Lake Park",
       tags: ["nice", "developer"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "2",
@@ -143,7 +143,7 @@ const GetPdf = () => {
       age: 42,
       address: "London No. 1 Lake Park",
       tags: ["loser"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "3",
@@ -151,7 +151,7 @@ const GetPdf = () => {
       age: 32,
       address: "Sydney No. 1 Lake Park",
       tags: ["cool", "teacher"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "4",
@@ -159,7 +159,7 @@ const GetPdf = () => {
       age: 32,
       address: "New York No. 1 Lake Park",
       tags: ["nice", "developer"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "5",
@@ -167,7 +167,7 @@ const GetPdf = () => {
       age: 42,
       address: "London No. 1 Lake Park",
       tags: ["loser"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "6",
@@ -175,7 +175,7 @@ const GetPdf = () => {
       age: 42,
       address: "London No. 1 Lake Park",
       tags: ["loser"],
-      action: "hansika",
+      action: "active",
     },
     {
       key: "7",
@@ -183,11 +183,11 @@ const GetPdf = () => {
       age: 42,
       address: "London No. 1 Lake Park",
       tags: ["loser"],
-      action: "hansika",
+      action: "active",
     }
   );
 
-  const teamLeader = "hansika";
+  const teamLeader = "active";
   const dateOfPDF = "20th of January 2023";
   const sign = { logo: logo };
 

@@ -43,6 +43,7 @@ const Team_member = () => {
   };
 
   const checkTeamMemberInfo = () => {
+    navigate("/TeamMemberList");
     console.log(tMemberID, tMemberName, tMemberRadio, sign, signurl);
     tMemberID.trim() === ""
       ? customToastMsg("Please Enter your Member ID!", 0)

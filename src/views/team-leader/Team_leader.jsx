@@ -16,6 +16,7 @@ import "./Team_leader.scss";
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
   const [location, setLocation] = useState("");
+  const [topic, setTopic] = useState("");
   const [tLDate, setTLDate] = useState("");
   const [tlTtime, setTLTime] = useState("");
   const [sign, setSign] = useState("");
@@ -33,9 +34,9 @@ const Team_leader = () => {
   const handleGenerate = () => {
     const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
     setSignUrl(generatedUrl);
-   // console.log(signurl, "usestate url");
-   // console.log(generatedUrl, "generate url");
-  }
+    // console.log(signurl, "usestate url");
+    // console.log(generatedUrl, "generate url");
+  };
 
   const onChangeDate = async (date, dateString) => {
     console.log(date, dateString);
@@ -57,6 +58,8 @@ const Team_leader = () => {
       ? customToastMsg("Please Enter your ToolBox No!", 0)
       : location.trim() === ""
       ? customToastMsg("Please Enter your Location!", 0)
+      : topic.trim() === ""
+      ? customToastMsg("Please Enter your Topic!", 0)
       : tLDate.trim() === ""
       ? customToastMsg("Please Enter Date!", 0)
       : tlTtime.trim() === ""
@@ -69,10 +72,11 @@ const Team_leader = () => {
   const markTeamLeaderAttendance = () => {
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
-
+    navigate("/TeamMember");
     let data = {
       toolBoxNo: toolBoxNo,
       location: location,
+      topic: topic,
       tLDate: tLDate,
       tlTtime: tlTtime,
       sign: sign,
@@ -132,6 +136,20 @@ const Team_leader = () => {
               />
             }
           />
+          <Input
+            onChange={async (e) => await setTopic(e.target.value)}
+            style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
+            placeholder="Topic"
+            type="text"
+            suffix={
+              <SlLocationPin
+                style={{
+                  color: "#9D9D9D",
+                  fontSize: "18px",
+                }}
+              />
+            }
+          />
           <DatePicker
             id="date-picker"
             onChange={onChangeDate}
@@ -156,7 +174,7 @@ const Team_leader = () => {
             placeholder="Time"
           />
 
-          <div id="signature" onWheel={handleWheel}  onClick={handleGenerate}>
+          <div id="signature" onWheel={handleWheel} onClick={handleGenerate}>
             <div id="signature-div">
               <SignatureCanvas
                 canvasProps={{ className: "sigCanvas" }}

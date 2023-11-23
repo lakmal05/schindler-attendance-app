@@ -21,61 +21,57 @@ const Login_page = () => {
   const [loader, setLoader] = useState(false);
 
   const checkLoginInfor = () => {
+    //  window.location.href = "/Dashboard";
     console.log(username, password);
     username.trim() === ""
       ? customToastMsg("Please Enter your Username!", 0)
       : password.trim() === ""
       ? customToastMsg("Please Enter your Password!", 0)
-      : loginUser();
+      : login();
   };
 
-  const loginUser = () => {
+  const login = async () => {
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
-    let creditionals = {
+    let credentials = {
       username: username,
       password: password,
     };
+    await userLogin(credentials)
+      .then((response) => {
+        console.log(response.data, "reponse.data");
+        console.log(
+          JSON.stringify(response.data),
+          "reponse.data JSON.stringify"
+        );
 
-    const a =  axios
-      .post(`http://192.168.1.42:3005/auth/login`, creditionals)
-      .then((res) => {
+        /**
+         *  check the response and define the output
+         * set alerts
+         * store the reponse.data
+         * store the response.data.user.name & and object in localstorage to show in dashbord for show name
+         *
+         */
         // customToastMsg("login", 0);
-        console.log(res, "resoinse");
-      //  alert("login");
-        // Cookies.set(constant.ACCESS_TOKEN, res.access_token);
-        // Cookies.set(constant.REFRESH_TOKEN, res.refresh_token);
-        // Cookies.set("expires_in", res.expires_in);
-
-        // getUserDetails()
-        //   .then((res) => {
-        //     Cookies.set("userDetails", JSON.stringify(res.data));
+        //Cookies.set("userDetails", JSON.stringify(res.data));
         //     window.location.href = "/Dashboard";
-        //   })
-        //   .catch((c) => {
-        //     Cookies.remove(constant.ACCESS_TOKEN);
+      })
+      .catch((c) => {
+        console.log(c, "catch");
+        //Cookies.remove(constant.ACCESS_TOKEN);
         //     Cookies.remove(constant.REFRESH_TOKEN);
         //     Cookies.remove("expires_in");
         //     Cookies.remove("userDetails");
-        //   })
-        //   .finally((f) => {
-        //     // dispatch(actionLoaderCreator.loaderHandler(false));
-        //     setLoader(false);
-        //   });
-      })
-      .catch((c) => {
-        console.log(c);
+
         // dispatch(actionLoaderCreator.loaderHandler(false));
         setLoader(false);
-      //  alert("Your User Name or password incorrect! Try Again ");
+        //  alert("Your User Name or password incorrect! Try Again ");
         // customToastMsg("Your User Name or password incorrect! Try Again ", 0);
       })
       .finally((f) => {
         // dispatch(actionLoaderCreator.loaderHandler(false));
         setLoader(false);
       });
-
-      console.log(a,"aaaaaaaaa");
   };
 
   return (
