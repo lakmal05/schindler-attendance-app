@@ -1,15 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as cors from 'cors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3001);
-  app.enableCors({
-    origin: 'http://192.168.1.32:3001',  // Replace with the origin of your frontend application
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
+  
+ app.use(
+   cors({
+     origin: 'http://localhost:3000', // Allow requests only from this origin
+     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+     credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+   }),
+ );
+ await app.listen(3005);
   // app.use(csurf());
 }
 bootstrap();

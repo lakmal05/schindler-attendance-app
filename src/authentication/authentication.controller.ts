@@ -5,10 +5,11 @@ import { AuthenticationService } from './authentication.service';
 export class AuthenticationController {
   constructor(private readonly authentication: AuthenticationService) {}
 
-  @Get('login')
+  @Post('login')
   async login(@Body() data: any) {
-    console.log(data,"data");
-    
-    return await this.authentication.login(data);
+    const reponse = await this.authentication.login(data);
+    console.log(reponse);
+
+    return reponse;
   }
 }
