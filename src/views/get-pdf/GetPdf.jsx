@@ -35,41 +35,44 @@ const GetPdf = () => {
 
   const fixedColumns = [
     {
-      title: "RowHead",
+      title: "No",
       dataIndex: "key",
       rowScope: "row",
       fixed: true,
-      width: 100,
     },
     {
       title: "Name",
       dataIndex: "name",
       fixed: true,
-      width: 100,
     },
     {
       title: "Description",
       dataIndex: "description",
+      fixed: true,
     },
     {
       title: "Age",
       dataIndex: "age",
       key: "age",
+      fixed: true,
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
+      fixed: true,
     },
     {
       title: "Tags",
       key: "tags",
       dataIndex: "tags",
+      fixed: true,
     },
     {
       title: "Action",
       key: "action",
       dataIndex: "action",
+      fixed: true,
     },
   ];
   const fixedData = [];
@@ -130,7 +133,7 @@ const GetPdf = () => {
       tags: ["loser"],
       action: "active",
     },{
-      key: "1",
+      key: "8",
       name: "John Brown",
       age: 32,
       address: "New York No. 1 Lake Park",
@@ -138,7 +141,7 @@ const GetPdf = () => {
       action: "active",
     },
     {
-      key: "2",
+      key: "9",
       name: "Jim Green",
       age: 42,
       address: "London No. 1 Lake Park",
@@ -146,7 +149,7 @@ const GetPdf = () => {
       action: "active",
     },
     {
-      key: "3",
+      key: "10",
       name: "Joe Black",
       age: 32,
       address: "Sydney No. 1 Lake Park",
@@ -154,7 +157,7 @@ const GetPdf = () => {
       action: "active",
     },
     {
-      key: "4",
+      key: "11",
       name: "John Brown",
       age: 32,
       address: "New York No. 1 Lake Park",
@@ -162,7 +165,7 @@ const GetPdf = () => {
       action: "active",
     },
     {
-      key: "5",
+      key: "12",
       name: "Jim Green",
       age: 42,
       address: "London No. 1 Lake Park",
@@ -170,7 +173,7 @@ const GetPdf = () => {
       action: "active",
     },
     {
-      key: "6",
+      key: "13",
       name: "Jim Green",
       age: 42,
       address: "London No. 1 Lake Park",
@@ -178,7 +181,132 @@ const GetPdf = () => {
       action: "active",
     },
     {
-      key: "7",
+      key: "14",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },{
+      key: "15",
+      name: "John Brown",
+      age: 32,
+      address: "New York No. 1 Lake Park",
+      tags: ["nice", "developer"],
+      action: "active",
+    },
+    {
+      key: "16",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },
+    {
+      key: "17",
+      name: "Joe Black",
+      age: 32,
+      address: "Sydney No. 1 Lake Park",
+      tags: ["cool", "teacher"],
+      action: "active",
+    },
+    {
+      key: "18",
+      name: "John Brown",
+      age: 32,
+      address: "New York No. 1 Lake Park",
+      tags: ["nice", "developer"],
+      action: "active",
+    },
+    {
+      key: "18",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },
+    {
+      key: "20",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },
+    {
+      key: "21",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },{
+      key: "22",
+      name: "John Brown",
+      age: 32,
+      address: "New York No. 1 Lake Park",
+      tags: ["nice", "developer"],
+      action: "active",
+    },
+    {
+      key: "23",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },
+    {
+      key: "24",
+      name: "Joe Black",
+      age: 32,
+      address: "Sydney No. 1 Lake Park",
+      tags: ["cool", "teacher"],
+      action: "active",
+    },
+    {
+      key: "25",
+      name: "John Brown",
+      age: 32,
+      address: "New York No. 1 Lake Park",
+      tags: ["nice", "developer"],
+      action: "active",
+    },
+    {
+      key: "26",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },
+    {
+      key: "27",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },
+    {
+      key: "28",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    }, {
+      key: "29",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+      action: "active",
+    },
+    {
+      key: "30",
       name: "Jim Green",
       age: 42,
       address: "London No. 1 Lake Park",
@@ -200,7 +328,7 @@ const GetPdf = () => {
 
           <div ref={conponentPDF} id="pdf-cnt-view">
             <div
-              style={{ marginLeft: 40, marginRight: 40, position: "relative" }}
+              style={{ marginLeft: 40, marginRight: 40, marginBottom:40, position: "relative" }}
             >
               <img
                 style={{
@@ -275,6 +403,7 @@ const GetPdf = () => {
                   dataSource={fixedData}
                   pagination={false}
                   bordered
+                 
                 />
 
                 <h3
@@ -361,6 +490,11 @@ const GetPdf = () => {
                 </h3>
 
               </div>
+              {/* <div style={{backgroundColor : "red",position: "fixed",
+                    right: 40,
+                    bottom: 30,
+                    width : "100%",
+                    height:20}}></div> */}
             </div>
           </div>
 
