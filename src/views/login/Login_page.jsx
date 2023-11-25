@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import { baseUrl } from "../../services/apiConfig";
 import axios from "axios";
-
 import "./Login_page.scss";
 import { Button } from "antd";
 import { Input } from "antd";
@@ -52,9 +51,11 @@ const Login_page = () => {
          * store the response.data.user.name & and object in localstorage to show in dashbord for show name
          *
          */
-        // customToastMsg("login", 0);
-        //Cookies.set("userDetails", JSON.stringify(res.data));
-        //     window.location.href = "/Dashboard";
+        customToastMsg("login", 0);
+      
+        localStorage.setItem("userDetails", JSON.stringify(response.data));
+        window.location.href = "/Dashboard";
+
       })
       .catch((c) => {
         console.log(c, "catch");

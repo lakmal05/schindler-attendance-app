@@ -1,15 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
-import Router from './router/Router';
 import RouterHandler from './router/Router';
-import Team_Member_List from './views/team-member-list/Team_Member_List';
-import TeamMemberDrower from './components/TeamMemberDrower';
-import GetPdf from './views/get-pdf/GetPdf';
-import PdfTest from './components/test';
-import NavBar from './components/NavBar';
-import TableData from './components/test';
-import TableTest2 from './components/test2';
-import TestTable3 from './components/text3';
+
 
 function App() {
   return (
@@ -32,9 +23,6 @@ function App() {
             {/* <TeamMemberDrower/> */}
             {/* <GetPdf/> */}
             {/* <PdfTest/> */}
-         {/* <TableData/> */}
-         {/* <TableTest2/> */}
-         {/* <TestTable3/> */}
           </main>
       
     </>

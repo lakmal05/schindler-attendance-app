@@ -6,9 +6,10 @@ import axios from "axios";
 //send  user name password
 //token
 //check and route to dashbord
+const url= 'http://192.168.1.42:3005/auth/login'
 
 export const userLogin = async (credentials) => {
-  return await axios.post(`${baseUrl}/auth/login`, credentials);
+  return await axios.post('http://192.168.1.42:3005/auth/login', credentials);
   // .then((res) => {});
 };
 

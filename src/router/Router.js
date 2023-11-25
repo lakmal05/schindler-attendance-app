@@ -17,14 +17,21 @@ import GetPdf from "../views/get-pdf/GetPdf";
 const RouterHandler = () => {
   const [isLogin, setIsLogin] = useState(true);
 
-  //   useEffect(() => {
-  //     let temp = Cookies.get("userDetails") !== undefined;
-  //       Cookies.get("userDetails") !== undefined
-  //         ? JSON.parse(Cookies.get("userDetails"))
-  //         : [];
-  //     setIsLogin(temp);
-  //     console.log();
-  //   }, []);
+  // useEffect(() => {
+  //   let temp =   localStorage.getItem("userDetails") !== undefined;
+  //   localStorage.getItem("userDetails") !== undefined
+  //       ? JSON.parse(localStorage.getItem("userDetails"))
+  //       : [];
+  //   setIsLogin(temp);
+  //   console.log();
+  // }, []);
+
+  // useEffect(() => {
+  //   const temp = localStorage.getItem("userDetails") !== undefined;
+  //   // temp ? JSON.parse(userData) : [];
+  //   setIsLogin(temp);
+  //   console.log();
+  // });
 
   return (
     <>

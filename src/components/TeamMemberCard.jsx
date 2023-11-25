@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoDotFill } from "react-icons/go";
 import { IoCaretDown } from "react-icons/io5";
 import "./TeamMemberCard.scss";
@@ -17,10 +17,18 @@ const TeamMemberCard = () => {
   const [url, setUrl] = useState();
   const [tMemberName, setTMemberName] = useState("");
 
-  
+  let online = "";
+  useEffect(() => {
+    teamMember == "TeamMember" ? (
+     online = "red"
+    ) : (
+      online = "green"
+    );
+  });
+
   const handleOnClickArrow = () => {
-    setOpen(true)
-   };
+    setOpen(true);
+  };
   const onClose = () => {
     setOpen(false);
   };
@@ -44,25 +52,22 @@ const TeamMemberCard = () => {
     onClose();
   };
 
-
+  const teamMember = "Team Member";
 
   return (
     <>
-      <ScrollToTop/>
+      <ScrollToTop />
       <div id="team-member-div">
-        <h4>Team Member</h4>
+        <h4>{teamMember}</h4>
         <IoCaretDown id="down-arrow" onClick={handleOnClickArrow} />
-        <GoDotFill id="online-offline" />
-
-        {/* <TeamMemberDrower
-          isOpen={TeamMemberModal}
-          toggleTeamMemberModal={toggleTeamMemberModal}
-          closeModel={TeamMemberModal}
-        /> */}
+       { teamMember == "Team Member" ? <GoDotFill id="online-offline" style={{ color: "red" ,margin: '0 20px 0 0',fontSize: "20px"}} />
+       :
+       <GoDotFill id="online-offline" style={{ color: "green" ,margin: '0 20px 0 0',fontSize: "20px"}} />
+       }
         
       </div>
 
-    {/* ---------------------drower ---------------------------------------------------*/}
+      {/* ---------------------drower ---------------------------------------------------*/}
       <Drawer
         placement={"top"}
         width={"100%"}
@@ -78,7 +83,6 @@ const TeamMemberCard = () => {
         //   </Space>
         // }
       >
-      
         <div id="team-member-drower">
           <div id="team-member-form">
             <h2 id="tm-name">{tMemberName ? tMemberName : "Team Member"}</h2>
@@ -147,7 +151,6 @@ const TeamMemberCard = () => {
         </div>
         {/* <img src={url} /> */}
       </Drawer>
-
     </>
   );
 };
