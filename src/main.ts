@@ -7,7 +7,7 @@ async function bootstrap() {
   
  app.use(
    cors({
-     origin: 'http://localhost:3000', // Allow requests only from this origin
+     origin: 'http://192.168.1.32:3000', // Allow requests only from this origin
      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
      credentials: true, // Enable credentials (cookies, authorization headers, etc.)
    }),

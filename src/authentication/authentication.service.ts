@@ -15,16 +15,28 @@ export class AuthenticationService {
     });
 
     if (!is_exsist) {
-      return false; 
-    } else { 
-      const employee = await this.prismaService.employee.findUnique({ 
-        where: { 
-          id: is_exsist.id, 
-        }, 
-      }); 
-      const token = await this.generateToken(employee.first_name); 
-      return  { employee, token };  
-    } 
+      return false;
+    } else {
+      const employee = await this.prismaService.employee.findUnique({
+        where: {
+          id: is_exsist.id,
+        },
+      });
+      const token = await this.generateToken(employee.first_name);
+
+      const data = {
+        id: employee.id,
+        first_name: employee.first_name,
+        last_name: employee.last_name,
+        nic: employee.nic,
+        contact_no: employee.contact_no,
+        created_at: employee.created_at,
+        updated_at: employee.updated_at,
+        token: token,
+      };
+
+      console.log(token);
+    }
   }
 
   generateToken(username: string): string {
