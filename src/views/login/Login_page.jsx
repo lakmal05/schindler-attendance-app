@@ -51,7 +51,7 @@ const Login_page = () => {
          * store the response.data.user.name & and object in localstorage to show in dashbord for show name
          *
          */
-        customToastMsg("login", 0);
+        // customToastMsg("login", 0);
       
         localStorage.setItem("userDetails", JSON.stringify(response.data));
         window.location.href = "/Dashboard";

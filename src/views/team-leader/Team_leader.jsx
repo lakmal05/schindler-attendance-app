@@ -12,6 +12,7 @@ import { SlLocationPin } from "react-icons/sl";
 import { RiLoader2Line } from "react-icons/ri";
 import { customToastMsg } from "../../utility/Utils";
 import "./Team_leader.scss";
+import { markTeamLeader } from "../../services/teamLeader";
 
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
@@ -84,19 +85,20 @@ const Team_leader = () => {
     };
 
     console.log("Team Leader Details", data);
-    // markTeamLeaderAttendance(data)
-    //   .then((res) => {
-    //     customToastMsg("Successfully Mark Your Attendance !", 1);
-    //     // props.toggleContactModal();
-    //      //window.location.href = "/TeamMember";
-    //     navigate("/TeamMember");
-    //   })
-    //   .catch((c) => {
-    //     customToastMsg("Unsuccessful !", 0);
-    //   }).finally(f => {
-    //     // dispatch(actionLoaderCreator.loaderHandler(false));
-    //     setLoader(false);
-    //   });
+    markTeamLeader(data)
+      .then((response) => {
+        console.log(response,"teamLeader");
+        customToastMsg("Successfully Mark Your Attendance !", 1);
+        // props.toggleContactModal();
+         //window.location.href = "/TeamMember";
+        navigate("/TeamMember");
+      })
+      .catch((c) => {
+        customToastMsg("Unsuccessful !", 0);
+      }).finally(f => {
+        // dispatch(actionLoaderCreator.loaderHandler(false));
+        setLoader(false);
+      });
   };
 
   return (

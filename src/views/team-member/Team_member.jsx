@@ -8,8 +8,9 @@ import { HiOutlineIdentification } from "react-icons/hi2";
 import { FaRegUserCircle } from "react-icons/fa";
 import { RiLoader2Line } from "react-icons/ri";
 import { customToastMsg } from "../../utility/Utils";
-
 import "./Team_member.scss";
+import { markTeamMember } from "../../services/teamMember";
+
 
 const Team_member = () => {
   const [tMemberID, setTMemberID] = useState("");
@@ -69,18 +70,20 @@ const Team_member = () => {
      };
  
      console.log("Team Member Details", data);
-    //  markTeamMemberAttendance(data)
-    //    .then((res) => {
-    //      customToastMsg("Successfully Mark Your Attendance !", 1);
-    //       //window.location.href = "/TeamMemberList";
-    //      navigate("/TeamMemberList");
-    //    })
-    //    .catch((c) => {
-    //      customToastMsg("Unsuccessful !", 0);
-    //    }).finally(f => {
-    //      // dispatch(actionLoaderCreator.loaderHandler(false));
-    //      setLoader(false);
-    //    });
+     markTeamMember(data)
+       .then((response) => {
+        console.log(response,"teamMember");
+         customToastMsg("Successfully Mark Your Attendance !", 1);
+          //window.location.href = "/TeamMemberList";
+         navigate("/TeamMemberList");
+       })
+       .catch((c) => {
+        console.log(c , "error");
+         customToastMsg("Unsuccessful !", 0);
+       }).finally(f => {
+         // dispatch(actionLoaderCreator.loaderHandler(false));
+         setLoader(false);
+       });
   };
 
   return (
