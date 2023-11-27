@@ -10,6 +10,7 @@ import { TimePicker } from "antd";
 import { LiaToolboxSolid } from "react-icons/lia";
 import { SlLocationPin } from "react-icons/sl";
 import { RiLoader2Line } from "react-icons/ri";
+import { MdOutlineTopic } from "react-icons/md";
 import { customToastMsg } from "../../utility/Utils";
 import "./Team_leader.scss";
 import { markTeamLeader } from "../../services/teamLeader";
@@ -74,7 +75,7 @@ const Team_leader = () => {
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
     navigate("/TeamMember");
-    let data = {
+    let credentials = {
       toolBoxNo: toolBoxNo,
       location: location,
       topic: topic,
@@ -84,19 +85,19 @@ const Team_leader = () => {
       signurl: signurl,
     };
 
-    console.log("Team Leader Details", data);
-    markTeamLeader(data)
+    console.log("Team Leader Details", credentials);
+    markTeamLeader(credentials)
       .then((response) => {
-        console.log(response,"teamLeader");
+        console.log(response, "teamLeader");
         customToastMsg("Successfully Mark Your Attendance !", 1);
         // props.toggleContactModal();
-         //window.location.href = "/TeamMember";
+        //window.location.href = "/TeamMember";
         navigate("/TeamMember");
       })
       .catch((c) => {
         customToastMsg("Unsuccessful !", 0);
-      }).finally(f => {
-        // dispatch(actionLoaderCreator.loaderHandler(false));
+      })
+      .finally((f) => {
         setLoader(false);
       });
   };
@@ -138,20 +139,6 @@ const Team_leader = () => {
               />
             }
           />
-          <Input
-            onChange={async (e) => await setTopic(e.target.value)}
-            style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
-            placeholder="Topic"
-            type="text"
-            suffix={
-              <SlLocationPin
-                style={{
-                  color: "#9D9D9D",
-                  fontSize: "18px",
-                }}
-              />
-            }
-          />
           <DatePicker
             id="date-picker"
             onChange={onChangeDate}
@@ -176,11 +163,27 @@ const Team_leader = () => {
             placeholder="Time"
           />
 
+          <Input
+            onChange={async (e) => await setTopic(e.target.value)}
+            style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
+            placeholder="Topic"
+            type="text"
+            suffix={
+              <MdOutlineTopic
+                style={{
+                  color: "#9D9D9D",
+                  fontSize: "18px",
+                }}
+              />
+            }
+          />
+
           <div id="signature" onWheel={handleWheel} onClick={handleGenerate}>
             <div id="signature-div">
               <SignatureCanvas
                 canvasProps={{ className: "sigCanvas" }}
                 ref={(data) => setSign(data)}
+                sign
               />
             </div>
             <Button id="signature-clear-btn" ghost onClick={handleClear}>

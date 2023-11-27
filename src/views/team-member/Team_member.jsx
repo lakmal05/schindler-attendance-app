@@ -128,8 +128,8 @@ const Team_member = () => {
             onChange={onChange}
             value={tMemberRadio}
           >
+            <Radio value={"employee"}>Employee</Radio>
             <Radio value={"sub"}>Sub</Radio>
-            <Radio value={"no-sub"}>No Sub</Radio>
           </Radio.Group>
 
           <div id="signature-member" onWheel={handleWheel} onClick={handleGenerate}>

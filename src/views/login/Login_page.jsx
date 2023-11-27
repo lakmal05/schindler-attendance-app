@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 import { baseUrl } from "../../services/apiConfig";
 import axios from "axios";
 import "./Login_page.scss";
@@ -13,6 +16,7 @@ import shadow02 from "../../assets/login-shadow-02.png";
 import logo from "../../assets/logo.png";
 import { userLogin } from "../../services/auth";
 
+
 const Login_page = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +24,6 @@ const Login_page = () => {
   const [loader, setLoader] = useState(false);
 
   const checkLoginInfor = () => {
-    //  window.location.href = "/Dashboard";
     console.log(username, password);
     username.trim() === ""
       ? customToastMsg("Please Enter your Username!", 0)
@@ -30,19 +33,21 @@ const Login_page = () => {
   };
 
   const login = async () => {
-    // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
     let credentials = {
       username: username,
       password: password,
     };
+    customToastMsg("Login Successfully", 1);
+
+
     await userLogin(credentials)
       .then((response) => {
         console.log(response.data, "reponse.data");
-        console.log(
-          JSON.stringify(response.data),
-          "reponse.data JSON.stringify"
-        );
+        // console.log(
+        //   JSON.stringify(response.data),
+        //   "reponse.data JSON.stringify"
+        // );
 
         /**
          *  check the response and define the output
@@ -51,8 +56,7 @@ const Login_page = () => {
          * store the response.data.user.name & and object in localstorage to show in dashbord for show name
          *
          */
-        // customToastMsg("login", 0);
-      
+        customToastMsg("Login Successfully", 1);
         localStorage.setItem("userDetails", JSON.stringify(response.data));
         window.location.href = "/Dashboard";
 
@@ -63,14 +67,11 @@ const Login_page = () => {
         //     Cookies.remove(constant.REFRESH_TOKEN);
         //     Cookies.remove("expires_in");
         //     Cookies.remove("userDetails");
-
-        // dispatch(actionLoaderCreator.loaderHandler(false));
+        localStorage.removeItem("userDetails");
         setLoader(false);
-        //  alert("Your User Name or password incorrect! Try Again ");
-        // customToastMsg("Your User Name or password incorrect! Try Again ", 0);
+        customToastMsg("Your User Name or password incorrect! Try Again ", 0);     
       })
       .finally((f) => {
-        // dispatch(actionLoaderCreator.loaderHandler(false));
         setLoader(false);
       });
   };

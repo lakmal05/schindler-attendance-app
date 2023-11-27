@@ -2,14 +2,6 @@
 import {Slide, toast} from "react-toastify"
 import {Fragment} from "react";
 import { Avatar} from 'antd';
-import { FiAlertTriangle } from "react-icons/fi";
-import { FaCheck } from "react-icons/fa6";
-import { RxCross2 } from "react-icons/rx";
-
-
-// import Swal from "sweetalert2";
-// import withReactContent from "sweetalert2-react-content"
-// export const MySwal = withReactContent(Swal)
 
 import Cookies from "js-cookie";
 import * as constant from '../constant/constants'
@@ -53,75 +45,48 @@ export const formatDateToMonthShort = (value, toTimeForCurrentDay = true) => {
 
 export const isUserLoggedIn = () => Cookies.get(constant.ACCESS_TOKEN)
 
-// export const getUserData = () => JSON.parse(localStorage.getItem('userData'))
 
-// export const getHomeRouteForLoggedInUser = userRole => {
-//   if (userRole === 'admin') return '/'
-//   if (userRole === 'client') return '/access-control'
-//   return '/login'
-// }
-
-// ** React Select Theme Colors
-// export const selectThemeColors = theme => ({
-//   ...theme,
-//   colors: {
-//     ...theme.colors,
-//     primary25: '#7367f01a', // for option hover bg-color
-//     primary: '#7367f0', // for selected option bg-color
-//     neutral10: '#7367f0', // for tags bg-color
-//     neutral20: '#ededed', // for input border-color
-//     neutral30: '#ededed' // for input hover border-color
-//   }
-// });
-
-
-const ToastContent = ({title, body, assets}) => (
-    <Fragment>
-      <div className='toastify-header'>
-        <div className='title-wrapper'>
-          <Avatar size='sm' className={assets.color} icon={assets.icon}/>
-          <h6 className='toast-title fw-bolder custom-font-toast'>{title}</h6>
-        </div>
-      </div>
-      {body && (
-          <div className='toastify-body'>
-            <span>{body}</span>
-          </div>
-      )}
-    </Fragment>
-)
-
-export const customToastMsg = (title, type, body) => {
-  let msgType = "info"
-  let assets = {
-    color: "bg-info",
-    icon: <FiAlertTriangle   color={'#3f3d3d'}  size={15}/>
-  }
+export const customToastMsg = (message,type) => {
 
   if (type === 2) {
-    msgType = "info"
-    assets = {
-       color: "bg-warning",
-      icon: <FiAlertTriangle  color={'#3f3d3d'} size={15}/>
-    }
-  } else if (type === 0) {
-    msgType = "error"
-    assets = {
-      color: "bg-danger",
-      icon: <RxCross2  size={15} color={'#680000'}/>
-    }
-  } else if (type === 1) {
-    msgType = "success"
-    assets = {
-      color: "bg-success",
-      icon: <FaCheck  color={'#10df10'} size={15}/>
-    }
-  }
+    
+    toast.info(message,{
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
 
-  toast[msgType](
-      <ToastContent title={title} body={body} assets={assets}/>,
-      {icon: false, transition: Slide, hideProgressBar: true, autoClose: 2000}
-  )
+  } else if (type === 0) {
+   
+    toast.error(message,{
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+  } else if (type === 1) {
+   
+    toast.success(message,{
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+  }
+ 
 }
 
 export const isEmpty = (str) => {
