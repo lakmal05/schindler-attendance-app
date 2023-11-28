@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { baseUrl } from "../../services/apiConfig";
@@ -15,7 +15,6 @@ import shadow01 from "../../assets/login-shadow-01.png";
 import shadow02 from "../../assets/login-shadow-02.png";
 import logo from "../../assets/logo.png";
 import { userLogin } from "../../services/auth";
-
 
 const Login_page = () => {
   const [username, setUsername] = useState("");
@@ -39,7 +38,7 @@ const Login_page = () => {
       password: password,
     };
     customToastMsg("Login Successfully", 1);
-
+    window.location.href = "/Dashboard";
 
     await userLogin(credentials)
       .then((response) => {
@@ -59,7 +58,6 @@ const Login_page = () => {
         customToastMsg("Login Successfully", 1);
         localStorage.setItem("userDetails", JSON.stringify(response.data));
         window.location.href = "/Dashboard";
-
       })
       .catch((c) => {
         console.log(c, "catch");
@@ -69,7 +67,7 @@ const Login_page = () => {
         //     Cookies.remove("userDetails");
         localStorage.removeItem("userDetails");
         setLoader(false);
-        customToastMsg("Your User Name or password incorrect! Try Again ", 0);     
+        customToastMsg("Your User Name or password incorrect! Try Again ", 0);
       })
       .finally((f) => {
         setLoader(false);

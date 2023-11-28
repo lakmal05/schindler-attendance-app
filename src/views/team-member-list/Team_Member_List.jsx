@@ -4,10 +4,12 @@ import { BiSolidRightArrow } from "react-icons/bi";
 import { Button } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import TeamMemberCard from "../../components/TeamMemberCard";
-
+import { useNavigate } from "react-router-dom";
 
 const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(2);
+
+  const navigate = useNavigate();
 
   const appendTeamMember = () => {
     setTeamMembers((prevMembers) => prevMembers + 1);
@@ -26,19 +28,22 @@ const Team_Member_List = () => {
         //   <IoCaretDown id="down-arrow" onClick={toggleTeamMemberModal}/>
         //   <GoDotFill id="online-offline" />
         // </div>
-        <TeamMemberCard key={i}/>
+        <TeamMemberCard key={i} />
       );
     }
     return members;
   };
 
+  const genereatePdf = async () => {
+    navigate("/GetPdf");
+  };
   return (
     <>
       <div id="team-member-list">
         <div id="team-member-cnt">
           {renderTeamMembers()}
 
-          <Button id="get-pdf-btn" type="primary">
+          <Button id="get-pdf-btn" type="primary" onClick={genereatePdf}>
             {" "}
             Get the PDF
             <BiSolidRightArrow style={{ margin: "0 0 0 10px" }} />
@@ -54,8 +59,6 @@ const Team_Member_List = () => {
             </Button>
           </div>
         </div>
-
-       
       </div>
     </>
   );

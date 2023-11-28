@@ -5,7 +5,7 @@
   margin-bottom: 5rem;
   display: flex;
   justify-content: center;
-  background-color: aquamarine;
+  // background-color: aquamarine;
 
   #get-pdf-cnt {
     width: 85%;
@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(240, 128, 128, 0.452);
+   // background-color: rgba(240, 128, 128, 0.452);
 
     h2 {
       font-size: 22px;
@@ -29,10 +29,10 @@
     }
 
     #pdf-cnt-view {
-      background-color: green;
+      // background-color: green;
       height: 360px;
       width: 90%;
-      background-color: #08c708;
+      // background-color: #08c708;
       overflow: auto;
       white-space: nowrap;
       position: relative;
