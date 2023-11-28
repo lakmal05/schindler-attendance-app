@@ -139,6 +139,7 @@ const Team_member = () => {
                 ref={(data) => setSign(data)}
               />
             </div>
+            
             <Button id="signature-clear-btn" ghost onClick={handleClear}>
               {" "}
               Clear
@@ -162,7 +163,7 @@ const Team_member = () => {
           </Button>
         </div>
       </div>
-      <img src={signurl} />
+    {/* //<img src={signurl} /> */}
     </>
   );
 };

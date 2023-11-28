@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { IoCaretDown } from "react-icons/io5";
 import "./TeamMemberCard.scss";
-import { Button, Drawer, Radio, Space, Input } from "antd";
+import { Button, Drawer, Radio, Input } from "antd";
 import SignatureCanvas from "react-signature-canvas";
 import { HiOutlineIdentification } from "react-icons/hi2";
 import { FaRegUserCircle } from "react-icons/fa";
