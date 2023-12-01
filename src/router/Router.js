@@ -15,23 +15,14 @@ import { ScrollToTop } from "../utility/CommonFun";
 import GetPdf from "../views/get-pdf/GetPdf";
 
 const RouterHandler = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
-  // useEffect(() => {
-  //   let temp =   localStorage.getItem("userDetails") !== undefined;
-  //   localStorage.getItem("userDetails") !== undefined
-  //       ? JSON.parse(localStorage.getItem("userDetails"))
-  //       : [];
-  //   setIsLogin(temp);
-  //   console.log();
-  // }, []);
-
-  // useEffect(() => {
-  //   const temp = localStorage.getItem("userDetails") !== undefined;
-  //   // temp ? JSON.parse(userData) : [];
-  //   setIsLogin(temp);
-  //   console.log();
-  // });
+  // meka balanna logic eka thawa tikak
+  useEffect(() => {
+    const temp = localStorage.getItem("userDetails") !== undefined;
+    console.log(temp,"route temp");
+    setIsLogin(temp);
+  },isLogin);
 
   return (
     <>

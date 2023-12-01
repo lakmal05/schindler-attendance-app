@@ -37,8 +37,8 @@ const Login_page = () => {
       username: username,
       password: password,
     };
-    customToastMsg("Login Successfully", 1);
-    window.location.href = "/Dashboard";
+    // customToastMsg("Login Successfully", 1);
+    // window.location.href = "/Dashboard";
 
     await userLogin(credentials)
       .then((response) => {
