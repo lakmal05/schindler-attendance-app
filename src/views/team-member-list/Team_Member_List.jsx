@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Team_Member_List.scss";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { Button } from "antd";
@@ -8,6 +8,11 @@ import { useNavigate } from "react-router-dom";
 
 const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(2);
+
+  useEffect(()=>{
+    // getallteammembers call krala eke namai athsanai 1 weni teammember card ekata set krnna one
+    // eyage arrow eka click krahama eyage data form eke pennanna one
+  },[])
 
   const navigate = useNavigate();
 
@@ -23,11 +28,6 @@ const Team_Member_List = () => {
     const members = [];
     for (let i = 0; i < teamMembers; i++) {
       members.push(
-        // <div id="team-member-div" key={i}>
-        //   <h4>Team Member</h4>
-        //   <IoCaretDown id="down-arrow" onClick={toggleTeamMemberModal}/>
-        //   <GoDotFill id="online-offline" />
-        // </div>
         <TeamMemberCard key={i} />
       );
     }
@@ -41,6 +41,8 @@ const Team_Member_List = () => {
     <>
       <div id="team-member-list">
         <div id="team-member-cnt">
+          <TeamMemberCard/> 
+          {/* mekata thama set krnna one 1 weni employeege data tika.ganna data tika prop ekak wage yawala modal ekata set krnna one meka kranna puluwanda kiyala hithanna one ekama component eka api methana call krnne.e hinda tikak balanna one eka */}
           {renderTeamMembers()}
 
           <Button id="get-pdf-btn" type="primary" onClick={genereatePdf}>

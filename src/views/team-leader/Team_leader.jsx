@@ -74,7 +74,8 @@ const Team_leader = () => {
   const markTeamLeaderAttendance = () => {
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
-    navigate("/TeamMember");
+    // navigate("/TeamMember");
+    
     let credentials = {
       toolBoxNo: toolBoxNo,
       location: location,

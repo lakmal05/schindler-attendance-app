@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { IoCaretDown } from "react-icons/io5";
@@ -11,7 +11,7 @@ import { ScrollToTop } from "../utility/CommonFun";
 import { RiLoader2Line } from "react-icons/ri";
 import { customToastMsg } from "../utility/Utils";
 import { markTeamMember } from "../services/teamMember";
-import "./TeamMemberCard.scss"
+import "./TeamMemberCard.scss";
 
 const TeamMemberCard = () => {
   const [open, setOpen] = useState(false);
@@ -20,22 +20,30 @@ const TeamMemberCard = () => {
   const [tMemberName, setTMemberName] = useState("");
   const [tMemberRadio, setTMemberRadio] = useState(1);
   const [sign, setSign] = useState();
-  const [signurl, setSignUrl] = useState();
+  const [signurl, setSignUrl] = useState(undefined);
 
+  const [online, setOnline] = useState();
   const [loader, setLoader] = useState(false);
 
-  
+  useEffect(() => {
+    const onlineOrOffline = () => {
+      return signurl === undefined ? (
+        <GoDotFill
+          id="online-offline"
+          style={{ color: "red", margin: "0 20px 0 0", fontSize: "20px" }}
+        />
+      ) : (
+        <GoDotFill
+          id="online-offline"
+          style={{ color: "green", margin: "0 20px 0 0", fontSize: "20px" }}
+        />
+      );
+    };
+
+    setOnline(onlineOrOffline);
+  }, [signurl]);
+
   const navigate = useNavigate();
-
-
-  // let online = "";
-  // useEffect(() => {
-  //   teamMember == "TeamMember" ? (
-  //    online = "red"
-  //   ) : (
-  //     online = "green"
-  //   );
-  // });
 
   const handleOnClickArrow = () => {
     setOpen(true);
@@ -51,15 +59,29 @@ const TeamMemberCard = () => {
   const handleGenerate = () => {
     const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
     setSignUrl(generatedUrl);
-  }
+        console.log(signurl, "usestate url");
+    console.log(generatedUrl, "generate url");
+  };
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setTMemberRadio(e.target.value);
   };
 
   const handleClear = () => {
+    // sign.clear();
+    // setSignUrl(undefined);
+
+  // methana signature pad eka wagema signature detail eka nathi wela update ekak wenna one 
+  // signature eka clear kaloth online button eka para rathu wenna one
+  // generate wena url eke hariyata thiynwan .eth state eke clear wenne na url clear url ekak thiyna.eth state eke parana ekamai thiyanne clear wela na.aluh ekaka gahuwoth eka enwa.clear krl mukuth nogha  thibboth parana ekama thiynwa
+
+  if (sign) {
     sign.clear();
-    setSignUrl("");
+    setSignUrl(undefined);
+    setTimeout(() => {
+      console.log(signurl, "url"); 
+    }, 10); 
+  }
   };
 
   const checkTeamMemberInfo = () => {
@@ -77,32 +99,32 @@ const TeamMemberCard = () => {
   };
 
   const markTeamMemberAttendance = () => {
-     setLoader(true);
+    setLoader(true);
 
-     let credentials = {
-       tMemberID: tMemberID,
-       tMemberName: tMemberName,
-       tMemberRadio: tMemberRadio,
-       sign: sign,
-       signurl: signurl,
-     };
- 
-     console.log("Team Member Details", credentials);
-     markTeamMember(credentials)
-       .then((response) => {
-        console.log(response,"teamMember");
-         customToastMsg("Successfully Mark Your Attendance !", 1);
-          onChange();
-         navigate("/TeamMemberList");
-       })
-       .catch((c) => {
-        console.log(c , "error");
-         customToastMsg("Unsuccessful !", 0);
-       }).finally(f => {
-         setLoader(false);
-       });
+    let credentials = {
+      tMemberID: tMemberID,
+      tMemberName: tMemberName,
+      tMemberRadio: tMemberRadio,
+      sign: sign,
+      signurl: signurl,
+    };
+
+    console.log("Team Member Details", credentials);
+    markTeamMember(credentials)
+      .then((response) => {
+        console.log(response, "teamMember");
+        customToastMsg("Successfully Mark Your Attendance !", 1);
+        onClose();
+        //  navigate("/TeamMemberList");
+      })
+      .catch((c) => {
+        console.log(c, "error");
+        customToastMsg("Unsuccessful !", 0);
+      })
+      .finally((f) => {
+        setLoader(false);
+      });
   };
-
 
   // const teamMember = "Team Member";
 
@@ -113,11 +135,18 @@ const TeamMemberCard = () => {
         <h4>{tMemberName ? tMemberName : "Team Member"}</h4>
         <IoCaretDown id="down-arrow" onClick={handleOnClickArrow} />
 
-       { signurl == undefined ? <GoDotFill id="online-offline" style={{ color: "red" ,margin: '0 20px 0 0',fontSize: "20px"}} />
-       :
-       <GoDotFill id="online-offline" style={{ color: "green" ,margin: '0 20px 0 0',fontSize: "20px"}} />
-       }
-        
+{online}
+        {/* {signurl === undefined ? (
+          <GoDotFill
+            id="online-offline"
+            style={{ color: "red", margin: "0 20px 0 0", fontSize: "20px" }}
+          />
+        ) : (
+          <GoDotFill
+            id="online-offline"
+            style={{ color: "green", margin: "0 20px 0 0", fontSize: "20px" }}
+          />
+        )} */}
       </div>
 
       {/* ---------------------drower ---------------------------------------------------*/}
@@ -134,72 +163,76 @@ const TeamMemberCard = () => {
             <h3>Team Member</h3>
             <p>Mark Your Attendance</p>
             <Input
-            onChange={(e) => setTMemberID(e.target.value)}
-            style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
-            placeholder="ID"
-            type="text"
-            suffix={
-              <HiOutlineIdentification
-                style={{
-                  color: "#9D9D9D",
-                  fontSize: "18px",
-                }}
-              />
-            }
-          />
-          <Input
-            style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
-            onChange={(e) => setTMemberName(e.target.value)}
-            required
-            placeholder="Name"
-            type="text"
-            suffix={
-              <FaRegUserCircle
-                style={{
-                  color: "#9D9D9D",
-                  fontSize: "18px",
-                }}
-              />
-            }
-          />
+              onChange={(e) => setTMemberID(e.target.value)}
+              style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
+              placeholder="ID"
+              type="text"
+              suffix={
+                <HiOutlineIdentification
+                  style={{
+                    color: "#9D9D9D",
+                    fontSize: "18px",
+                  }}
+                />
+              }
+            />
+            <Input
+              style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
+              onChange={(e) => setTMemberName(e.target.value)}
+              required
+              placeholder="Name"
+              type="text"
+              suffix={
+                <FaRegUserCircle
+                  style={{
+                    color: "#9D9D9D",
+                    fontSize: "18px",
+                  }}
+                />
+              }
+            />
 
-          <Radio.Group
-            id="team-member-radio-btn"
-            onChange={onChange}
-            value={tMemberRadio}
-          >
-            <Radio value={"employee"}>Employee</Radio>
-            <Radio value={"sub"}>Sub</Radio>
-          </Radio.Group>
+            <Radio.Group
+              id="team-member-radio-btn"
+              onChange={onChange}
+              value={tMemberRadio}
+            >
+              <Radio value={"employee"}>Employee</Radio>
+              <Radio value={"sub"}>Sub</Radio>
+            </Radio.Group>
 
-          <div id="signature-member" onWheel={handleWheel} onClick={handleGenerate}>
-            <div id="signature-div">
-              <SignatureCanvas
-                canvasProps={{ className: "sigCanvas" }}
-                ref={(data) => setSign(data)}
-              />
+            <div
+              id="signature-member"
+              onWheel={handleWheel}
+              onClick={handleGenerate}
+            >
+              <div id="signature-div">
+                <SignatureCanvas
+                  canvasProps={{ className: "sigCanvas" }}
+                  ref={(data) => setSign(data)}
+                />
+              </div>
+              <Button id="signature-clear-btn" ghost onClick={handleClear}>
+                {" "}
+                Clear
+              </Button>
             </div>
-            <Button id="signature-clear-btn" ghost onClick={handleClear}>
-              {" "}
-              Clear
-            </Button>
-          </div>
 
-          <Button
-            id="team-member-btn"
-            type="primary"
-            onClick={checkTeamMemberInfo}
-          >
-            {" "}
-            {!loader ? (
-              "Done"
-            ) : (
-              <span>
-                <RiLoader2Line />
-                <span style={{ marginLeft: "5px" }}> loading ... </span>
-              </span>
-            )}
-          </Button>
+            <Button
+              id="team-member-btn"
+              type="primary"
+              onClick={checkTeamMemberInfo}
+            >
+              {" "}
+              {!loader ? (
+                "Done"
+              ) : (
+                <span>
+                  <RiLoader2Line />
+                  <span style={{ marginLeft: "5px" }}> loading ... </span>
+                </span>
+              )}
+            </Button>
           </div>
         </div>
         {/* <img src={url} /> */}

@@ -19,12 +19,16 @@ const GetPdf = () => {
   const [userData, setUserdata] = useState([]);
 
   useEffect(() => {
-    const registerUserdata = async () => {
+    const getAllEmployeeAttendance = async () => {
       //  axios.get("http://localhost:7000/api/registeruserdata")
       //  .then(res=>setUserdata(res.data) )
       //  .catch(error=>console.log(error));
+      getAllTeamMembers().then((response)=>{
+          // object array ekaka enne methenta
+          // fixedData = ...response.data thiyna array ekata me ena data ojbect array eka set krnwa
+      })
     };
-    registerUserdata();
+    getAllEmployeeAttendance();
   }, []);
 
   const generatePDF = useReactToPrint({

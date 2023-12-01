@@ -23,6 +23,7 @@ export const getTeamMember = async (TeamMemberID) => {
 export const getAllTeamMembers = async () => {
   return true;
   // return await axios.get(baseUrl+"/");
+  // return karanne okkoma dala thiyana data object array ekak
 };
 
 // delete teamMember attendance
