@@ -11,14 +11,17 @@ datasource db {
 }
 
 model Employee {
-  id         String   @id
+  id         String       @id
+  emp_id     String       @unique
   first_name String
   last_name  String
+  type       Type
   nic        String
   contact_no String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  User       User?
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
+  user       User?
+  attendance Attendance[]
 }
 
 model User {
@@ -32,43 +35,29 @@ model User {
 }
 
 model Attendance {
-  id           String   @id
-  leader       Leader   @relation(fields: [leader_id], references: [id])
-  leader_id    String
-  team_members Json
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
-  pdf          Pdf[]
-}
-
-model Pdf {
-  id            String     @id
-  attendance    Attendance @relation(fields: [attendance_id], references: [id])
-  created_at    DateTime   @default(now())
-  updated_at    DateTime   @updatedAt
-  attendance_id String
-}
-
-model Leader {
-  id         String       @id
-  leader_id  String
-  name       String
-  signature  String
-  created_at DateTime     @default(now())
-  updated_at DateTime     @updatedAt()
-  Attendance Attendance[]
-}
-
-model Member {
   id            String       @id
-  member_id     String
-  signature     String
+  leader        Employee     @relation(fields: [leader_emp_id], references: [emp_id])
+  leader_emp_id String
+  member_name   String?
+  member_emp_id String?
+  date          DateTime?
+  time          DateTime?
+  location      String?
   contract_type ContractType
+  tool_box_no   String?
+  topic         String?
+  signature     String?
   created_at    DateTime     @default(now())
-  updated_at    DateTime     @updatedAt()
+  updated_at    DateTime     @updatedAt
+  type          Type
 }
 
 enum ContractType {
   EMP
   SUBCON
+}
+
+enum Type {
+  LEADER
+  MEMBER
 }

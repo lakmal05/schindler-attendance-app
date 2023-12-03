@@ -19,23 +19,24 @@ export class AuthenticationService {
     } else {
       const employee = await this.prismaService.employee.findUnique({
         where: {
-          id: is_exsist.id,
+          id: is_exsist.employee_id,
         },
       });
-      const token = await this.generateToken(employee.first_name);
+      const token = await this.generateToken(employee.emp_id);
 
       const data = {
         id: employee.id,
+        emp_id: employee.emp_id,
         first_name: employee.first_name,
         last_name: employee.last_name,
         nic: employee.nic,
+        type: employee.type,
         contact_no: employee.contact_no,
         created_at: employee.created_at,
         updated_at: employee.updated_at,
         token: token,
       };
-
-      console.log(token);
+      return data;
     }
   }
 
