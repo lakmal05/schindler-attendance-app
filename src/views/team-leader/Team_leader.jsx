@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { Input } from "antd";
@@ -24,8 +24,15 @@ const Team_leader = () => {
   const [tlTtime, setTLTime] = useState("");
   const [sign, setSign] = useState("");
   const [signurl, setSignUrl] = useState();
+  const [leaderObj, setLeaderObj] = useState({});
 
   const [loader, setLoader] = useState(false);
+
+  useEffect(() => {
+    const local_storage_leader_obj = localStorage.getItem("leader_object");
+    const leaderObj = JSON.parse(local_storage_leader_obj);
+    setLeaderObj(leaderObj);
+  }, []);
 
   const navigate = useNavigate();
   const format = "HH:mm";
@@ -77,6 +84,7 @@ const Team_leader = () => {
       "leader_object"
     );
     const leaderObj = JSON.parse(local_storage_leader_obj);
+
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
 
@@ -116,8 +124,10 @@ const Team_leader = () => {
     <>
       <div id="team-leader">
         <div id="team-leader-form">
-          <h2 id="tl-name">Lakmal Jayawardhana </h2>
-          <h2 id="tl-id">ID : 4759862</h2>
+          <h2 id="tl-name">
+            {leaderObj.first_name + " " + leaderObj.last_name}
+          </h2>
+          <h2 id="tl-id">ID : {leaderObj.emp_id}</h2>
           <h3>Team Leader</h3>
           <p>Mark Your Attendance</p>
 
