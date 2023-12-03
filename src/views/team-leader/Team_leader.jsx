@@ -80,7 +80,7 @@ const Team_leader = () => {
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
 
-    let credentials = {
+    let data = {
       leader_emp_id: await leaderObj.emp_id,
       member_name: await (leaderObj.first_name + " " + leaderObj.last_name),
       member_emp_id: await leaderObj.emp_id,
@@ -95,8 +95,8 @@ const Team_leader = () => {
       type: LEADER,
     };
 
-    console.log("Team Leader Details", credentials);
-    markTeamLeader(credentials)
+    console.log("Team Leader Details", data);
+    markTeamLeader(data)
       .then((response) => {
         //console.log(response, "teamLeader");
         customToastMsg("Successfully Mark Your Attendance !", 1);

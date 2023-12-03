@@ -33,10 +33,10 @@ const Team_Member_List = () => {
     return members;
   };
 
-  getAllAttendance = async () => {
-    //send tool_box_num and execute date and leader_emp_id as a parameters or object
-    await getAllMarkedAttendanceList("data").then((response) => {});
-  };
+  // getAllAttendance = async () => {
+  //   //send tool_box_num and execute date and leader_emp_id as a parameters or object
+  //   await getAllMarkedAttendanceList("data").then((response) => {});
+  // };
 
   const genereatePdf = async () => {
     navigate("/GetPdf");
