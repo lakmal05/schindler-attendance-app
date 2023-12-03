@@ -10,7 +10,7 @@ import { RiLoader2Line } from "react-icons/ri";
 import { customToastMsg } from "../../utility/Utils";
 import "./Team_member.scss";
 import { markTeamMember } from "../../services/teamMember";
-
+import { MEMBER } from "../../constant/constants";
 
 const Team_member = () => {
   const [tMemberID, setTMemberID] = useState("");
@@ -32,7 +32,7 @@ const Team_member = () => {
     setSignUrl(generatedUrl);
     // console.log(signurl, "usestate url");
     // console.log(generatedUrl, "generate url");
-  }
+  };
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setTMemberRadio(e.target.value);
@@ -45,7 +45,6 @@ const Team_member = () => {
 
   const checkTeamMemberInfo = () => {
     navigate("/TeamMemberList");
-    console.log(tMemberID, tMemberName, tMemberRadio, sign, signurl);
     tMemberID.trim() === ""
       ? customToastMsg("Please Enter your Member ID!", 0)
       : tMemberName.trim() === ""
@@ -57,33 +56,43 @@ const Team_member = () => {
         markTeamMemberAttendance();
   };
 
-  const markTeamMemberAttendance = () => {
-     // dispatch(actionLoaderCreator.loaderHandler(true));
-     setLoader(true);
+  const markTeamMemberAttendance = async () => {
+    // dispatch(actionLoaderCreator.loaderHandler(true));
+    setLoader(true);
+    const local_storage_leader_obj = await localStorage.getItem(
+      "leader_object"
+    );
+    const leaderObj = JSON.parse(local_storage_leader_obj);
 
-     let data = {
-       tMemberID: tMemberID,
-       tMemberName: tMemberName,
-       tMemberRadio: tMemberRadio,
-       sign: sign,
-       signurl: signurl,
-     };
- 
-     console.log("Team Member Details", data);
-     markTeamMember(data)
-       .then((response) => {
-        console.log(response,"teamMember");
-         customToastMsg("Successfully Mark Your Attendance !", 1);
-          //window.location.href = "/TeamMemberList";
-         navigate("/TeamMemberList");
-       })
-       .catch((c) => {
-        console.log(c , "error");
-         customToastMsg("Unsuccessful !", 0);
-       }).finally(f => {
-         // dispatch(actionLoaderCreator.loaderHandler(false));
-         setLoader(false);
-       });
+    let data = {
+      leader_emp_id:"await leaderObj.emp_id",
+      member_name: tMemberName,
+      member_emp_id: tMemberID,
+      contract_type: tMemberRadio,
+      sign: sign,
+      signurl: signurl,
+      type: MEMBER,
+    };
+
+    console.log("Team Member Details", data);
+    markTeamMember(data)
+      .then((response) => {
+        console.log(response, "teamMember");
+
+        if (response.data) {
+          //**RESPONSE. DATA set value to name in team member list */
+          customToastMsg("Successfully Mark Your Attendance !", 1);
+          navigate("/TeamMemberList");
+        }
+      })
+      .catch((c) => {
+        console.log(c, "error");
+        customToastMsg("Unsuccessful !", 0);
+      })
+      .finally((f) => {
+        // dispatch(actionLoaderCreator.loaderHandler(false));
+        setLoader(false);
+      });
   };
 
   return (
@@ -132,14 +141,18 @@ const Team_member = () => {
             <Radio value={"sub"}>Sub</Radio>
           </Radio.Group>
 
-          <div id="signature-member" onWheel={handleWheel} onClick={handleGenerate}>
+          <div
+            id="signature-member"
+            onWheel={handleWheel}
+            onClick={handleGenerate}
+          >
             <div id="signature-div">
               <SignatureCanvas
                 canvasProps={{ className: "sigCanvas" }}
                 ref={(data) => setSign(data)}
               />
             </div>
-            
+
             <Button id="signature-clear-btn" ghost onClick={handleClear}>
               {" "}
               Clear
@@ -163,7 +176,7 @@ const Team_member = () => {
           </Button>
         </div>
       </div>
-    {/* //<img src={signurl} /> */}
+      {/* //<img src={signurl} /> */}
     </>
   );
 };

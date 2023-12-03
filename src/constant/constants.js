@@ -4,6 +4,10 @@ export const REFRESH_TOKEN ='cfsk23bsdsde';
 export const Expire_time ='expire_time';
 export const BASIC_AUTH ='cfsk23saw2bsdsde';
 export const PERMISSION ='cfsk23sadesferfsjw2bsdsde';
+export const LEADER ="LEADER"
+export const MEMBER ="MEMBER"
+export const CONTRACT_TYPE_EMP= "EMP"
+
 
 //alertmsg
 

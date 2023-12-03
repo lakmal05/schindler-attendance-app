@@ -9,9 +9,11 @@ import axios from "axios";
 //const url= 'http://192.168.1.42:3005/auth/login'
 
 export const userLogin = async (credentials) => {
-  return true;
-  // return await axios.post('http://192.168.1.42:3005/auth/login', credentials);
-  // .then((res) => {});
+  // return true;
+  // return await axios.post("http://192.168.1.42:3005/auth/login", credentials);
+  return await axios.post("http://localhost:3005/auth/login", credentials);
+  //  .then((res) => {
+  //  });
 };
 
 export const userLogout = async () => {

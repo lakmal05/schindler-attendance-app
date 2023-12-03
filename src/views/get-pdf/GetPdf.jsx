@@ -23,10 +23,10 @@ const GetPdf = () => {
       //  axios.get("http://localhost:7000/api/registeruserdata")
       //  .then(res=>setUserdata(res.data) )
       //  .catch(error=>console.log(error));
-      getAllTeamMembers().then((response)=>{
-          // object array ekaka enne methenta
-          // fixedData = ...response.data thiyna array ekata me ena data ojbect array eka set krnwa
-      })
+      // getAllTeamMembers().then((response)=>{
+      //     // object array ekaka enne methenta
+      //     // fixedData = ...response.data thiyna array ekata me ena data ojbect array eka set krnwa
+      // })
     };
     getAllEmployeeAttendance();
   }, []);

@@ -14,6 +14,7 @@ import { MdOutlineTopic } from "react-icons/md";
 import { customToastMsg } from "../../utility/Utils";
 import "./Team_leader.scss";
 import { markTeamLeader } from "../../services/teamLeader";
+import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
 
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
@@ -71,29 +72,37 @@ const Team_leader = () => {
         markTeamLeaderAttendance();
   };
 
-  const markTeamLeaderAttendance = () => {
+  const markTeamLeaderAttendance = async () => {
+    const local_storage_leader_obj = await localStorage.getItem(
+      "leader_object"
+    );
+    const leaderObj = JSON.parse(local_storage_leader_obj);
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
-    // navigate("/TeamMember");
-    
+
     let credentials = {
-      toolBoxNo: toolBoxNo,
+      leader_emp_id: await leaderObj.emp_id,
+      member_name: await (leaderObj.first_name + " " + leaderObj.last_name),
+      member_emp_id: await leaderObj.emp_id,
+      contract_type: CONTRACT_TYPE_EMP,
+      tool_box_no: toolBoxNo,
       location: location,
       topic: topic,
-      tLDate: tLDate,
-      tlTtime: tlTtime,
+      date: tLDate,
+      time: tlTtime,
       sign: sign,
       signurl: signurl,
+      type: LEADER,
     };
 
     console.log("Team Leader Details", credentials);
     markTeamLeader(credentials)
       .then((response) => {
-        console.log(response, "teamLeader");
+        //console.log(response, "teamLeader");
         customToastMsg("Successfully Mark Your Attendance !", 1);
         // props.toggleContactModal();
         //window.location.href = "/TeamMember";
-        navigate("/TeamMember");
+        // navigate("/TeamMember");
       })
       .catch((c) => {
         customToastMsg("Unsuccessful !", 0);

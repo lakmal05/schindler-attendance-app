@@ -42,32 +42,22 @@ const Login_page = () => {
 
     await userLogin(credentials)
       .then((response) => {
-        console.log(response.data, "reponse.data");
-        // console.log(
-        //   JSON.stringify(response.data),
-        //   "reponse.data JSON.stringify"
-        // );
+        // console.log(JSON.stringify(response.data), "reponse.data JSON.stringify");
+        // console.log(response.data, "resposse . ddada");
+        if (response.data) {
+          localStorage.setItem("leader_object", JSON.stringify(response.data));
+          customToastMsg("Login Successfully", 1);
+          window.location.href = "/Dashboard";
+          return;
+        } else if (response.data === false) {
+          customToastMsg("Your User Name or password incorrect! Try Again ", 0);
+          console.log("false logged");
+          setLoader(false);
+          return;
+        }
 
-        /**
-         *  check the response and define the output
-         * set alerts
-         * store the reponse.data
-         * store the response.data.user.name & and object in localstorage to show in dashbord for show name
-         *
-         */
-        customToastMsg("Login Successfully", 1);
-        localStorage.setItem("userDetails", JSON.stringify(response.data));
-        window.location.href = "/Dashboard";
-      })
-      .catch((c) => {
-        console.log(c, "catch");
-        //Cookies.remove(constant.ACCESS_TOKEN);
-        //     Cookies.remove(constant.REFRESH_TOKEN);
-        //     Cookies.remove("expires_in");
-        //     Cookies.remove("userDetails");
-        localStorage.removeItem("userDetails");
-        setLoader(false);
-        customToastMsg("Your User Name or password incorrect! Try Again ", 0);
+        // localStorage.setItem("leader_object", JSON.stringify(response.data));
+        //  window.location.href = "/Dashboard";
       })
       .finally((f) => {
         setLoader(false);

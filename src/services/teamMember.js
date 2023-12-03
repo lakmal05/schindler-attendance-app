@@ -1,9 +1,16 @@
 import axios from "axios";
 import { baseUrl } from "./apiConfig";
 
-export const markTeamMember = async (credentials) => {
-  return true;
-  //return await axios.post(baseUrl+"/",credentials);
+export const markTeamMember = async (data) => {
+  // return true;
+  return await axios
+    .post("http://localhost:3005/attendance/mark-attendance", data)
+    .then((response) => {
+      console.log(response, "response of axios");
+    })
+    .catch((c) => {
+      console.log("catch", c);
+    });
 };
 
 export const updateTeamMember = async (credentials) => {

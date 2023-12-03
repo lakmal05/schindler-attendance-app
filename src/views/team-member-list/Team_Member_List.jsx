@@ -5,14 +5,15 @@ import { Button } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import TeamMemberCard from "../../components/TeamMemberCard";
 import { useNavigate } from "react-router-dom";
+import { getAllMarkedAttendanceList } from "../../services/teamMemberList";
 
 const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(2);
 
-  useEffect(()=>{
+  useEffect(() => {
     // getallteammembers call krala eke namai athsanai 1 weni teammember card ekata set krnna one
     // eyage arrow eka click krahama eyage data form eke pennanna one
-  },[])
+  }, []);
 
   const navigate = useNavigate();
 
@@ -27,11 +28,14 @@ const Team_Member_List = () => {
   const renderTeamMembers = () => {
     const members = [];
     for (let i = 0; i < teamMembers; i++) {
-      members.push(
-        <TeamMemberCard key={i} />
-      );
+      members.push(<TeamMemberCard key={i} />);
     }
     return members;
+  };
+
+  getAllAttendance = async () => {
+    //send tool_box_num and execute date and leader_emp_id as a parameters or object
+    await getAllMarkedAttendanceList("data").then((response) => {});
   };
 
   const genereatePdf = async () => {
@@ -41,7 +45,7 @@ const Team_Member_List = () => {
     <>
       <div id="team-member-list">
         <div id="team-member-cnt">
-          <TeamMemberCard/> 
+          <TeamMemberCard />
           {/* mekata thama set krnna one 1 weni employeege data tika.ganna data tika prop ekak wage yawala modal ekata set krnna one meka kranna puluwanda kiyala hithanna one ekama component eka api methana call krnne.e hinda tikak balanna one eka */}
           {renderTeamMembers()}
 
