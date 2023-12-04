@@ -73,7 +73,7 @@ const Team_member = () => {
       // sign: sign,
       signurl: signurl,
       execute_date: await leaderObj.execute_date,
-      tool_box_no : await leaderObj.tool_box_no,
+      tool_box_no: await leaderObj.tool_box_no,
       type: MEMBER,
     };
 

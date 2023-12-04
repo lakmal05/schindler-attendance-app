@@ -2,13 +2,11 @@ import axios from "axios";
 import { baseUrl } from "./apiConfig";
 
 export const markTeamLeader = async (data) => {
-  return await axios
-    .post(baseUrl+"attendance/mark-attendance", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    
+  return await axios.post(baseUrl + "attendance/mark-attendance", data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 export const updateTeamleader = async (data) => {
@@ -23,6 +21,11 @@ export const getTeamLeader = async (TeamLeaderID) => {
   //       TLID: TeamLeaderID,
   //     },
   //   });
+};
+
+export const getTeamLeaderAttendance = (data) => {
+
+  
 };
 
 // delete teamLeader attendance

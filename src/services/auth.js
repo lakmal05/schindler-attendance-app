@@ -9,16 +9,12 @@ import axios from "axios";
 //const url= 'http://192.168.1.42:3005/auth/login'
 
 export const userLogin = async (credentials) => {
-  // return true;
   // return await axios.post("http://192.168.1.42:3005/auth/login", credentials);
-  return await axios.post(baseUrl+"auth/login", credentials, {
+  return await axios.post(baseUrl + "auth/login", credentials, {
     headers: {
       "Content-Type": "application/json",
-      // Add any other headers if needed
     },
   });
-  //  .then((res) => {
-  //  });
 };
 
 export const userLogout = async () => {

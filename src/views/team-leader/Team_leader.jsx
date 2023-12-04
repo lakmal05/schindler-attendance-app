@@ -13,7 +13,11 @@ import { RiLoader2Line } from "react-icons/ri";
 import { MdOutlineTopic } from "react-icons/md";
 import { customToastMsg } from "../../utility/Utils";
 import "./Team_leader.scss";
-import { markTeamLeader } from "../../services/teamLeader";
+import {
+  getTeamLeader,
+  markTeamLeader,
+  getTeamLeaderAttendance,
+} from "../../services/teamLeader";
 import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
 import { async } from "q";
 
@@ -30,6 +34,7 @@ const Team_leader = () => {
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
+    getLeaderMarkedAttendance();
     const local_storage_leader_obj = localStorage.getItem("leader_object");
     const leaderObj = JSON.parse(local_storage_leader_obj);
     setLeaderObj(leaderObj);
@@ -79,6 +84,19 @@ const Team_leader = () => {
         markTeamLeaderAttendance();
   };
 
+  const getLeaderMarkedAttendance = async () => {
+    const leader_attendance_details = await localStorage.getItem(
+      "leader_attendance_details"
+    );
+    const marked_attendance_obj = JSON.parse(leader_attendance_details);
+
+    const data = {
+      id: marked_attendance_obj.id,
+    };
+
+    getTeamLeaderAttendance(data);
+  };
+
   const markTeamLeaderAttendance = async () => {
     const local_storage_leader_obj = await localStorage.getItem(
       "leader_object"
@@ -102,7 +120,6 @@ const Team_leader = () => {
       type: LEADER,
     };
 
-    
     markTeamLeader(data)
       .then(async (response) => {
         //   {
@@ -121,16 +138,15 @@ const Team_leader = () => {
         //     "updated_at": "2023-12-04T10:38:29.797Z",
         //     "type": "LEADER"
         // }
-     
+
         customToastMsg("Successfully Mark Your Attendance !", 1);
-      console.log(response.data.leader_emp_id,"=======");
-      console.log(response,"response");
         const leaderAttendance = {
+          id: response.data.leader_emp_id,
           leader_emp_id: response.data.leader_emp_id,
           execute_date: response.data.execute_date,
           tool_box_no: response.data.tool_box_no,
+          // created_at: response.data.created_at,
         };
-        console.log(leaderAttendance, "==============");
         await localStorage.setItem(
           "leader_attendance_details",
           JSON.stringify(leaderAttendance)

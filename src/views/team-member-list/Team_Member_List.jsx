@@ -11,6 +11,7 @@ const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(1);
 
   useEffect(() => {
+    getAllAttendance();
     // getallteammembers call krala eke namai athsanai 1 weni teammember card ekata set krnna one
     // eyage arrow eka click krahama eyage data form eke pennanna one
   }, []);
@@ -34,8 +35,21 @@ const Team_Member_List = () => {
   };
 
   const getAllAttendance = async () => {
+    const local_storage_leader_obj = await localStorage.getItem(
+      "leader_attendance_details"
+    );
+    const leaderObj = JSON.parse(local_storage_leader_obj);
+    const data = {
+      leader_emp_id: leaderObj.leader_emp_id,
+      tool_box_no: leaderObj.tool_box_no,
+      execute_date: leaderObj.execute_date,
+    };
     //send tool_box_num and execute date and leader_emp_id as a parameters or object
-    await getAllMarkedAttendanceList("data").then((response) => {});
+    await getAllMarkedAttendanceList(data).then((response) => {
+      if (response.data) {
+        console.log(response.data);
+      }
+    });
   };
 
   const genereatePdf = async () => {
