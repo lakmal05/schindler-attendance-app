@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class AttendanceService {
   constructor(private readonly prismaService: PrismaService) {}
   async markAttendance(data: any) {
-    // console.log(data.date, 'ate');
-    // console.log(data.time, 'ate');
+    console.log(data.execute_date, 'date');
+    console.log(new Date(data.execute_date), 'time');
 
     try {
       const new_attendance = this.prismaService.attendance.create({
@@ -16,8 +16,8 @@ export class AttendanceService {
           leader_emp_id: data.leader_emp_id,
           member_name: data.member_name,
           member_emp_id: data.member_emp_id,
-          execute_date: '2023-12-04T12:08:00Z',
-          execute_time: '12:08',
+          execute_date: new Date(data.execute_date),
+          execute_time: data.execute_time,
           location: data.location,
           contract_type: data.contract_type,
           tool_box_no: data.tool_box_no,
@@ -56,6 +56,7 @@ export class AttendanceService {
         leader_emp_id: data.leader_emp_id,
         tool_box_no: data.tool_box_no,
         execute_date: data.execute_date,
+        type: 'MEMBER',
       },
     });
 
