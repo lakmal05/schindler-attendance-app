@@ -19,7 +19,8 @@ const RouterHandler = () => {
 
   // meka balanna logic eka thawa tikak
   useEffect(() => {
-    const temp = localStorage.getItem("userDetails") !== undefined;
+    const temp = localStorage.getItem("leader_object") !== null;
+    console.log(isLogin,"isLogin state");
     console.log(temp,"route temp");
     setIsLogin(temp);
   },isLogin);
@@ -27,14 +28,7 @@ const RouterHandler = () => {
   return (
     <>
       <ToastContainer />
-
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Login_page />} />
-        </Routes>
-      </Router>
-
+      
       {isLogin ? (
         <>
           <Router>
@@ -55,6 +49,7 @@ const RouterHandler = () => {
       ) : (
         <Router>
           <Routes>
+            <Route path="/" element={<Login_page />} />
             <Route path="/NotAuthorized" element={<NotAuthorized />} />
           </Routes>
         </Router>

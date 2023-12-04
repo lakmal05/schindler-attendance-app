@@ -15,7 +15,7 @@ import { MEMBER } from "../../constant/constants";
 const Team_member = () => {
   const [tMemberID, setTMemberID] = useState("");
   const [tMemberName, setTMemberName] = useState("");
-  const [tMemberRadio, setTMemberRadio] = useState(1);
+  const [tMemberRadio, setTMemberRadio] = useState("unchecked");
   const [sign, setSign] = useState();
   const [signurl, setSignUrl] = useState();
 
@@ -44,12 +44,12 @@ const Team_member = () => {
   };
 
   const checkTeamMemberInfo = () => {
-    navigate("/TeamMemberList");
+    console.log(tMemberRadio);
     tMemberID.trim() === ""
       ? customToastMsg("Please Enter your Member ID!", 0)
       : tMemberName.trim() === ""
       ? customToastMsg("Please Enter your Name!", 0)
-      : tMemberRadio.trim() === ""
+      : tMemberRadio === "unchecked"
       ? customToastMsg("Please Select one option!", 0)
       : // : sign.trim() === ""
         // ? customToastMsg("Please Enter your Signature!", 0)
@@ -57,20 +57,23 @@ const Team_member = () => {
   };
 
   const markTeamMemberAttendance = async () => {
+    // teamleader get all ekak gahala eyage data
     // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
     const local_storage_leader_obj = await localStorage.getItem(
-      "leader_object"
+      "leader_attendance_details"
     );
     const leaderObj = JSON.parse(local_storage_leader_obj);
 
     let data = {
-      leader_emp_id:"await leaderObj.emp_id",
+      leader_emp_id: await leaderObj.leader_emp_id,
       member_name: tMemberName,
       member_emp_id: tMemberID,
       contract_type: tMemberRadio,
-      sign: sign,
+      // sign: sign,
       signurl: signurl,
+      execute_date: await leaderObj.execute_date,
+      tool_box_no : await leaderObj.tool_box_no,
       type: MEMBER,
     };
 
@@ -80,6 +83,21 @@ const Team_member = () => {
         console.log(response, "teamMember");
 
         if (response.data) {
+          // contract_type: "SUBCON";
+          // created_at: "2023-12-04T10:54:57.758Z";
+          // execute_date: "2023-12-04T12:08:00.000Z";
+          // execute_time: "12:08";
+          // id: "a1a6e41c-b4e4-44ef-815d-474b947f5a04";
+          // leader_emp_id: "1000";
+          // location: null;
+          // member_emp_id: "gf34g34";
+          // member_name: "kukku manika";
+          // signature: "signature";
+          // tool_box_no: null;
+          // topic: null;
+          // type: "MEMBER";
+          // updated_at: "2023-12-04T10:54:57.758Z";
+
           //**RESPONSE. DATA set value to name in team member list */
           customToastMsg("Successfully Mark Your Attendance !", 1);
           navigate("/TeamMemberList");
@@ -137,8 +155,8 @@ const Team_member = () => {
             onChange={onChange}
             value={tMemberRadio}
           >
-            <Radio value={"employee"}>Employee</Radio>
-            <Radio value={"sub"}>Sub</Radio>
+            <Radio value={"EMP"}>Employee</Radio>
+            <Radio value={"SUBCON"}>Sub</Radio>
           </Radio.Group>
 
           <div

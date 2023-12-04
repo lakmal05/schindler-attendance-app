@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllMarkedAttendanceList } from "../../services/teamMemberList";
 
 const Team_Member_List = () => {
-  const [teamMembers, setTeamMembers] = useState(2);
+  const [teamMembers, setTeamMembers] = useState(1);
 
   useEffect(() => {
     // getallteammembers call krala eke namai athsanai 1 weni teammember card ekata set krnna one
@@ -33,10 +33,10 @@ const Team_Member_List = () => {
     return members;
   };
 
-  // getAllAttendance = async () => {
-  //   //send tool_box_num and execute date and leader_emp_id as a parameters or object
-  //   await getAllMarkedAttendanceList("data").then((response) => {});
-  // };
+  const getAllAttendance = async () => {
+    //send tool_box_num and execute date and leader_emp_id as a parameters or object
+    await getAllMarkedAttendanceList("data").then((response) => {});
+  };
 
   const genereatePdf = async () => {
     navigate("/GetPdf");

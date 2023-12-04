@@ -3,14 +3,7 @@ import { baseUrl } from "./apiConfig";
 
 export const markTeamMember = async (data) => {
   // return true;
-  return await axios
-    .post("http://localhost:3005/attendance/mark-attendance", data)
-    .then((response) => {
-      console.log(response, "response of axios");
-    })
-    .catch((c) => {
-      console.log("catch", c);
-    });
+  return await axios.post(baseUrl+"attendance/mark-attendance", data)
 };
 
 export const updateTeamMember = async (credentials) => {
@@ -27,10 +20,10 @@ export const getTeamMember = async (TeamMemberID) => {
   // });
 };
 
-export const getAllTeamMembers = async () => {
-  return true;
-  // return await axios.get(baseUrl+"/");
-  // return karanne okkoma dala thiyana data object array ekak
-};
+// export const getAllTeamMembers = async () => {
+//   return true;
+//   // return await axios.get(baseUrl+"/");
+//   // return karanne okkoma dala thiyana data object array ekak
+// };
 
 // delete teamMember attendance

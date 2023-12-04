@@ -18,7 +18,7 @@ const TeamMemberCard = () => {
 
   const [tMemberID, setTMemberID] = useState("");
   const [tMemberName, setTMemberName] = useState("");
-  const [tMemberRadio, setTMemberRadio] = useState(1);
+  const [tMemberRadio, setTMemberRadio] = useState("unchecked");
   const [sign, setSign] = useState();
   const [signurl, setSignUrl] = useState(undefined);
 
@@ -91,7 +91,7 @@ const TeamMemberCard = () => {
       ? customToastMsg("Please Enter your Member ID!", 0)
       : tMemberName.trim() === ""
       ? customToastMsg("Please Enter your Name!", 0)
-      : tMemberRadio.trim() === ""
+      : tMemberRadio === "unchecked"
       ? customToastMsg("Please Select one option!", 0)
       : // : sign.trim() === ""
         // ? customToastMsg("Please Enter your Signature!", 0)
@@ -126,7 +126,7 @@ const TeamMemberCard = () => {
       });
   };
 
-  // const teamMember = "Team Member";
+  
 
   return (
     <>

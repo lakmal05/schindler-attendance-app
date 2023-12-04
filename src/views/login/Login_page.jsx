@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { baseUrl } from "../../services/apiConfig";
-import axios from "axios";
 import "./Login_page.scss";
 import { Button } from "antd";
 import { Input } from "antd";
@@ -37,9 +32,7 @@ const Login_page = () => {
       username: username,
       password: password,
     };
-    // customToastMsg("Login Successfully", 1);
-    // window.location.href = "/Dashboard";
-
+    
     await userLogin(credentials)
       .then((response) => {
         // console.log(JSON.stringify(response.data), "reponse.data JSON.stringify");

@@ -21,14 +21,14 @@ export const ScrollToTop = ({ children }) => {
 
 
 
-export const logOutUser = () => {
+export const logOutLeader = () => {
   console.log("logOut");
-  Cookies.remove(constant.ACCESS_TOKEN);
-  Cookies.remove(constant.REFRESH_TOKEN);
-  Cookies.remove(constant.Expire_time);
-  Cookies.remove("userDetails");
-  Cookies.remove(constant.ACCESS_TOKEN);
-  window.location = `/login`;
+  // Cookies.remove(constant.ACCESS_TOKEN);
+  // Cookies.remove(constant.REFRESH_TOKEN);
+  // Cookies.remove(constant.Expire_time);
+  // Cookies.remove(constant.ACCESS_TOKEN);
+  localStorage.removeItem("leader_object");
+  window.location = "/";
 };
 
 export const setCommonErrorMessage = (e) => {

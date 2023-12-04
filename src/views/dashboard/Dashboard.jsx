@@ -4,6 +4,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { Button } from "antd";
 import { getWeekDates } from "../../utility/Utils";
 import "./Dashboard.scss";
+import { logOutLeader } from "../../utility/CommonFun";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -41,6 +42,10 @@ const Dashboard = () => {
     setWeekElements(weekDivs);
   }, []);
 
+  const logout =() => {
+    logOutLeader();
+  }
+
   return (
     <>
       <div id="dashboard">
@@ -49,40 +54,19 @@ const Dashboard = () => {
           <div id="prifile-details">
             <h4 id="profile-name">Hi {leader_first_name}</h4>
             <h4 id="profile-postion">Team Leader</h4>
+            <Button
+              id="mt-btn"
+              type="primary"
+              onClick={logout}
+            >
+              LOGoUT
+            </Button>
           </div>
         </div>
 
         <div id="calander">
           <div id="calander-div">
             {weekElements}
-            {/* <div className="date-box">
-              <div className="calander-day">Mo</div>
-              <div className="calander-date">19</div>
-            </div>
-            <div className="date-box">
-              <div className="calander-day">Tu</div>
-              <div className="calander-date">20</div>
-            </div>
-            <div className="date-box">
-              <div className="calander-day">We</div>
-              <div className="calander-date">21</div>
-            </div>
-            <div className="date-box active">
-              <div className="calander-day">Th</div>
-              <div className="calander-date">22</div>
-            </div>
-            <div className="date-box">
-              <div className="calander-day">Fr</div>
-              <div className="calander-date">23</div>
-            </div>
-            <div className="date-box">
-              <div className="calander-day">Sa</div>
-              <div className="calander-date">24</div>
-            </div>
-            <div className="date-box">
-              <div className="calander-day">Su</div>
-              <div className="calander-date">25</div>
-            </div> */}
           </div>
         </div>
 

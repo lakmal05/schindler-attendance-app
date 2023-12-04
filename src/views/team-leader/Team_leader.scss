@@ -21,6 +21,9 @@
       font-weight: 600;
       margin: 0;
     }
+    #tl-name::first-letter{
+      text-transform: uppercase;
+    }
     #tl-id {
       font-size: 18px;
     }

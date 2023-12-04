@@ -15,6 +15,7 @@ import { customToastMsg } from "../../utility/Utils";
 import "./Team_leader.scss";
 import { markTeamLeader } from "../../services/teamLeader";
 import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
+import { async } from "q";
 
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
@@ -63,7 +64,6 @@ const Team_leader = () => {
   };
 
   const checkTeamLeaderInfo = () => {
-    //  console.log(toolBoxNo, location, tLDate, tlTtime, sign, signurl);
     toolBoxNo.trim() === ""
       ? customToastMsg("Please Enter your ToolBox No!", 0)
       : location.trim() === ""
@@ -85,7 +85,6 @@ const Team_leader = () => {
     );
     const leaderObj = JSON.parse(local_storage_leader_obj);
 
-    // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
 
     let data = {
@@ -96,21 +95,48 @@ const Team_leader = () => {
       tool_box_no: toolBoxNo,
       location: location,
       topic: topic,
-      date: tLDate,
-      time: tlTtime,
-      sign: sign,
+      execute_date: tLDate,
+      execute_time: tlTtime,
+      // sign: sign,
       signurl: signurl,
       type: LEADER,
     };
 
-    console.log("Team Leader Details", data);
+    
     markTeamLeader(data)
-      .then((response) => {
-        //console.log(response, "teamLeader");
+      .then(async (response) => {
+        //   {
+        //     "id": "8d07526e-8ef4-422a-8852-9f8e68df6101",
+        //     "leader_emp_id": "1000",  -------
+        //     "member_name": "lakmal madushani",
+        //     "member_emp_id": "1000",
+        //     "execute_date": "2023-12-04T12:08:00.000Z", ----
+        //     "execute_time": "12:08",
+        //     "location": "adn",
+        //     "contract_type": "EMP",
+        //     "tool_box_no": "121",  -----
+        //     "topic": "asdfasdf",
+        //     "signature": "signature",
+        //     "created_at": "2023-12-04T10:38:29.797Z",
+        //     "updated_at": "2023-12-04T10:38:29.797Z",
+        //     "type": "LEADER"
+        // }
+     
         customToastMsg("Successfully Mark Your Attendance !", 1);
-        // props.toggleContactModal();
-        //window.location.href = "/TeamMember";
-        // navigate("/TeamMember");
+      console.log(response.data.leader_emp_id,"=======");
+      console.log(response,"response");
+        const leaderAttendance = {
+          leader_emp_id: response.data.leader_emp_id,
+          execute_date: response.data.execute_date,
+          tool_box_no: response.data.tool_box_no,
+        };
+        console.log(leaderAttendance, "==============");
+        await localStorage.setItem(
+          "leader_attendance_details",
+          JSON.stringify(leaderAttendance)
+        );
+
+        navigate("/TeamMember");
       })
       .catch((c) => {
         customToastMsg("Unsuccessful !", 0);
@@ -125,7 +151,12 @@ const Team_leader = () => {
       <div id="team-leader">
         <div id="team-leader-form">
           <h2 id="tl-name">
-            {leaderObj.first_name + " " + leaderObj.last_name}
+            {leaderObj.first_name +
+              " " +
+              (leaderObj.last_name
+                ? leaderObj.last_name.charAt(0).toUpperCase() +
+                  leaderObj.last_name.slice(1)
+                : "")}
           </h2>
           <h2 id="tl-id">ID : {leaderObj.emp_id}</h2>
           <h3>Team Leader</h3>
@@ -167,7 +198,7 @@ const Team_leader = () => {
               margin: "12px 0",
               width: "100%",
             }}
-            placeholder="Date"
+            placeholder="Project Date"
           />
 
           <TimePicker
@@ -180,7 +211,7 @@ const Team_leader = () => {
               margin: "12px 0",
               width: "100%",
             }}
-            placeholder="Time"
+            placeholder="Project Time"
           />
 
           <Input
