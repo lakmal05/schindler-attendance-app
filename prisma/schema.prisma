@@ -40,8 +40,8 @@ model Attendance {
   leader_emp_id String
   member_name   String?
   member_emp_id String?
-  date          DateTime?
-  time          DateTime?
+  execute_date  DateTime?
+  execute_time  String?
   location      String?
   contract_type ContractType
   tool_box_no   String?

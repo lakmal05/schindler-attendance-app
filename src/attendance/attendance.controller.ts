@@ -7,9 +7,6 @@ export class AttendanceController {
 
   @Post('/mark-attendance')
   markAttendance(@Body() data: any) {
-    console.log(data, 'data log');
-    return true;
-
-    // return this.attendanceService.markAttendance(data);
+    return this.attendanceService.markAttendance(data);
   }
 }
