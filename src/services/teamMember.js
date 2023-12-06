@@ -7,8 +7,7 @@ export const markTeamMember = async (data) => {
 };
 
 export const updateTeamMember = async (credentials) => {
-  return true;
-  //return await axios.put(baseUrl+"/" , credentials);
+  return await axios.put(baseUrl+"attendance/update" , credentials);
 };
 
 export const getTeamMember = async (TeamMemberID) => {

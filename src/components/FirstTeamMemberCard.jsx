@@ -1,5 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
 import { GoDotFill } from "react-icons/go";
 import { IoCaretDown } from "react-icons/io5";
 import "./TeamMemberCard.scss";
@@ -10,44 +9,36 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { ScrollToTop } from "../utility/CommonFun";
 import { RiLoader2Line } from "react-icons/ri";
 import { customToastMsg } from "../utility/Utils";
-import { markTeamMember } from "../services/teamMember";
-import { MEMBER } from "../constant/constants";
+import { updateTeamMember } from "../services/teamMember";
 import "./TeamMemberCard.scss";
 
-const TeamMemberCard = (teamMemberDetails) => {
+const FirstTeamMemberCard = () => {
   const [open, setOpen] = useState(false);
 
   const [tMemberID, setTMemberID] = useState("");
   const [tMemberName, setTMemberName] = useState("");
   const [tMemberRadio, setTMemberRadio] = useState("unchecked");
-  const [sign, setSign] = useState();
+  const [sign, setSign] = useState(null);
   const [signurl, setSignUrl] = useState(undefined);
 
   const signatureRef = useRef(null);
+
   const [online, setOnline] = useState();
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    console.log(
-      teamMemberDetails.teamMemberData,
-      "card ekata ena team member detail eka"
+    const firstTeamMember = JSON.parse(
+      localStorage.getItem("first-team-member")
     );
-    const team_member_data =  teamMemberDetails.teamMemberData
-    console.log(
-      team_member_data,
-      "card ekata ena team member detail eka"
-    );
-   
-    // if(team_member_data !== undefined){
-      setTMemberID(team_member_data?.member_emp_id);
-      setTMemberName(team_member_data?.member_name);
-      setTMemberRadio(team_member_data?.contract_type);
-  
-      setSignUrl(team_member_data?.signature);
-      setSignatureToSignaturepad(signurl);
-    // }
-    
-  },[open]);
+
+    console.log(firstTeamMember, "firstMemb");
+    setTMemberID(firstTeamMember.member_emp_id);
+    setTMemberName(firstTeamMember.member_name);
+    setTMemberRadio(firstTeamMember.contract_type);
+
+    setSignUrl(firstTeamMember.signurl);
+    setSignatureToSignaturepad(signurl);
+  }, [open]);
 
   const setSignatureToSignaturepad = (signaureURL) => {
     if (signatureRef.current && signaureURL) {
@@ -66,7 +57,6 @@ const TeamMemberCard = (teamMemberDetails) => {
       setSign(data);
     }
   };
-
 
   useEffect(() => {
     const onlineOrOffline = () => {
@@ -103,8 +93,6 @@ const TeamMemberCard = (teamMemberDetails) => {
     setOnline(onlineOrOffline);
   }, [signurl]);
 
-  const navigate = useNavigate();
-
   const handleOnClickArrow = () => {
     setOpen(true);
   };
@@ -129,7 +117,6 @@ const TeamMemberCard = (teamMemberDetails) => {
       console.log(generatedUrl, "generate url2");
     }
   };
-
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setTMemberRadio(e.target.value);
@@ -171,31 +158,42 @@ const TeamMemberCard = (teamMemberDetails) => {
         markTeamMemberAttendance();
   };
 
-  const markTeamMemberAttendance = async () => {
+  const markTeamMemberAttendance = () => {
     setLoader(true);
 
-    const local_storage_leader_obj = await localStorage.getItem(
-      "leader_attendance_details"
+    const firstTeamMember = JSON.parse(
+      localStorage.getItem("first-team-member")
     );
-    const leaderObj = JSON.parse(local_storage_leader_obj);
+    firstTeamMember.contract_type = tMemberRadio;
+    firstTeamMember.member_emp_id = tMemberID;
+    firstTeamMember.member_name = tMemberName;
+    firstTeamMember.signurl = signurl;
+    console.log(firstTeamMember.signurl, "url");
 
-    let credentials = {
-      leader_emp_id: await leaderObj.leader_emp_id,
-      member_name: tMemberName,
-      member_emp_id: tMemberID,
-      contract_type: tMemberRadio,
-      // sign: sign,
-      signurl: signurl,
-      execute_date: await leaderObj.execute_date,
-      tool_box_no: await leaderObj.tool_box_no,
-      type: MEMBER,
-    };
+    // meka ai kalpana krnna useeffect eka drower eka open wena hama welema wada krnwa.e hinda eka krnna puluwan weida--->localstorage eken aragena eka set karala eken credentials object eka hadala eka passe krnwa update ekata
+    // meke apiset karapu value ai update krnna puluwan wennath one
 
-    console.log("Team Member Details", credentials);
-    markTeamMember(credentials)
+    // let credentials = {
+    //   //   leader_emp_id: await firstTeamMember.leader_emp_id,
+    //   member_name: tMemberName,
+    //   member_emp_id: tMemberID,
+    //   contract_type: tMemberRadio,
+    //   // sign: sign,
+    //   signurl: signurl,
+    //   //   execute_date: await leaderObj.execute_date,
+    //   //   tool_box_no: await leaderObj.tool_box_no,
+    //   type: MEMBER,
+    // };
+
+    console.log("Team Member Details", firstTeamMember);
+    updateTeamMember(firstTeamMember)
       .then((response) => {
         console.log(response, "teamMember");
-        customToastMsg("Successfully Mark Your Attendance !", 1);
+        localStorage.setItem(
+          "first-team-member",
+          JSON.stringify(firstTeamMember)
+        );
+        customToastMsg("Successfully Update Your Attendance !", 1);
         onClose();
       })
       .catch((c) => {
@@ -211,7 +209,7 @@ const TeamMemberCard = (teamMemberDetails) => {
     <>
       <ScrollToTop />
       <div id="team-member-div">
-        <h4>{tMemberName ? tMemberName : "Team Member"}</h4>
+        <h4>{tMemberName ? tMemberName : "First Team Member"}</h4>
         <IoCaretDown id="down-arrow" onClick={handleOnClickArrow} />
 
         {online}
@@ -227,15 +225,17 @@ const TeamMemberCard = (teamMemberDetails) => {
       >
         <div id="team-member-drower">
           <div id="team-member-form">
-            <h2 id="tm-name">{tMemberName ? tMemberName : "Team Member"}</h2>
+            <h2 id="tm-name">
+              {tMemberName ? tMemberName : "First Team Member"}
+            </h2>
             <h3>Team Member</h3>
             <p>Mark Your Attendance</p>
             <Input
               onChange={(e) => setTMemberID(e.target.value)}
-              value={tMemberID}
               style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
               placeholder="ID"
               type="text"
+              value={tMemberID}
               suffix={
                 <HiOutlineIdentification
                   style={{
@@ -248,10 +248,10 @@ const TeamMemberCard = (teamMemberDetails) => {
             <Input
               style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
               onChange={(e) => setTMemberName(e.target.value)}
-              value={tMemberName}
               required
               placeholder="Name"
               type="text"
+              value={tMemberName}
               suffix={
                 <FaRegUserCircle
                   style={{
@@ -283,6 +283,14 @@ const TeamMemberCard = (teamMemberDetails) => {
                   ref={(ref) => {
                     setSignature(ref);
                   }}
+                  //   ref={(ref) => {
+                  //     if (ref) {
+                  //       signatureRef.current = ref;
+                  //       signatureRef.current.onBegin = () => {};
+                  //     } else {
+                  //       setSign(ref);
+                  //     }
+                  //   }}
                 />
               </div>
               <Button id="signature-clear-btn" ghost onClick={handleClear}>
@@ -298,7 +306,7 @@ const TeamMemberCard = (teamMemberDetails) => {
             >
               {" "}
               {!loader ? (
-                "Done"
+                "Update"
               ) : (
                 <span>
                   <RiLoader2Line />
@@ -314,4 +322,4 @@ const TeamMemberCard = (teamMemberDetails) => {
   );
 };
 
-export default TeamMemberCard;
+export default FirstTeamMemberCard;

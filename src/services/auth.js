@@ -17,8 +17,8 @@ export const userLogin = async (credentials) => {
   });
 };
 
-export const userLogout = async () => {
-  return true;
-  //route to login page
-  //logout and clear local storage or session
-};
+// export const userLogout = async () => {
+//   return true;
+//   //route to login page
+//   //logout and clear local storage or session
+// };
