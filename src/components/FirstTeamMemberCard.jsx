@@ -211,7 +211,6 @@ const FirstTeamMemberCard = () => {
       <div id="team-member-div">
         <h4>{tMemberName ? tMemberName : "First Team Member"}</h4>
         <IoCaretDown id="down-arrow" onClick={handleOnClickArrow} />
-
         {online}
       </div>
 

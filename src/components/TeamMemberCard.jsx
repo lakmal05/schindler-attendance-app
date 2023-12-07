@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { IoCaretDown } from "react-icons/io5";
@@ -11,8 +11,11 @@ import { ScrollToTop } from "../utility/CommonFun";
 import { RiLoader2Line } from "react-icons/ri";
 import { customToastMsg } from "../utility/Utils";
 import { markTeamMember } from "../services/teamMember";
+import { updateTeamMember } from "../services/teamMember";
 import { MEMBER } from "../constant/constants";
 import "./TeamMemberCard.scss";
+
+
 
 const TeamMemberCard = (teamMemberDetails) => {
   const [open, setOpen] = useState(false);
@@ -32,22 +35,18 @@ const TeamMemberCard = (teamMemberDetails) => {
       teamMemberDetails.teamMemberData,
       "card ekata ena team member detail eka"
     );
-    const team_member_data =  teamMemberDetails.teamMemberData
-    console.log(
-      team_member_data,
-      "card ekata ena team member detail eka"
-    );
-   
+    const team_member_data = teamMemberDetails.teamMemberData;
+    console.log(team_member_data, "card ekata ena team member detail eka");
+
     // if(team_member_data !== undefined){
-      setTMemberID(team_member_data?.member_emp_id);
-      setTMemberName(team_member_data?.member_name);
-      setTMemberRadio(team_member_data?.contract_type);
-  
-      setSignUrl(team_member_data?.signature);
-      setSignatureToSignaturepad(signurl);
+    setTMemberID(team_member_data?.member_emp_id);
+    setTMemberName(team_member_data?.member_name);
+    setTMemberRadio(team_member_data?.contract_type);
+
+    setSignUrl(team_member_data?.signature);
+    setSignatureToSignaturepad(signurl);
     // }
-    
-  },[open]);
+  }, [open]);
 
   const setSignatureToSignaturepad = (signaureURL) => {
     if (signatureRef.current && signaureURL) {
@@ -67,25 +66,28 @@ const TeamMemberCard = (teamMemberDetails) => {
     }
   };
 
-
   useEffect(() => {
     const onlineOrOffline = () => {
-      if(signurl === undefined || signurl === 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC'){
+      if (
+        signurl === undefined ||
+        signurl ===
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC"
+      ) {
         console.log("empty signature");
-        return(
+        return (
           <GoDotFill
-          id="online-offline"
-          style={{ color: "red", margin: "0 20px 0 0", fontSize: "20px" }}
-        />
-        )
-      }else{
+            id="online-offline"
+            style={{ color: "red", margin: "0 20px 0 0", fontSize: "20px" }}
+          />
+        );
+      } else {
         console.log("empty na sig");
-        return(
+        return (
           <GoDotFill
-          id="online-offline"
-          style={{ color: "green", margin: "0 20px 0 0", fontSize: "20px" }}
-        />
-        )
+            id="online-offline"
+            style={{ color: "green", margin: "0 20px 0 0", fontSize: "20px" }}
+          />
+        );
       }
       // return signurl === undefined ? (
       //   <GoDotFill
@@ -133,6 +135,7 @@ const TeamMemberCard = (teamMemberDetails) => {
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setTMemberRadio(e.target.value);
+
   };
 
   const handleClear = () => {
@@ -194,8 +197,66 @@ const TeamMemberCard = (teamMemberDetails) => {
     console.log("Team Member Details", credentials);
     markTeamMember(credentials)
       .then((response) => {
+        
         console.log(response, "teamMember");
         customToastMsg("Successfully Mark Your Attendance !", 1);
+        onClose();
+      })
+      .catch((c) => {
+        console.log(c, "error");
+        customToastMsg("Unsuccessful !", 0);
+      })
+      .finally((f) => {
+        setLoader(false);
+      });
+  };
+
+
+  const checkUpdateTeamMemberInfo = () => {
+    tMemberID.trim() === ""
+      ? customToastMsg("Please Enter your Member ID!", 0)
+      : tMemberName.trim() === ""
+      ? customToastMsg("Please Enter your Name!", 0)
+      : tMemberRadio === "unchecked"
+      ? customToastMsg("Please Select one option!", 0)
+      : // : sign.trim() === ""
+        // ? customToastMsg("Please Enter your Signature!", 0)
+       updateTeamMemberAttendance();
+  }
+
+  const updateTeamMemberAttendance = async () => {
+    setLoader(true);
+
+    // const local_storage_leader_obj = await localStorage.getItem(
+    //   "leader_attendance_details"
+    // );
+    // const leaderObj = JSON.parse(local_storage_leader_obj);
+
+    // let credentials = {
+    //   leader_emp_id: await leaderObj.leader_emp_id,
+    //   member_name: tMemberName,
+    //   member_emp_id: tMemberID,
+    //   contract_type: tMemberRadio,
+    //   // sign: sign,
+    //   signurl: signurl,
+    //   execute_date: await leaderObj.execute_date,
+    //   tool_box_no: await leaderObj.tool_box_no,
+    //   type: MEMBER,
+    // };
+
+    teamMemberDetails.teamMemberData.member_emp_id=tMemberID,
+    teamMemberDetails.teamMemberData.member_name=tMemberName,
+    console.log(tMemberRadio,'udate');
+    teamMemberDetails.teamMemberData.contract_type = tMemberRadio,
+    teamMemberDetails.teamMemberData.signurl=signurl,
+
+
+
+    console.log("Team Member Details", teamMemberDetails.teamMemberData);
+    updateTeamMember(teamMemberDetails.teamMemberData)
+      .then((response) => {
+        console.log(response, "teamMember");
+        customToastMsg("Successfully Update Your Attendance !", 1);
         onClose();
       })
       .catch((c) => {
@@ -291,21 +352,39 @@ const TeamMemberCard = (teamMemberDetails) => {
               </Button>
             </div>
 
-            <Button
-              id="team-member-btn"
-              type="primary"
-              onClick={checkTeamMemberInfo}
-            >
-              {" "}
-              {!loader ? (
-                "Done"
-              ) : (
-                <span>
-                  <RiLoader2Line />
-                  <span style={{ marginLeft: "5px" }}> loading ... </span>
-                </span>
-              )}
-            </Button>
+            {teamMemberDetails.teamMemberData ? (
+              <Button
+                id="team-member-btn"
+                type="primary"
+                onClick={checkUpdateTeamMemberInfo}
+              >
+                {" "}
+                {!loader ? (
+                  "Update"
+                ) : (
+                  <span>
+                    <RiLoader2Line />
+                    <span style={{ marginLeft: "5px" }}> loading ... </span>
+                  </span>
+                )}
+              </Button>
+            ) : (
+              <Button
+                id="team-member-btn"
+                type="primary"
+                onClick={checkTeamMemberInfo}
+              >
+                {" "}
+                {!loader ? (
+                  "Done"
+                ) : (
+                  <span>
+                    <RiLoader2Line />
+                    <span style={{ marginLeft: "5px" }}> loading ... </span>
+                  </span>
+                )}
+              </Button>
+            )}
           </div>
         </div>
         {/* <img src={url} /> */}

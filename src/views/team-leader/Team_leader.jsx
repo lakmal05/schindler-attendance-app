@@ -91,7 +91,7 @@ const Team_leader = () => {
     const marked_attendance_obj = JSON.parse(leader_attendance_details);
 
     const data = {
-      id: marked_attendance_obj.id,
+      id: marked_attendance_obj?.id,
     };
 
     getTeamLeaderAttendance(data);
