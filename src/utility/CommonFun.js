@@ -18,9 +18,9 @@ export const getAllAttendance = async () => {
   await getAllMarkedMemberAttendanceList(data)
     .then((response) => {
       if (response.data) {
-        const dataarray = response.data
+        const dataarray = response.data;
         // console.log(response.data, "response");
-        console.log(dataarray,"data array");
+        console.log(dataarray, "data array");
 
         return dataarray;
 
@@ -56,6 +56,7 @@ export const logOutLeader = () => {
   // Cookies.remove(constant.Expire_time);
   // Cookies.remove(constant.ACCESS_TOKEN);
   localStorage.removeItem("leader_object");
+  localStorage.removeItem("leader_attendance_details");
   window.location = "/";
 };
 

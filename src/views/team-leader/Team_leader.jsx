@@ -18,7 +18,7 @@ import {
   markTeamLeader,
   getTeamLeaderAttendance,
   getLeaderAttendanceByAttendanceId,
-  updateTeamleader
+  updateTeamleader,
 } from "../../services/teamLeader";
 import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
 import { async } from "q";
@@ -27,7 +27,7 @@ const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
   const [location, setLocation] = useState("");
   const [topic, setTopic] = useState("");
-  const [tLDate, setTLDate] = useState("");
+  const [tLDate, setTLDate] = useState(null);
   const [tlTtime, setTLTime] = useState("");
   const [sign, setSign] = useState("");
   const [signurl, setSignUrl] = useState();
@@ -106,6 +106,7 @@ const Team_leader = () => {
         console.log(response.data, "=============");
 
         const leaderAtendance = response.data;
+        // execute_date = await new Date(leaderAtendance.execute_date);
 
         setToolBoxNo(leaderAtendance.tool_box_no);
         setLocation(leaderAtendance.location);
@@ -173,7 +174,7 @@ const Team_leader = () => {
       execute_date: tLDate,
       execute_time: tlTtime,
       // sign: sign,
-      signurl: signurl,
+      signature: signurl,
       type: LEADER,
     };
 
@@ -219,21 +220,21 @@ const Team_leader = () => {
       });
   };
 
-  const checkUpdateTeamLeaderInfo = () =>{
+  const checkUpdateTeamLeaderInfo = () => {
     toolBoxNo.trim() === ""
-    ? customToastMsg("Please Enter your ToolBox No!", 0)
-    : location.trim() === ""
-    ? customToastMsg("Please Enter your Location!", 0)
-    : topic.trim() === ""
-    ? customToastMsg("Please Enter your Topic!", 0)
-    : tLDate.trim() === ""
-    ? customToastMsg("Please Enter Date!", 0)
-    : tlTtime.trim() === ""
-    ? customToastMsg("Please Enter Time!", 0)
-    : // : sign.trim() === ""
-      // ? customToastMsg("Please Enter your Signature!", 0)
-      updateTeamLeaderAttendance();
-  }
+      ? customToastMsg("Please Enter your ToolBox No!", 0)
+      : location.trim() === ""
+      ? customToastMsg("Please Enter your Location!", 0)
+      : topic.trim() === ""
+      ? customToastMsg("Please Enter your Topic!", 0)
+      : tLDate.trim() === ""
+      ? customToastMsg("Please Enter Date!", 0)
+      : tlTtime.trim() === ""
+      ? customToastMsg("Please Enter Time!", 0)
+      : // : sign.trim() === ""
+        // ? customToastMsg("Please Enter your Signature!", 0)
+        updateTeamLeaderAttendance();
+  };
 
   const updateTeamLeaderAttendance = async () => {
     // const local_storage_leader_obj = await localStorage.getItem(
@@ -243,16 +244,16 @@ const Team_leader = () => {
 
     setLoader(true);
 
-    const leader_attendance_details = JSON.parse(await localStorage.getItem(
-      "leader_attendance_details"
-    ));
+    const leader_attendance_details = JSON.parse(
+      await localStorage.getItem("leader_attendance_details")
+    );
 
     leader_attendance_details.tool_box_no = toolBoxNo;
     leader_attendance_details.location = location;
     leader_attendance_details.execute_date = tLDate;
     leader_attendance_details.execute_time = tlTtime;
-    leader_attendance_details.topic= topic;
-    leader_attendance_details.signurl = signurl
+    leader_attendance_details.topic = topic;
+    leader_attendance_details.signature = signurl;
 
     // let data = {
     //   leader_emp_id: await leaderObj.emp_id,
@@ -293,7 +294,6 @@ const Team_leader = () => {
         setLoader(false);
       });
   };
-
 
   return (
     <>
@@ -432,10 +432,8 @@ const Team_leader = () => {
               )}
             </Button>
           )}
-
         </div>
       </div>
-      
     </>
   );
 };
