@@ -41,22 +41,66 @@ export class AttendanceService {
     return result;
   }
 
-  async findAttendanceById(data: any) {
+  async findAttendanceByAttendanceId(id: any) {
     const result = await this.prismaService.attendance.findUnique({
       where: {
-        id: data.id,
+        id: id,
       },
     });
     return result;
   }
 
-  async findAllAttendance(data: any) {
-    const all_attendance = await this.prismaService.attendance.findMany({
+  async findAllMembersAttendance(data: any) {
+    const all_member_attendance = await this.prismaService.attendance.findMany({
       where: {
+        // leader: {
+        //   attendance: {
+        //     some: {
+        //       id: '',
+        //     },
+        //   },
+        // },
         leader_emp_id: data.leader_emp_id,
         tool_box_no: data.tool_box_no,
         execute_date: data.execute_date,
         type: 'MEMBER',
+      },
+    });
+
+    return all_member_attendance;
+  }
+
+  async updateAttendance(data) {
+    try {
+      const update = await this.prismaService.attendance.update({
+        where: {
+          id: data.id,
+        },
+        data: {
+          member_name: data.member_name,
+          member_emp_id: data.member_emp_id,
+          contract_type: data.contract_type,
+        },
+      });
+      return update;
+    } catch (error) {
+      console.log(error, '============');
+    }
+  }
+
+  async findAllAttendance(data: any) {
+    const all_attendance = await this.prismaService.attendance.findMany({
+      where: {
+        // leader: {
+        //   attendance: {
+        //     some: {
+        //       id: '',
+        //     },
+        //   },
+        // },
+        leader_emp_id: data.leader_emp_id,
+        tool_box_no: data.tool_box_no,
+        execute_date: data.execute_date,
       },
     });
 
