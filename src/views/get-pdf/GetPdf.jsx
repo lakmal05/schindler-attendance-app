@@ -9,27 +9,55 @@ import axios from "axios";
 // npm install react-to-print (please install)
 import { useReactToPrint } from "react-to-print";
 import { Table } from "antd";
+import { getAllMarkedAttendanceList } from "../../services/teamMemberList";
 import logo from "../../assets/logo.png";
 import "./GetPdf.scss";
 
 const GetPdf = () => {
   const [loader, setLoader] = useState(false);
-
+  const [leaderObj, setLeaderObj] = useState({});
+  const [leaderAttendance, setLeaderAttendance] = useState({});
+  const [attendanceArray, setAttendanceArray] = useState([]);
   const conponentPDF = useRef();
-  const [userData, setUserdata] = useState([]);
 
   useEffect(() => {
-    const getAllEmployeeAttendance = async () => {
-      //  axios.get("http://localhost:7000/api/registeruserdata")
-      //  .then(res=>setUserdata(res.data) )
-      //  .catch(error=>console.log(error));
-      // getAllTeamMembers().then((response)=>{
-      //     // object array ekaka enne methenta
-      //     // fixedData = ...response.data thiyna array ekata me ena data ojbect array eka set krnwa
-      // })
-    };
-    getAllEmployeeAttendance();
+    getAllAttendance();
+    findLeader();
   }, []);
+
+  const getAllAttendance = async () => {
+    const local_storage_leader_obj = await localStorage.getItem(
+      "leader_attendance_details"
+    );
+    const leaderObj = JSON.parse(local_storage_leader_obj);
+    setLeaderObj(leaderObj);
+    const data = {
+      leader_emp_id: leaderObj.leader_emp_id,
+      tool_box_no: leaderObj.tool_box_no,
+      execute_date: leaderObj.execute_date,
+    };
+    await getAllMarkedAttendanceList(data).then((response) => {
+      if (response.data) {
+        console.log(response.data, "response of GenaratePDF");
+        setAttendanceArray(response.data); 
+      }
+    });
+  };
+
+  const findLeader = () => {
+    for (let i = 0; i < attendanceArray.length; i++) {
+      if (attendanceArray[i].type === "LEADER") {
+        setLeaderAttendance(attendanceArray[i]);
+        console.log(leaderAttendance,"leader attendance");
+        removeLeader(i);
+      }
+    }
+  };
+  const removeLeader = (indexToRemove) => {
+    const updatedData = attendanceArray.filter((item) => item.id !==indexToRemove);
+    setAttendanceArray(updatedData);
+    console.log(attendanceArray, "leaderRemoveArray");
+  };
 
   const generatePDF = useReactToPrint({
     content: () => conponentPDF.current,
@@ -46,281 +74,300 @@ const GetPdf = () => {
     },
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "member_name",
       fixed: true,
     },
     {
-      title: "Description",
-      dataIndex: "description",
+      title: "EMP/SUBCON",
+      dataIndex: "contract_type",
       fixed: true,
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "ID No",
+      dataIndex: "member_emp_id",
       fixed: true,
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      fixed: true,
-    },
-    {
-      title: "Tags",
-      key: "tags",
-      dataIndex: "tags",
-      fixed: true,
-    },
-    {
-      title: "Action",
-      key: "action",
-      dataIndex: "action",
+      title: "Signature",
+      dataIndex: "signature",
       fixed: true,
     },
   ];
   const fixedData = [];
-  fixedData.push(
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-      action: "active",
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-      action: "active",
-    },
-    {
-      key: "4",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-      action: "active",
-    },
-    {
-      key: "5",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "6",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "7",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },{
-      key: "8",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-      action: "active",
-    },
-    {
-      key: "9",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "10",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-      action: "active",
-    },
-    {
-      key: "11",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-      action: "active",
-    },
-    {
-      key: "12",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "13",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "14",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },{
-      key: "15",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-      action: "active",
-    },
-    {
-      key: "16",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "17",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-      action: "active",
-    },
-    {
-      key: "18",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-      action: "active",
-    },
-    {
-      key: "18",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "20",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "21",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },{
-      key: "22",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-      action: "active",
-    },
-    {
-      key: "23",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "24",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-      action: "active",
-    },
-    {
-      key: "25",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-      action: "active",
-    },
-    {
-      key: "26",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "27",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "28",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    }, {
-      key: "29",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    },
-    {
-      key: "30",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-      action: "active",
-    }
-  );
+  // fixedData.push(
+  //   {
+  //     key: "1",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //     tags: ["nice", "developer"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "2",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "3",
+  //     name: "Joe Black",
+  //     age: 32,
+  //     address: "Sydney No. 1 Lake Park",
+  //     tags: ["cool", "teacher"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "4",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //     tags: ["nice", "developer"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "5",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "6",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "7",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "8",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //     tags: ["nice", "developer"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "9",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "10",
+  //     name: "Joe Black",
+  //     age: 32,
+  //     address: "Sydney No. 1 Lake Park",
+  //     tags: ["cool", "teacher"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "11",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //     tags: ["nice", "developer"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "12",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "13",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "14",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "15",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //     tags: ["nice", "developer"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "16",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "17",
+  //     name: "Joe Black",
+  //     age: 32,
+  //     address: "Sydney No. 1 Lake Park",
+  //     tags: ["cool", "teacher"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "18",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //     tags: ["nice", "developer"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "18",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "20",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "21",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "22",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //     tags: ["nice", "developer"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "23",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "24",
+  //     name: "Joe Black",
+  //     age: 32,
+  //     address: "Sydney No. 1 Lake Park",
+  //     tags: ["cool", "teacher"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "25",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //     tags: ["nice", "developer"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "26",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "27",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "28",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "29",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   },
+  //   {
+  //     key: "30",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //     tags: ["loser"],
+  //     action: "active",
+  //   }
+  // );
 
-  const teamLeader = "active";
-  const dateOfPDF = "20th of January 2023";
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const day = currentDate.getDate();
+
+  // Format the date as YYYY-MM-DD
+  const formattedDate = `${year}-${month < 10 ? "0" + month : month}-${
+    day < 10 ? "0" + day : day
+  }`;
+
+  const monthIndex = currentDate.getMonth();
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const monthName = months[monthIndex];
+
+  const teamLeader = "name of teamMember";
+  // const execution_date = `${month < 10 ? "0" + month : monthName}-${year}`;
+  const execution_date = "execution date";
   const sign = { logo: logo };
 
   return (
@@ -332,7 +379,12 @@ const GetPdf = () => {
 
           <div ref={conponentPDF} id="pdf-cnt-view">
             <div
-              style={{ marginLeft: 40, marginRight: 40, marginBottom:40, position: "relative" }}
+              style={{
+                marginLeft: 40,
+                marginRight: 40,
+                marginBottom: 40,
+                position: "relative",
+              }}
             >
               <img
                 style={{
@@ -356,7 +408,7 @@ const GetPdf = () => {
                   top: 120,
                 }}
               >
-                January - 2023
+                {execution_date}
               </h3>
               <h3
                 style={{
@@ -401,13 +453,12 @@ const GetPdf = () => {
 
               <div style={{ position: "relative", top: 130 }}>
                 <Table
-                  style={{ width: "100%",zIndex:6 }}
+                  style={{ width: "100%", zIndex: 6 }}
                   id="pdf-data-table"
                   columns={fixedColumns}
                   dataSource={fixedData}
                   pagination={false}
                   bordered
-                 
                 />
 
                 <h3
@@ -433,36 +484,36 @@ const GetPdf = () => {
                     top: 30,
                   }}
                 >
-                  Date : {dateOfPDF}
+                  Date : {formattedDate}
                 </h3>
 
                 <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "start",
-                  position: "relative",
-                  top: 30,
-                }}
-              >
-                <h3
                   style={{
-                    fontFamily: "Poppins",
-                    fontWeight: 400,
-                    fontSize: 15,
-                    margin:0
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "start",
+                    position: "relative",
+                    top: 30,
                   }}
                 >
-                  Signature :{" "}
-                  <img
+                  <h3
                     style={{
-                      height: "auto",
-                      width: 50,
+                      fontFamily: "Poppins",
+                      fontWeight: 400,
+                      fontSize: 15,
+                      margin: 0,
                     }}
-                    src={sign.logo}
-                    alt="logo"
-                  />
-                </h3>
+                  >
+                    Signature :{" "}
+                    <img
+                      style={{
+                        height: "auto",
+                        width: 50,
+                      }}
+                      src={sign.logo}
+                      alt="logo"
+                    />
+                  </h3>
                 </div>
 
                 <h3
@@ -471,12 +522,12 @@ const GetPdf = () => {
                     fontWeight: 400,
                     fontSize: 12,
                     position: "fixed",
-                    left:40,
+                    left: 40,
                     bottom: 30,
-                    zIndex:0
+                    zIndex: 0,
                   }}
                 >
-                 FQE - Safety and Health
+                  FQE - Safety and Health
                 </h3>
 
                 <h3
@@ -487,12 +538,11 @@ const GetPdf = () => {
                     position: "fixed",
                     right: 40,
                     bottom: 30,
-                    zIndex :0
+                    zIndex: 0,
                   }}
                 >
-                Trade Promoters Limited
+                  Trade Promoters Limited
                 </h3>
-
               </div>
               {/* <div style={{backgroundColor : "red",position: "fixed",
                     right: 40,

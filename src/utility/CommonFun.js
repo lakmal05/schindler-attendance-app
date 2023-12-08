@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 import Cookies from "js-cookie";
-import { getAllMarkedAttendanceList } from "../services/teamMemberList";
+import { getAllMarkedMemberAttendanceList } from "../services/teamMemberList";
 import * as constant from "../constant/constants";
 
 export const getAllAttendance = async () => {
@@ -15,7 +15,7 @@ export const getAllAttendance = async () => {
     execute_date: leaderObj.execute_date,
   };
   //send tool_box_num and execute date and leader_emp_id as a parameters or object
-  await getAllMarkedAttendanceList(data)
+  await getAllMarkedMemberAttendanceList(data)
     .then((response) => {
       if (response.data) {
         const dataarray = response.data

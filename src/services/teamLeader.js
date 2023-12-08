@@ -9,9 +9,9 @@ export const markTeamLeader = async (data) => {
   });
 };
 
-export const updateTeamleader = async (data) => {
-  return true;
-  // return await axios.put(baseUrl + "/", credentials);
+export const updateTeamleader = async (credentials) => {
+  // return true;
+  return await axios.put(baseUrl +"attendance/update", credentials);
 };
 
 export const getTeamLeader = async (TeamLeaderID) => {
@@ -23,9 +23,12 @@ export const getTeamLeader = async (TeamLeaderID) => {
   //   });
 };
 
-export const getTeamLeaderAttendance = (data) => {
+export const getTeamLeaderAttendance = (TeamLeaderID) => {};
 
-  
+export const getLeaderAttendanceByAttendanceId = async (attendanceId) => {
+  return await axios.get(
+    baseUrl + "attendance/get-leader-attendance/"+attendanceId
+  );
 };
 
 // delete teamLeader attendance

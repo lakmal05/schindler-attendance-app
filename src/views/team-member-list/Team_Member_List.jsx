@@ -5,7 +5,7 @@ import { Button } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import TeamMemberCard from "../../components/TeamMemberCard";
 import { useNavigate } from "react-router-dom";
-import { getAllMarkedAttendanceList } from "../../services/teamMemberList";
+import { getAllMarkedMemberAttendanceList } from "../../services/teamMemberList";
 import FirstTeamMemberCard from "../../components/FirstTeamMemberCard";
 
 import { getAllAttendance } from "../../utility/CommonFun";
@@ -57,7 +57,7 @@ getAllAttendance();
       execute_date: leaderObj.execute_date,
     };
     //send tool_box_num and execute date and leader_emp_id as a parameters or object
-    await getAllMarkedAttendanceList(data).then((response) => {
+    await getAllMarkedMemberAttendanceList(data).then((response) => {
       if (response.data) {
         console.log(response.data,"response");
         console.log(response.data.length);
