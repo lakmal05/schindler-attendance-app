@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { ToastContainer } from "react-toastify";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Login_page from "../views/login/Login_page";
 import Dashboard from "../views/dashboard/Dashboard";
@@ -22,40 +17,43 @@ import GetPdf from "../views/get-pdf/GetPdf";
 const RouterHandler = () => {
   const [isLogin, setIsLogin] = useState(false);
 
+  // meka balanna logic eka thawa tikak
   useEffect(() => {
     const temp = localStorage.getItem("leader_object") !== null;
+    console.log(isLogin,"isLogin state");
+    console.log(temp,"route temp");
     setIsLogin(temp);
-  }, []);
+  },isLogin);
 
   return (
     <>
       <ToastContainer />
-
-      <Router>
-        <ScrollToTop />
-        {isLogin ? (
-          <div>
-            <Header />
-            <Routes>
-              <Route path="/Dashboard" element={<Dashboard />} />
-              <Route path="/TeamLeader" element={<Team_leader />} />
-              <Route path="/TeamMember" element={<Team_member />} />
-              <Route path="/TeamMemberList" element={<Team_Member_List />} />
-              <Route path="/GetPdf" element={<GetPdf />} />
-              {/* Redirect to dashboard if logged in */}
-              <Route path="/" element={<Navigate to="/Dashboard" />} />
-            </Routes>
-            <NavBar />
-          </div>
-        ) : (
+      
+      {isLogin ? (
+        <>
+          <Router>
+            <ScrollToTop />
+            <div>
+              <Header />
+              <Routes>
+                <Route path="/Dashboard" element={<Dashboard />} />
+                <Route path="/TeamLeader" element={<Team_leader />} />
+                <Route path="/TeamMember" element={<Team_member />} />
+                <Route path="/TeamMemberList" element={<Team_Member_List />} />
+                <Route path="/GetPdf" element={<GetPdf />} />
+              </Routes>
+              <NavBar />
+            </div>
+          </Router>
+        </>
+      ) : (
+        <Router>
           <Routes>
             <Route path="/" element={<Login_page />} />
             <Route path="/NotAuthorized" element={<NotAuthorized />} />
-            {/* Redirect to login page if not logged in or leader_object is null */}
-            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-        )}
-      </Router>
+        </Router>
+      )}
     </>
   );
 };

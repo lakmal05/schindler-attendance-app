@@ -6,21 +6,21 @@ import { FaPlus } from "react-icons/fa6";
 import TeamMemberCard from "../../components/TeamMemberCard";
 import { useNavigate } from "react-router-dom";
 import { getAllMarkedMemberAttendanceList } from "../../services/teamMemberList";
-import FirstTeamMemberCard from "../../components/FirstTeamMemberCard";
 
-import { getAllAttendance } from "../../utility/CommonFun";
+
+
 
 const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(2);
   const [teamMembersArray, setTeamMembersArray] = useState([]);
   useEffect(() => {
-    // const attendanceArray = getAllAttendance()
+    // const attendanceArray = getAllMemberAttendance()
     // console.log(attendanceArray,"attendanceArray");
     // setTeamMembersArray(attendanceArray,);
     // console.log(teamMembersArray,"array in list");
     // setTeamMembers(attendanceArray.length)
     // console.log(teamMembers,"array length in list");
-getAllAttendance();
+getAllMemberAttendance();
   }, []);
 
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ getAllAttendance();
     return members;
   };
 
-   const getAllAttendance = async () => {
+   const getAllMemberAttendance = async () => {
     const local_storage_leader_obj = await localStorage.getItem(
       "leader_attendance_details"
     );
@@ -75,9 +75,7 @@ getAllAttendance();
     <>
       <div id="team-member-list">
         <div id="team-member-cnt">
-          {/* <FirstTeamMemberCard/> */}
-          {/* methenta 1 weni ekkenage object eka yawanna one get all eken */}
-          {/* mekata thama set krnna one 1 weni employeege data tika.ganna data tika prop ekak wage yawala modal ekata set krnna one meka kranna puluwanda kiyala hithanna one ekama component eka api methana call krnne.e hinda tikak balanna one eka */}
+          
           {renderTeamMembers()}
 
           <Button id="get-pdf-btn" type="primary" onClick={genereatePdf}>

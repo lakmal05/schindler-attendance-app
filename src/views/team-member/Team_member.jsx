@@ -30,8 +30,6 @@ const Team_member = () => {
   const handleGenerate = () => {
     const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
     setSignUrl(generatedUrl);
-    // console.log(signurl, "usestate url");
-    // console.log(generatedUrl, "generate url");
   };
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
@@ -57,8 +55,6 @@ const Team_member = () => {
   };
 
   const markTeamMemberAttendance = async () => {
-    // teamleader get all ekak gahala eyage data
-    // dispatch(actionLoaderCreator.loaderHandler(true));
     setLoader(true);
     const local_storage_leader_obj = await localStorage.getItem(
       "leader_attendance_details"
@@ -71,7 +67,7 @@ const Team_member = () => {
       member_emp_id: tMemberID,
       contract_type: tMemberRadio,
       // sign: sign,
-      signurl: signurl,
+      signature: signurl,
       execute_date: await leaderObj.execute_date,
       tool_box_no: await leaderObj.tool_box_no,
       type: MEMBER,
@@ -83,24 +79,6 @@ const Team_member = () => {
         console.log(response, "teamMember");
 
         if (response.data) {
-          // contract_type: "SUBCON";
-          // created_at: "2023-12-04T10:54:57.758Z";
-          // execute_date: "2023-12-04T12:08:00.000Z";
-          // execute_time: "12:08";
-          // id: "a1a6e41c-b4e4-44ef-815d-474b947f5a04";
-          // leader_emp_id: "1000";
-          // location: null;
-          // member_emp_id: "gf34g34";
-          // member_name: "kukku manika";
-          // signature: "signature";
-          // tool_box_no: null;
-          // topic: null;
-          // type: "MEMBER";
-          // updated_at: "2023-12-04T10:54:57.758Z";
-
-          //**RESPONSE. DATA set value to name in team member list */
-          // localStorage.setItem("first-team-member",JSON.stringify(response.data))
-          
           customToastMsg("Successfully Mark Your Attendance !", 1);
           navigate("/TeamMemberList");
         }
@@ -110,7 +88,6 @@ const Team_member = () => {
         customToastMsg("Unsuccessful !", 0);
       })
       .finally((f) => {
-        // dispatch(actionLoaderCreator.loaderHandler(false));
         setLoader(false);
       });
   };
@@ -196,7 +173,6 @@ const Team_member = () => {
           </Button>
         </div>
       </div>
-      {/* //<img src={signurl} /> */}
     </>
   );
 };

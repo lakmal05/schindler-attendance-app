@@ -22,7 +22,7 @@ const GetPdf = () => {
 
   useEffect(() => {
     getAllAttendance();
-    findLeader();
+    setAttendanceToTable();
   }, []);
 
   const getAllAttendance = async () => {
@@ -39,7 +39,8 @@ const GetPdf = () => {
     await getAllMarkedAttendanceList(data).then((response) => {
       if (response.data) {
         console.log(response.data, "response of GenaratePDF");
-        setAttendanceArray(response.data); 
+        setAttendanceArray(response.data);
+        findLeader();
       }
     });
   };
@@ -48,15 +49,30 @@ const GetPdf = () => {
     for (let i = 0; i < attendanceArray.length; i++) {
       if (attendanceArray[i].type === "LEADER") {
         setLeaderAttendance(attendanceArray[i]);
-        console.log(leaderAttendance,"leader attendance");
+        console.log(leaderAttendance, "leader attendance", i);
         removeLeader(i);
       }
     }
   };
   const removeLeader = (indexToRemove) => {
-    const updatedData = attendanceArray.filter((item) => item.id !==indexToRemove);
+    // const updatedData = attendanceArray.filter((item) => item.id !==indexToRemove);
+    const updatedData = attendanceArray.splice(indexToRemove, 1);
     setAttendanceArray(updatedData);
     console.log(attendanceArray, "leaderRemoveArray");
+  };
+
+  const setAttendanceToTable = () => {
+    // fixedData = attendanceArray;
+    for (let i = 0; i < attendanceArray.length; i++) {
+      let temp = {
+        key: (i+1),
+        member_name: attendanceArray[i].member_name,
+        contract_type: attendanceArray[i].contract_type,
+        member_emp_id: attendanceArray[i].member_emp_id,
+        signature:attendanceArray[i].signature,
+      };
+      fixedData.push(temp);
+    }
   };
 
   const generatePDF = useReactToPrint({

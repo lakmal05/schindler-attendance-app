@@ -30,6 +30,8 @@ const TeamMemberCard = (teamMemberDetails) => {
   const [online, setOnline] = useState();
   const [loader, setLoader] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     console.log(
       teamMemberDetails.teamMemberData,
@@ -44,7 +46,7 @@ const TeamMemberCard = (teamMemberDetails) => {
     setTMemberRadio(team_member_data?.contract_type);
 
     setSignUrl(team_member_data?.signature);
-    setSignatureToSignaturepad(signurl);
+    setSignatureToSignaturepad(team_member_data?.signature);
     // }
   }, [open]);
 
@@ -89,29 +91,17 @@ const TeamMemberCard = (teamMemberDetails) => {
           />
         );
       }
-      // return signurl === undefined ? (
-      //   <GoDotFill
-      //     id="online-offline"
-      //     style={{ color: "red", margin: "0 20px 0 0", fontSize: "20px" }}
-      //   />
-      // ) : (
-      //   <GoDotFill
-      //     id="online-offline"
-      //     style={{ color: "green", margin: "0 20px 0 0", fontSize: "20px" }}
-      //   />
-      // );
     };
 
     setOnline(onlineOrOffline);
   }, [signurl]);
-
-  const navigate = useNavigate();
 
   const handleOnClickArrow = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
+    navigate("/TeamMemberList");
   };
 
   const handleWheel = (e) => {
@@ -122,7 +112,6 @@ const TeamMemberCard = (teamMemberDetails) => {
     console.log("out generate");
     console.log(signatureRef.current._sigPad._isEmpty, "log1");
     console.log(sign, "log2");
-    // ======================if eka athulata yanne na=====================================
     if (sign) {
       console.log("in");
       const generatedUrl = sign?.getTrimmedCanvas().toDataURL("image/png");
@@ -141,17 +130,11 @@ const TeamMemberCard = (teamMemberDetails) => {
   const handleClear = () => {
     signatureRef.current.on();
     signatureRef.current.clear();
+    
     console.log(signatureRef, "clear krhama");
-    // sign.clear();
-    // setSignUrl(undefined);
-
-    // methana signature pad eka wagema signature detail eka nathi wela update ekak wenna one
-    // signature eka clear kaloth online button eka para rathu wenna one
-    // generate wena url eke hariyata thiynwan .eth state eke clear wenne na url clear url ekak thiyna.eth state eke parana ekamai thiyanne clear wela na.aluh ekaka gahuwoth eka enwa.clear krl mukuth nogha  thibboth parana ekama thiynwa
-
-    // hariyata wada krnne na meka
 
     console.log(signatureRef.current._sigPad._isEmpty, "clear out");
+
     console.log(sign, "sign eka thiynwada");
 
     if (sign) {
@@ -182,22 +165,21 @@ const TeamMemberCard = (teamMemberDetails) => {
     );
     const leaderObj = JSON.parse(local_storage_leader_obj);
 
-    let credentials = {
+    let data = {
       leader_emp_id: await leaderObj.leader_emp_id,
       member_name: tMemberName,
       member_emp_id: tMemberID,
       contract_type: tMemberRadio,
       // sign: sign,
-      signurl: signurl,
+      signature: signurl,
       execute_date: await leaderObj.execute_date,
       tool_box_no: await leaderObj.tool_box_no,
       type: MEMBER,
     };
 
-    console.log("Team Member Details", credentials);
-    markTeamMember(credentials)
+    console.log("Team Member Details", data);
+    markTeamMember(data)
       .then((response) => {
-        
         console.log(response, "teamMember");
         customToastMsg("Successfully Mark Your Attendance !", 1);
         onClose();
@@ -227,30 +209,11 @@ const TeamMemberCard = (teamMemberDetails) => {
   const updateTeamMemberAttendance = async () => {
     setLoader(true);
 
-    // const local_storage_leader_obj = await localStorage.getItem(
-    //   "leader_attendance_details"
-    // );
-    // const leaderObj = JSON.parse(local_storage_leader_obj);
-
-    // let credentials = {
-    //   leader_emp_id: await leaderObj.leader_emp_id,
-    //   member_name: tMemberName,
-    //   member_emp_id: tMemberID,
-    //   contract_type: tMemberRadio,
-    //   // sign: sign,
-    //   signurl: signurl,
-    //   execute_date: await leaderObj.execute_date,
-    //   tool_box_no: await leaderObj.tool_box_no,
-    //   type: MEMBER,
-    // };
-
     teamMemberDetails.teamMemberData.member_emp_id=tMemberID,
     teamMemberDetails.teamMemberData.member_name=tMemberName,
     console.log(tMemberRadio,'udate');
     teamMemberDetails.teamMemberData.contract_type = tMemberRadio,
-    teamMemberDetails.teamMemberData.signurl=signurl,
-
-
+    teamMemberDetails.teamMemberData.signature=signurl,
 
     console.log("Team Member Details", teamMemberDetails.teamMemberData);
     updateTeamMember(teamMemberDetails.teamMemberData)

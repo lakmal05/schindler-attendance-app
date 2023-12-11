@@ -114,7 +114,8 @@ const Team_leader = () => {
         setTLDate(leaderAtendance.execute_date);
         setTLTime(leaderAtendance.execute_time);
         setSignUrl(leaderAtendance.signature);
-        setSignatureToSignaturepad(signurl);
+        console.log(signurl, "url useEffect eke");
+        setSignatureToSignaturepad(leaderAtendance.signature);
       })
       .catch(() => {
         console.log("load All TeamLeader Attendance not working");
@@ -180,30 +181,14 @@ const Team_leader = () => {
 
     markTeamLeader(data)
       .then(async (response) => {
-        //   {
-        //     "id": "8d07526e-8ef4-422a-8852-9f8e68df6101",
-        //     "leader_emp_id": "1000",  -------
-        //     "member_name": "lakmal madushani",
-        //     "member_emp_id": "1000",
-        //     "execute_date": "2023-12-04T12:08:00.000Z", ----
-        //     "execute_time": "12:08",
-        //     "location": "adn",
-        //     "contract_type": "EMP",
-        //     "tool_box_no": "121",  -----
-        //     "topic": "asdfasdf",
-        //     "signature": "signature",
-        //     "created_at": "2023-12-04T10:38:29.797Z",
-        //     "updated_at": "2023-12-04T10:38:29.797Z",
-        //     "type": "LEADER"
-        // }
-
         customToastMsg("Successfully Mark Your Attendance !", 1);
         const leaderAttendance = {
           id: response.data.id,
           leader_emp_id: response.data.leader_emp_id,
           execute_date: response.data.execute_date,
           tool_box_no: response.data.tool_box_no,
-          // created_at: response.data.created_at,
+
+          created_at: response.data.created_at,
         };
         await localStorage.setItem(
           "leader_attendance_details",
@@ -237,61 +222,55 @@ const Team_leader = () => {
   };
 
   const updateTeamLeaderAttendance = async () => {
-    // const local_storage_leader_obj = await localStorage.getItem(
-    //   "leader_object"
-    // );
-    // const leaderObj = JSON.parse(local_storage_leader_obj);
-
     setLoader(true);
 
     const leader_attendance_details = JSON.parse(
       await localStorage.getItem("leader_attendance_details")
     );
 
-    leader_attendance_details.tool_box_no = toolBoxNo;
-    leader_attendance_details.location = location;
-    leader_attendance_details.execute_date = tLDate;
-    leader_attendance_details.execute_time = tlTtime;
-    leader_attendance_details.topic = topic;
-    leader_attendance_details.signature = signurl;
+    getLeaderAttendanceByAttendanceId(leader_attendance_details?.id)
+      .then(async (res) => {
+        console.log(res, "asdfasdfasdfasdfasdfasdfasdfasdf");
 
-    // let data = {
-    //   leader_emp_id: await leaderObj.emp_id,
-    //   member_name: await (leaderObj.first_name + " " + leaderObj.last_name),
-    //   member_emp_id: await leaderObj.emp_id,
-    //   contract_type: CONTRACT_TYPE_EMP,
-    //   tool_box_no: toolBoxNo,
-    //   location: location,
-    //   topic: topic,
-    //   execute_date: tLDate,
-    //   execute_time: tlTtime,
-    //   // sign: sign,
-    //   signurl: signurl,
-    //   type: LEADER,
-    // };
+        const leaderAtendanceById = res.data;
+        console.log("get Team Leader Details by id", res.data);
 
-    updateTeamleader(leader_attendance_details)
-      .then(async (response) => {
-        customToastMsg("Successfully Update Your Attendance !", 1);
-        const leaderAttendance = {
-          id: response.data.id,
-          leader_emp_id: response.data.leader_emp_id,
-          execute_date: response.data.execute_date,
-          tool_box_no: response.data.tool_box_no,
-          // created_at: response.data.created_at,
-        };
-        await localStorage.setItem(
-          "leader_attendance_details",
-          JSON.stringify(leaderAttendance)
-        );
+        leaderAtendanceById.tool_box_no = toolBoxNo;
+        leaderAtendanceById.location = location;
+        leaderAtendanceById.execute_date = tLDate;
+        leaderAtendanceById.execute_time = tlTtime;
+        leaderAtendanceById.topic = topic;
+        leaderAtendanceById.signature = signurl;
 
-        navigate("/TeamMemberList");
+        console.log("update wena obj eka", leaderAtendanceById);
+
+        updateTeamleader(leaderAtendanceById)
+          .then(async (response) => {
+            customToastMsg("Successfully Update Your Attendance !", 1);
+            const leaderAttendance = {
+              id: response.data.id,
+              leader_emp_id: response.data.leader_emp_id,
+              execute_date: response.data.execute_date,
+              tool_box_no: response.data.tool_box_no,
+              // created_at: response.data.created_at,
+            };
+            // await localStorage.clear("leader_attendance_details");
+            await localStorage.setItem(
+              "leader_attendance_details",
+              JSON.stringify(leaderAttendance)
+            );
+            navigate("/TeamMemberList");
+          })
+          .catch((c) => {
+            customToastMsg("Unsuccessful !", 0);
+          })
+          .finally((f) => {
+            setLoader(false);
+          });
       })
       .catch((c) => {
-        customToastMsg("Unsuccessful !", 0);
-      })
-      .finally((f) => {
-        setLoader(false);
+        console.log(c, "error");
+        console.log("load All TeamLeader Attendance not working");
       });
   };
 
