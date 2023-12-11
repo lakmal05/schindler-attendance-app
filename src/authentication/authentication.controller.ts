@@ -7,8 +7,8 @@ export class AuthenticationController {
 
   @Post('login')
   async login(@Body() data: any) {
-  
-    
+    console.log('login');
+
     const reponse = await this.authentication.login(data);
     return reponse;
   }

@@ -35,21 +35,22 @@ model User {
 }
 
 model Attendance {
-  id            String       @id
-  leader        Employee     @relation(fields: [leader_emp_id], references: [emp_id])
-  leader_emp_id String
-  member_name   String?
-  member_emp_id String?
-  execute_date  DateTime?
-  execute_time  String?
-  location      String?
-  contract_type ContractType
-  tool_box_no   String?
-  topic         String?
-  signature     String?
-  created_at    DateTime     @default(now())
-  updated_at    DateTime     @updatedAt
-  type          Type
+  id                   String       @id
+  leader               Employee     @relation(fields: [leader_emp_id], references: [emp_id])
+  leader_emp_id        String
+  member_name          String?
+  member_emp_id        String?
+  // leader_attendance_id String?
+  execute_date         DateTime?
+  execute_time         String?
+  location             String?
+  contract_type        ContractType
+  tool_box_no          String?
+  topic                String?
+  signature            String?
+  created_at           DateTime     @default(now())
+  updated_at           DateTime     @updatedAt
+  type                 Type
 }
 
 enum ContractType {

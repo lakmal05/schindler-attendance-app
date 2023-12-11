@@ -12,6 +12,8 @@ export class AttendanceController {
 
   @Post('/mark-attendance')
   markAttendance(@Body() data: any) {
+    console.log(data);
+    
     return this.attendanceService.markAttendance(data);
   }
 
@@ -33,7 +35,6 @@ export class AttendanceController {
   @Put('update')
   updateAttendance(@Body() data: any) {
     console.log(data, 'data');
-
     return this.attendanceService.updateAttendance(data);
   }
 
