@@ -22,8 +22,11 @@ const GetPdf = () => {
 
   useEffect(() => {
     getAllAttendance();
-    setAttendanceToTable();
   }, []);
+
+  useEffect(() => {
+    findLeader();
+  }, [attendanceArray]);
 
   const getAllAttendance = async () => {
     const local_storage_leader_obj = await localStorage.getItem(
@@ -40,45 +43,54 @@ const GetPdf = () => {
       if (response.data) {
         console.log(response.data, "response of GenaratePDF");
         setAttendanceArray(response.data);
-        findLeader();
       }
     });
   };
 
+  // const findLeader = () => {
+  //   for (let i = 0; i < attendanceArray?.length; i++) {
+  //     if (attendanceArray[i].type === "LEADER") {
+  //       setLeaderAttendance(attendanceArray[i]);
+  //       console.log(leaderAttendance, "leader attendance", i);
+  //       removeLeader(i);
+  //     }
+  //   }
+  // };
+  // const removeLeader = (indexToRemove) => {
+  //   // const updatedData = attendanceArray.filter((item) => item.id !==indexToRemove);
+  //   const updatedData = attendanceArray.splice(indexToRemove, 1);
+  //   setAttendanceArray(updatedData);
+  //   console.log(attendanceArray, "leaderRemoveArray");
+  //   setAttendanceArray();
+  //   setAttendanceToTable();
+  // };
+
   const findLeader = () => {
-    for (let i = 0; i < attendanceArray.length; i++) {
-      if (attendanceArray[i].type === "LEADER") {
-        setLeaderAttendance(attendanceArray[i]);
-        console.log(leaderAttendance, "leader attendance", i);
-        removeLeader(i);
-      }
+    const leaderIndex = attendanceArray.findIndex(
+      (item) => item.type === 'LEADER'
+    );
+  
+    if (leaderIndex !== -1) {
+      const leader = attendanceArray[leaderIndex];
+      setLeaderAttendance(leader);
+  
+      // Remove leader from attendanceArray and update the state
+      const updatedArray = attendanceArray.filter(
+        (_, index) => index !== leaderIndex
+      );
+      setAttendanceArray(updatedArray);
     }
-  };
-  const removeLeader = (indexToRemove) => {
-    // const updatedData = attendanceArray.filter((item) => item.id !==indexToRemove);
-    const updatedData = attendanceArray.splice(indexToRemove, 1);
-    setAttendanceArray(updatedData);
-    console.log(attendanceArray, "leaderRemoveArray");
   };
 
-  const setAttendanceToTable = () => {
-    // fixedData = attendanceArray;
-    for (let i = 0; i < attendanceArray.length; i++) {
-      let temp = {
-        key: (i+1),
-        member_name: attendanceArray[i].member_name,
-        contract_type: attendanceArray[i].contract_type,
-        member_emp_id: attendanceArray[i].member_emp_id,
-        signature:attendanceArray[i].signature,
-      };
-      fixedData.push(temp);
-    }
+  const capitalizeEachWord = (str) => {
+    return str?.replace(/\b\w/g, function (char) {
+      return char.toUpperCase();
+    });
   };
 
   const generatePDF = useReactToPrint({
     content: () => conponentPDF.current,
     documentTitle: "Userdata",
-    // onAfterPrint: () => alert("Data saved in PDF"),
   });
 
   const fixedColumns = [
@@ -106,250 +118,37 @@ const GetPdf = () => {
     {
       title: "Signature",
       dataIndex: "signature",
+      render: (text, record) => (
+        <img src={record.signature} alt="Image" style={{ width: '100px', height: 'auto' }} />
+      ),
+
       fixed: true,
     },
   ];
-  const fixedData = [];
+  let fixedData = [];
+   fixedData = attendanceArray.map((item, index) => ({
+      key: (index + 1).toString(),
+      member_name: item.member_name,
+      contract_type: item.contract_type,
+      member_emp_id: item.member_emp_id,
+      signature: item.signature,
+    }));
+    console.log(fixedData, "fixed data array");
+  
   // fixedData.push(
   //   {
   //     key: "1",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //     action: "active",
+  //     member_name: attendanceArray[0]?.member_name,
+  //     contract_type: attendanceArray[0]?.contract_type,
+  //     member_emp_id: attendanceArray[0]?.member_emp_id,
+  //     signature: attendanceArray[0]?.signature,
   //   },
   //   {
   //     key: "2",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "3",
-  //     name: "Joe Black",
-  //     age: 32,
-  //     address: "Sydney No. 1 Lake Park",
-  //     tags: ["cool", "teacher"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "4",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "5",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "6",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "7",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "8",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "9",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "10",
-  //     name: "Joe Black",
-  //     age: 32,
-  //     address: "Sydney No. 1 Lake Park",
-  //     tags: ["cool", "teacher"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "11",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "12",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "13",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "14",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "15",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "16",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "17",
-  //     name: "Joe Black",
-  //     age: 32,
-  //     address: "Sydney No. 1 Lake Park",
-  //     tags: ["cool", "teacher"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "18",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "18",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "20",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "21",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "22",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "23",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "24",
-  //     name: "Joe Black",
-  //     age: 32,
-  //     address: "Sydney No. 1 Lake Park",
-  //     tags: ["cool", "teacher"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "25",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "26",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "27",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "28",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "29",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
-  //   },
-  //   {
-  //     key: "30",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //     action: "active",
+  //     member_name: attendanceArray[1]?.member_name,
+  //     contract_type: attendanceArray[1]?.contract_type,
+  //     member_emp_id: attendanceArray[1]?.member_emp_id,
+  //     signature: attendanceArray[1]?.signature,
   //   }
   // );
 
@@ -378,12 +177,9 @@ const GetPdf = () => {
     "November",
     "December",
   ];
-
   const monthName = months[monthIndex];
 
-  const teamLeader = "name of teamMember";
   // const execution_date = `${month < 10 ? "0" + month : monthName}-${year}`;
-  const execution_date = "execution date";
   const sign = { logo: logo };
 
   return (
@@ -424,7 +220,7 @@ const GetPdf = () => {
                   top: 120,
                 }}
               >
-                {execution_date}
+                {leaderAttendance.execute_date?.split("T")[0]}
               </h3>
               <h3
                 style={{
@@ -436,7 +232,7 @@ const GetPdf = () => {
                   top: 120,
                 }}
               >
-                TPL-SCH-TBT - 002
+                {leaderAttendance?.tool_box_no}
               </h3>
               <div
                 style={{
@@ -462,7 +258,7 @@ const GetPdf = () => {
                       textTransform: "uppercase",
                     }}
                   >
-                    Mandatory safe sections
+                    {leaderAttendance?.topic}
                   </span>
                 </h3>
               </div>
@@ -487,7 +283,8 @@ const GetPdf = () => {
                     top: 30,
                   }}
                 >
-                  Name of PM/AM/GL/TL : {teamLeader}
+                  Name of PM/AM/GL/TL :{" "}
+                  {capitalizeEachWord(leaderAttendance?.member_name)}
                 </h3>
 
                 <h3
@@ -524,10 +321,10 @@ const GetPdf = () => {
                     <img
                       style={{
                         height: "auto",
-                        width: 50,
+                        width: 150,
                       }}
-                      src={sign.logo}
-                      alt="logo"
+                      src={leaderAttendance.signature}
+                      alt="sign"
                     />
                   </h3>
                 </div>
