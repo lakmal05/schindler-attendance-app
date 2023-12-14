@@ -21,7 +21,7 @@
       font-weight: 600;
       margin: 0;
     }
-    #tl-name::first-letter{
+    #tl-name::first-letter {
       text-transform: uppercase;
     }
     #tl-id {
@@ -53,13 +53,38 @@
       height: 40px;
       color: #3b3b3b;
       background-color: #eeeeee;
+      margin: 12px 0;
+      width: 98%;
+      border: 1px solid gainsboro;
+      padding: 5px 12px;
+      border-radius: 7px;
     }
 
+    #date-picker.active {
+      align-items: center;
+      background-color: #eeeeee !important;
+      border: 1px solid gainsboro !important;  
+    }
+
+  //  .flatpickr-calendar .animate .open{
+  //   z-index: 1 !important;
+  //  }
+    
     #time-picker {
       font-size: 15px;
       height: 40px;
       color: #3b3b3b;
       background-color: #eeeeee;
+      margin: 12px 0;
+      width: 98%;
+      border: 1px solid gainsboro;
+      padding: 5px 12px;
+      border-radius: 7px;
+    }
+    #time-picker.active {
+      align-items: center;
+      background-color: #eeeeee !important;
+      border: 1px solid gainsboro !important;  
     }
     #signature {
       width: 100%;

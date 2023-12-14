@@ -2,11 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { Input } from "antd";
-import { DatePicker } from "antd";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/material_red.css";
+import moment from "moment";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import SignatureCanvas from "react-signature-canvas";
 import { TimePicker } from "antd";
+import { DatePicker } from "antd";
 import { LiaToolboxSolid } from "react-icons/lia";
 import { SlLocationPin } from "react-icons/sl";
 import { RiLoader2Line } from "react-icons/ri";
@@ -27,7 +30,7 @@ const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
   const [location, setLocation] = useState("");
   const [topic, setTopic] = useState("");
-  const [tLDate, setTLDate] = useState(null);
+  const [tLDate, setTLDate] = useState("");
   const [tlTtime, setTLTime] = useState("");
   const [sign, setSign] = useState("");
   const [signurl, setSignUrl] = useState();
@@ -43,6 +46,7 @@ const Team_leader = () => {
     setLeaderObj(leaderObj);
     console.log(leaderObj, "leaderObj");
     getLeaderMarkedAttendance();
+    console.log(tlTtime, "time", tLDate, "date");
   }, []);
 
   const navigate = useNavigate();
@@ -65,14 +69,14 @@ const Team_leader = () => {
     }
   };
 
-  const onChangeDate = async (date, dateString) => {
-    console.log(date, dateString);
-    await setTLDate(dateString);
-  };
-  const onChangeTime = async (time, timeString) => {
-    console.log(time, timeString);
-    await setTLTime(timeString);
-  };
+  // const onChangeDate = async (date, dateString) => {
+  //   console.log(date, dateString);
+  //   await setTLDate(dateString);
+  // };
+  // const onChangeTime = async (time, timeString) => {
+  //   console.log(time, timeString);
+  //   await setTLTime(timeString);
+  // };
 
   const handleClear = () => {
     signatureRef.current.on();
@@ -111,8 +115,8 @@ const Team_leader = () => {
         setToolBoxNo(leaderAtendance.tool_box_no);
         setLocation(leaderAtendance.location);
         setTopic(leaderAtendance.topic);
-        setTLDate(leaderAtendance.execute_date);
-        setTLTime(leaderAtendance.execute_time);
+        setTLDate(moment(leaderAtendance.execute_date).format("yyyy-MM-DD"));
+        setTLTime(moment(leaderAtendance.execute_time).format("HH:MM"));
         setSignUrl(leaderAtendance.signature);
         console.log(signurl, "url useEffect eke");
         setSignatureToSignaturepad(leaderAtendance.signature);
@@ -141,6 +145,7 @@ const Team_leader = () => {
   };
 
   const checkTeamLeaderInfo = () => {
+    console.log(tLDate, "date", tlTtime);
     toolBoxNo.trim() === ""
       ? customToastMsg("Please Enter your ToolBox No!", 0)
       : location.trim() === ""
@@ -172,9 +177,8 @@ const Team_leader = () => {
       tool_box_no: toolBoxNo,
       location: location,
       topic: topic,
-      execute_date: tLDate,
-      execute_time: tlTtime,
-      // sign: sign,
+      execute_date: moment(tLDate).format("yyyy-MM-DD"),
+      execute_time: moment(tlTtime).format("HH:MM"),
       signature: signurl,
       type: LEADER,
     };
@@ -185,9 +189,8 @@ const Team_leader = () => {
         const leaderAttendance = {
           id: response.data.id,
           leader_emp_id: response.data.leader_emp_id,
-          execute_date: response.data.execute_date,
+          execute_date: moment(response.data.execute_date).format("yyyy-MM-DD"),
           tool_box_no: response.data.tool_box_no,
-
           created_at: response.data.created_at,
         };
         await localStorage.setItem(
@@ -227,18 +230,18 @@ const Team_leader = () => {
     const leader_attendance_details = JSON.parse(
       await localStorage.getItem("leader_attendance_details")
     );
-
+    console.log(leader_attendance_details, "local storage eken ena data");
     getLeaderAttendanceByAttendanceId(leader_attendance_details?.id)
       .then(async (res) => {
-        console.log(res, "asdfasdfasdfasdfasdfasdfasdfasdf");
+        console.log(res.data, "asdfasdfasdfasdfasdfasdfasdfasdf");
 
         const leaderAtendanceById = res.data;
         console.log("get Team Leader Details by id", res.data);
 
         leaderAtendanceById.tool_box_no = toolBoxNo;
         leaderAtendanceById.location = location;
-        leaderAtendanceById.execute_date = tLDate;
-        leaderAtendanceById.execute_time = tlTtime;
+        leaderAtendanceById.execute_date = moment(tLDate).format("yyyy-MM-DD");
+        leaderAtendanceById.execute_time = moment(tlTtime).format("HH:MM");
         leaderAtendanceById.topic = topic;
         leaderAtendanceById.signature = signurl;
 
@@ -247,6 +250,7 @@ const Team_leader = () => {
         updateTeamleader(leaderAtendanceById)
           .then(async (response) => {
             customToastMsg("Successfully Update Your Attendance !", 1);
+            console.log(response, "response eka yko");
             const leaderAttendance = {
               id: response.data.id,
               leader_emp_id: response.data.leader_emp_id,
@@ -254,6 +258,10 @@ const Team_leader = () => {
               tool_box_no: response.data.tool_box_no,
               // created_at: response.data.created_at,
             };
+            console.log(
+              leaderAttendance,
+              "local storage ekata set krana data eka"
+            );
             // await localStorage.clear("leader_attendance_details");
             await localStorage.setItem(
               "leader_attendance_details",
@@ -320,9 +328,9 @@ const Team_leader = () => {
               />
             }
           />
-          <DatePicker
+          {/* <DatePicker
             id="date-picker"
-            // value={tLDate}
+            value={tLDate ? moment(tLDate) : null}
             onChange={onChangeDate}
             style={{
               backgroundColor: "#EEEEEE",
@@ -330,12 +338,41 @@ const Team_leader = () => {
               width: "100%",
             }}
             placeholder="Project Date"
+          /> */}
+
+          <Flatpickr
+            id="date-picker"
+            placeholder="Project Date"
+            className="form-control"
+            value={tLDate === "" ? null : tLDate}
+            onChange={([date]) => {
+              setTLDate(moment(date).format("yyyy-MM-DD"));
+            }}
+            options={{
+              defaultDate: null,
+            }}
+          />
+          <Flatpickr
+            id="time-picker"
+            placeholder="Project Time"
+            className="form-control"
+            data-enable-time
+            value={tlTtime === "" ? null : tlTtime}
+            onChange={([time]) => {
+              setTLTime(moment(time).format("HH:MM"));
+            }}
+            options={{
+              enableTime: true,
+              noCalendar: true,
+              dateFormat: "H:i",
+              time_24hr: true,
+            }}
           />
 
-          <TimePicker
+          {/* <TimePicker
             id="time-picker"
             onChange={onChangeTime}
-            // value={tlTtime}
+            value={tlTtime ? moment(tlTtime, format) : null}
             defaultOpenValue={dayjs("12:08", format)}
             format={format}
             style={{
@@ -344,7 +381,7 @@ const Team_leader = () => {
               width: "100%",
             }}
             placeholder="Project Time"
-          />
+          /> */}
 
           <Input
             onChange={async (e) => await setTopic(e.target.value)}
