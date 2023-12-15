@@ -32,6 +32,12 @@ const TeamMemberCard = (teamMemberDetails) => {
 
   const navigate = useNavigate();
 
+  // useEffect(()=>{
+  //   setTMemberName(teamMemberDetails.teamMemberData?.member_name);
+  //   setSignUrl(teamMemberDetails.teamMemberData?.signature);
+  //   setSignatureToSignaturepad(teamMemberDetails.teamMemberData?.signature);
+  // },[])
+
   useEffect(() => {
     console.log(
       teamMemberDetails.teamMemberData,

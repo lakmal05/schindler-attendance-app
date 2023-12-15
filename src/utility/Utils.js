@@ -73,7 +73,7 @@ export const customToastMsg = (message, type) => {
   if (type === 2) {
     toast.info(message, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -84,7 +84,7 @@ export const customToastMsg = (message, type) => {
   } else if (type === 0) {
     toast.error(message, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -95,7 +95,7 @@ export const customToastMsg = (message, type) => {
   } else if (type === 1) {
     toast.success(message, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

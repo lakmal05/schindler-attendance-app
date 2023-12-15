@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "antd";
-import { Input } from "antd";
-import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/themes/material_red.css";
+import { Button, Input } from "antd";
+import { FormGroup, Label,} from "reactstrap";
+
+// import Flatpickr from "react-flatpickr";
+// import "flatpickr/dist/themes/material_red.css";
 import moment from "moment";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import SignatureCanvas from "react-signature-canvas";
-import { TimePicker } from "antd";
-import { DatePicker } from "antd";
+// import { TimePicker } from "antd";
+// import { DatePicker } from "antd";
 import { LiaToolboxSolid } from "react-icons/lia";
 import { SlLocationPin } from "react-icons/sl";
 import { RiLoader2Line } from "react-icons/ri";
@@ -69,14 +70,14 @@ const Team_leader = () => {
     }
   };
 
-  // const onChangeDate = async (date, dateString) => {
-  //   console.log(date, dateString);
-  //   await setTLDate(dateString);
-  // };
-  // const onChangeTime = async (time, timeString) => {
-  //   console.log(time, timeString);
-  //   await setTLTime(timeString);
-  // };
+  const onChangeDate = async (e) => {
+    console.log(e.target.value);
+    await setTLDate(e.target.value);
+  };
+  const onChangeTime = async (e) => {
+    console.log(e.target.value,"aaaaaaaaa");
+    await setTLTime(e.target.value);
+  };
 
   const handleClear = () => {
     signatureRef.current.on();
@@ -116,9 +117,11 @@ const Team_leader = () => {
         setLocation(leaderAtendance.location);
         setTopic(leaderAtendance.topic);
         setTLDate(moment(leaderAtendance.execute_date).format("yyyy-MM-DD"));
-        setTLTime(moment(leaderAtendance.execute_time).format("HH:MM"));
+        console.log(leaderAtendance.execute_time,"exectete time get all eke");
+        setTLTime(leaderAtendance.execute_time);
+        // setTLDate(leaderAtendance.execute_date);
+        // setTLTime(leaderAtendance.execute_time);
         setSignUrl(leaderAtendance.signature);
-        console.log(signurl, "url useEffect eke");
         setSignatureToSignaturepad(leaderAtendance.signature);
       })
       .catch(() => {
@@ -145,7 +148,7 @@ const Team_leader = () => {
   };
 
   const checkTeamLeaderInfo = () => {
-    console.log(tLDate, "date", tlTtime);
+    console.log(tLDate, "date", tlTtime, "time");
     toolBoxNo.trim() === ""
       ? customToastMsg("Please Enter your ToolBox No!", 0)
       : location.trim() === ""
@@ -154,9 +157,9 @@ const Team_leader = () => {
       ? customToastMsg("Please Enter your Topic!", 0)
       : tLDate.trim() === ""
       ? customToastMsg("Please Enter Date!", 0)
-      : tlTtime.trim() === ""
-      ? customToastMsg("Please Enter Time!", 0)
-      : // : sign.trim() === ""
+      : // : tlTtime.trim() === ""
+        // ? customToastMsg("Please Enter Time!", 0)
+        // : sign.trim() === ""
         // ? customToastMsg("Please Enter your Signature!", 0)
         markTeamLeaderAttendance();
   };
@@ -178,11 +181,13 @@ const Team_leader = () => {
       location: location,
       topic: topic,
       execute_date: moment(tLDate).format("yyyy-MM-DD"),
-      execute_time: moment(tlTtime).format("HH:MM"),
+      execute_time: tlTtime,
+      // execute_date:tLDate,
+      // execute_time:tlTtime,
       signature: signurl,
       type: LEADER,
     };
-
+    console.log(data, "data obj ==== ");
     markTeamLeader(data)
       .then(async (response) => {
         customToastMsg("Successfully Mark Your Attendance !", 1);
@@ -190,6 +195,7 @@ const Team_leader = () => {
           id: response.data.id,
           leader_emp_id: response.data.leader_emp_id,
           execute_date: moment(response.data.execute_date).format("yyyy-MM-DD"),
+          // execute_date:response.data.execute_date,
           tool_box_no: response.data.tool_box_no,
           created_at: response.data.created_at,
         };
@@ -241,7 +247,9 @@ const Team_leader = () => {
         leaderAtendanceById.tool_box_no = toolBoxNo;
         leaderAtendanceById.location = location;
         leaderAtendanceById.execute_date = moment(tLDate).format("yyyy-MM-DD");
-        leaderAtendanceById.execute_time = moment(tlTtime).format("HH:MM");
+        leaderAtendanceById.execute_time = tlTtime;
+        // leaderAtendanceById.execute_date = tLDate;
+        // leaderAtendanceById.execute_time = tlTtime;
         leaderAtendanceById.topic = topic;
         leaderAtendanceById.signature = signurl;
 
@@ -329,7 +337,7 @@ const Team_leader = () => {
             }
           />
           {/* <DatePicker
-            id="date-picker"
+            // id="date-picker"
             value={tLDate ? moment(tLDate) : null}
             onChange={onChangeDate}
             style={{
@@ -340,8 +348,40 @@ const Team_leader = () => {
             placeholder="Project Date"
           /> */}
 
-          <Flatpickr
+          <Input
             id="date-picker"
+            name="date"
+            value={tLDate}
+            onChange={onChangeDate}
+            style={{
+              backgroundColor: "#EEEEEE",
+              margin: "12px 0",
+              width: "100%",
+            }}
+            placeholder="Project Date"
+            type="date"
+          />
+
+          <Input
+            name="time"
+            type="time"
+            id="time-picker"
+            onChange={onChangeTime}
+            value={tlTtime}
+            defaultOpenValue={dayjs("12:08", format)}
+            format={format}
+            style={{
+              backgroundColor: "#EEEEEE",
+              margin: "12px 0",
+              width: "100%",
+            }}
+            placeholder="Project Time"
+          />
+
+          
+
+          {/* <Flatpickr
+            // id="date-picker"
             placeholder="Project Date"
             className="form-control"
             value={tLDate === "" ? null : tLDate}
@@ -350,10 +390,11 @@ const Team_leader = () => {
             }}
             options={{
               defaultDate: null,
+              disableMobile: "false"
             }}
           />
           <Flatpickr
-            id="time-picker"
+            // id="time-picker"
             placeholder="Project Time"
             className="form-control"
             data-enable-time
@@ -366,8 +407,9 @@ const Team_leader = () => {
               noCalendar: true,
               dateFormat: "H:i",
               time_24hr: true,
+              disableMobile: "false"
             }}
-          />
+          /> */}
 
           {/* <TimePicker
             id="time-picker"

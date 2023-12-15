@@ -9,9 +9,10 @@ export const markTeamLeader = async (data) => {
   });
 };
 
-export const updateTeamleader = async (credentials) => {
+export const updateTeamleader = async (data) => {
+  console.log(data,"==========================");
   // return true;
-  return await axios.put(baseUrl +"attendance/update", credentials);
+  return await axios.put(baseUrl +"attendance/update-all-attendance", data);
 };
 
 export const getTeamLeader = async (TeamLeaderID) => {

@@ -50,14 +50,12 @@
 
     #date-picker {
       font-size: 15px;
-      height: 40px;
+      height: 50px;
       color: #3b3b3b;
       background-color: #eeeeee;
       margin: 12px 0;
-      width: 98%;
-      border: 1px solid gainsboro;
-      padding: 5px 12px;
-      border-radius: 7px;
+      width: 100%;
+
     }
 
     #date-picker.active {
@@ -72,14 +70,12 @@
     
     #time-picker {
       font-size: 15px;
-      height: 40px;
+      height: 50px;
       color: #3b3b3b;
       background-color: #eeeeee;
       margin: 12px 0;
-      width: 98%;
-      border: 1px solid gainsboro;
-      padding: 5px 12px;
-      border-radius: 7px;
+      width: 100%;
+     
     }
     #time-picker.active {
       align-items: center;
