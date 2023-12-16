@@ -1,7 +1,12 @@
 import { React, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { ToastContainer } from "react-toastify";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  redirect,
+} from "react-router-dom";
 
 import Login_page from "../views/login/Login_page";
 import Dashboard from "../views/dashboard/Dashboard";
@@ -18,17 +23,22 @@ const RouterHandler = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   // meka balanna logic eka thawa tikak
+  // useEffect(() => {
+  //   const temp = localStorage.getItem("leader_object") !== null;
+  //   console.log(isLogin,"isLogin state");
+  //   console.log(temp,"route temp");
+  //   setIsLogin(temp);
+  // },isLogin);
+
   useEffect(() => {
-    const temp = localStorage.getItem("leader_object") !== null;
-    console.log(isLogin,"isLogin state");
-    console.log(temp,"route temp");
-    setIsLogin(temp);
-  },isLogin);
+    const is_login =
+      localStorage.getItem("leader_object") !== null ? true : false;
+  });
 
   return (
     <>
       <ToastContainer />
-      
+
       {isLogin ? (
         <>
           <Router>
