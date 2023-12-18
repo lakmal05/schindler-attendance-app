@@ -23,17 +23,17 @@ const RouterHandler = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   // meka balanna logic eka thawa tikak
-  // useEffect(() => {
-  //   const temp = localStorage.getItem("leader_object") !== null;
-  //   console.log(isLogin,"isLogin state");
-  //   console.log(temp,"route temp");
-  //   setIsLogin(temp);
-  // },isLogin);
-
   useEffect(() => {
-    const is_login =
-      localStorage.getItem("leader_object") !== null ? true : false;
-  });
+    const temp = localStorage.getItem("leader_object") !== null;
+    console.log(isLogin,"isLogin state");
+    console.log(temp,"route temp");
+    setIsLogin(temp);
+  },isLogin);
+
+  // useEffect(() => {
+  //   const is_login =
+  //     localStorage.getItem("leader_object") !== null ? true : false;
+  // });
 
   return (
     <>

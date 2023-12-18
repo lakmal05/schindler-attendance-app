@@ -3,6 +3,8 @@ import "./Team_Member_List.scss";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { Button } from "antd";
 import { FaPlus } from "react-icons/fa6";
+import { FaMinus } from "react-icons/fa6";
+import { IoCaretBack } from "react-icons/io5";
 import TeamMemberCard from "../../components/TeamMemberCard";
 import { useNavigate } from "react-router-dom";
 import { getAllMarkedMemberAttendanceList } from "../../services/teamMemberList";
@@ -90,9 +92,13 @@ getAllMemberAttendance();
             </Button>
             <Button id="minus-btn" type="primary" onClick={prependTeamMember}>
               {" "}
-              -
+              <FaMinus />
             </Button>
           </div>
+          <Button id="back-btn" type="primary" onClick={()=>{navigate("/TeamLeader")}}>
+              {" "}
+              <IoCaretBack/>
+            </Button>
         </div>
       </div>
     </>

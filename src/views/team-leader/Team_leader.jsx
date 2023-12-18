@@ -82,16 +82,10 @@ const Team_leader = () => {
   const handleClear = () => {
     signatureRef.current.on();
     signatureRef.current.clear();
-    console.log(signatureRef, "clear krhama");
 
-    // methana signature pad eka wagema signature detail eka nathi wela update ekak wenna one
-    // signature eka clear kaloth online button eka para rathu wenna one
-    // generate wena url eke hariyata thiynwan .eth state eke clear wenne na url clear url ekak thiyna.eth state eke parana ekamai thiyanne clear wela na.aluh ekaka gahuwoth eka enwa.clear krl mukuth nogha  thibboth parana ekama thiynwa
-
-    // hariyata wada krnne na meka
-
-    console.log(signatureRef.current._sigPad._isEmpty, "clear out");
-    console.log(sign, "sign eka thiynwada");
+    // console.log(signatureRef, "clear krhama");
+    // console.log(signatureRef.current._sigPad._isEmpty, "clear out");
+    // console.log(sign, "sign eka thiynwada");
 
     if (sign) {
       console.log("clear in");
@@ -240,7 +234,7 @@ const Team_leader = () => {
     getLeaderAttendanceByAttendanceId(leader_attendance_details?.id)
       .then(async (res) => {
         console.log(res.data, "asdfasdfasdfasdfasdfasdfasdfasdf");
-
+        const oldLeaderAtendance = res.data;
         const leaderAtendanceById = res.data;
         console.log("get Team Leader Details by id", res.data);
 
@@ -255,7 +249,12 @@ const Team_leader = () => {
 
         console.log("update wena obj eka", leaderAtendanceById);
 
-        updateTeamleader(leaderAtendanceById)
+        const updateLeaderAttendance={
+          oldAttendance : oldLeaderAtendance,
+          updateAttendance : leaderAtendanceById
+        }
+
+        updateTeamleader(updateLeaderAttendance)
           .then(async (response) => {
             customToastMsg("Successfully Update Your Attendance !", 1);
             console.log(response, "response eka yko");

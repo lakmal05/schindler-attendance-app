@@ -42,5 +42,20 @@
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       }
     }
+    #back-btn{
+      font-size: 23px;
+        background-color: #ff5252;
+        width: 45px;
+        height: 45px;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        position: fixed;
+        bottom: 5rem;
+        left: 20px;
+    }
   }
 }
