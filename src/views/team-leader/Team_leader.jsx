@@ -101,7 +101,7 @@ const Team_leader = () => {
       getLeaderAttendanceByAttendanceId(marked_attendance_obj?.id)
         .then(async (response) => {
           const leaderAtendance = response.data;
-          
+
           setToolBoxNo(leaderAtendance.tool_box_no);
           setLocation(leaderAtendance.location);
           setTopic(leaderAtendance.topic);
@@ -258,15 +258,19 @@ const Team_leader = () => {
               tool_box_no: response.data.tool_box_no,
               // created_at: response.data.created_at,
             };
-            console.log(
-              leaderAttendance,
-              "local storage ekata set krana data eka"
-            );
-
-            await localStorage.setItem(
+            console.log(response, "respose");
+            console.log(leaderAttendance, "ledaer-attendance");
+            console.log(response.data.leader_emp_id, "response data id");
+            localStorage.setItem(
               "leader_attendance_details",
               JSON.stringify(leaderAttendance)
             );
+            const update_object = localStorage.getItem(
+              "leader_attendance_details"
+            );
+
+            console.log(JSON.parse(update_object), "===========new ");
+
             navigate("/TeamMemberList");
           })
           .catch((c) => {
