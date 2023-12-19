@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Input } from "antd";
-import { FormGroup, Label,} from "reactstrap";
+import { FormGroup, Label } from "reactstrap";
 
 // import Flatpickr from "react-flatpickr";
 // import "flatpickr/dist/themes/material_red.css";
@@ -34,7 +34,7 @@ const Team_leader = () => {
   const [tLDate, setTLDate] = useState("");
   const [tlTtime, setTLTime] = useState("");
   const [sign, setSign] = useState("");
-  const [signurl, setSignUrl] = useState();
+  const [signurl, setSignUrl] = useState(undefined);
 
   const [leaderObj, setLeaderObj] = useState({});
 
@@ -45,38 +45,34 @@ const Team_leader = () => {
     const local_storage_leader_obj = localStorage.getItem("leader_object");
     const leaderObj = JSON.parse(local_storage_leader_obj);
     setLeaderObj(leaderObj);
-    console.log(leaderObj, "leaderObj");
     getLeaderMarkedAttendance();
-    console.log(tlTtime, "time", tLDate, "date");
   }, []);
 
   const navigate = useNavigate();
   const format = "HH:mm";
+
+  const onChangeDate = async (e) => {
+    await setTLDate(e.target.value);
+  };
+  const onChangeTime = async (e) => {
+    await setTLTime(e.target.value);
+  };
 
   const handleWheel = (e) => {
     e.preventDefault(); // Prevent default scrolling behavior
   };
 
   const handleGenerate = () => {
-    console.log("out generate");
-    console.log(signatureRef.current._sigPad._isEmpty, "log1");
-    console.log(sign, "log2");
+    // console.log("out generate");
+    /// console.log(signatureRef.current._sigPad._isEmpty, "log1");
+    // console.log(sign, "log2");
     if (sign) {
       console.log("in");
       const generatedUrl = sign?.getTrimmedCanvas().toDataURL("image/png");
       setSignUrl(generatedUrl);
-      console.log(signurl, "usestate url1");
-      console.log(generatedUrl, "generate url2");
+      // console.log(signurl, "usestate url1");
+      //  console.log(generatedUrl, "generate url2");
     }
-  };
-
-  const onChangeDate = async (e) => {
-    console.log(e.target.value);
-    await setTLDate(e.target.value);
-  };
-  const onChangeTime = async (e) => {
-    console.log(e.target.value,"aaaaaaaaa");
-    await setTLTime(e.target.value);
   };
 
   const handleClear = () => {
@@ -98,29 +94,26 @@ const Team_leader = () => {
     const leader_attendance_details = await localStorage.getItem(
       "leader_attendance_details"
     );
+
     const marked_attendance_obj = JSON.parse(leader_attendance_details);
 
-    getLeaderAttendanceByAttendanceId(marked_attendance_obj?.id)
-      .then(async (response) => {
-        console.log(response.data, "=============");
-
-        const leaderAtendance = response.data;
-        // execute_date = await new Date(leaderAtendance.execute_date);
-
-        setToolBoxNo(leaderAtendance.tool_box_no);
-        setLocation(leaderAtendance.location);
-        setTopic(leaderAtendance.topic);
-        setTLDate(moment(leaderAtendance.execute_date).format("yyyy-MM-DD"));
-        console.log(leaderAtendance.execute_time,"exectete time get all eke");
-        setTLTime(leaderAtendance.execute_time);
-        // setTLDate(leaderAtendance.execute_date);
-        // setTLTime(leaderAtendance.execute_time);
-        setSignUrl(leaderAtendance.signature);
-        setSignatureToSignaturepad(leaderAtendance.signature);
-      })
-      .catch(() => {
-        console.log("load All TeamLeader Attendance not working");
-      });
+    if (marked_attendance_obj !== null) {
+      getLeaderAttendanceByAttendanceId(marked_attendance_obj?.id)
+        .then(async (response) => {
+          const leaderAtendance = response.data;
+          
+          setToolBoxNo(leaderAtendance.tool_box_no);
+          setLocation(leaderAtendance.location);
+          setTopic(leaderAtendance.topic);
+          setTLDate(moment(leaderAtendance.execute_date).format("yyyy-MM-DD"));
+          setTLTime(leaderAtendance.execute_time);
+          setSignUrl(leaderAtendance.signature);
+          setSignatureToSignaturepad(leaderAtendance.signature);
+        })
+        .catch(() => {
+          console.log("load All TeamLeader Attendance not working");
+        });
+    }
   };
 
   const setSignatureToSignaturepad = (signaureURL) => {
@@ -133,7 +126,7 @@ const Team_leader = () => {
   const setSignature = (data) => {
     if (data) {
       signatureRef.current = data;
-      console.log(signatureRef, "set karana hana");
+      //console.log(signatureRef, "set karana hana");
       //   signatureRef.current.off();
       setSign(data);
     } else {
@@ -141,21 +134,21 @@ const Team_leader = () => {
     }
   };
 
+  // ===============================================Add Leader Attendance=============================================
   const checkTeamLeaderInfo = () => {
-    console.log(tLDate, "date", tlTtime, "time");
     toolBoxNo.trim() === ""
       ? customToastMsg("Please Enter your ToolBox No!", 0)
       : location.trim() === ""
       ? customToastMsg("Please Enter your Location!", 0)
-      : topic.trim() === ""
-      ? customToastMsg("Please Enter your Topic!", 0)
       : tLDate.trim() === ""
       ? customToastMsg("Please Enter Date!", 0)
-      : // : tlTtime.trim() === ""
-        // ? customToastMsg("Please Enter Time!", 0)
-        // : sign.trim() === ""
-        // ? customToastMsg("Please Enter your Signature!", 0)
-        markTeamLeaderAttendance();
+      : tlTtime.trim() === ""
+      ? customToastMsg("Please Enter Time!", 0)
+      : topic.trim() === ""
+      ? customToastMsg("Please Enter your Topic!", 0)
+      : signurl === undefined || signurl === null
+      ? customToastMsg("Please Enter your Signature!", 0)
+      : markTeamLeaderAttendance();
   };
 
   const markTeamLeaderAttendance = async () => {
@@ -176,12 +169,10 @@ const Team_leader = () => {
       topic: topic,
       execute_date: moment(tLDate).format("yyyy-MM-DD"),
       execute_time: tlTtime,
-      // execute_date:tLDate,
-      // execute_time:tlTtime,
       signature: signurl,
       type: LEADER,
     };
-    console.log(data, "data obj ==== ");
+
     markTeamLeader(data)
       .then(async (response) => {
         customToastMsg("Successfully Mark Your Attendance !", 1);
@@ -189,7 +180,6 @@ const Team_leader = () => {
           id: response.data.id,
           leader_emp_id: response.data.leader_emp_id,
           execute_date: moment(response.data.execute_date).format("yyyy-MM-DD"),
-          // execute_date:response.data.execute_date,
           tool_box_no: response.data.tool_box_no,
           created_at: response.data.created_at,
         };
@@ -197,7 +187,6 @@ const Team_leader = () => {
           "leader_attendance_details",
           JSON.stringify(leaderAttendance)
         );
-
         navigate("/TeamMember");
       })
       .catch((c) => {
@@ -208,20 +197,21 @@ const Team_leader = () => {
       });
   };
 
+  // ===============================================Update Leader Attendance=============================================
   const checkUpdateTeamLeaderInfo = () => {
     toolBoxNo.trim() === ""
       ? customToastMsg("Please Enter your ToolBox No!", 0)
       : location.trim() === ""
       ? customToastMsg("Please Enter your Location!", 0)
-      : topic.trim() === ""
-      ? customToastMsg("Please Enter your Topic!", 0)
       : tLDate.trim() === ""
       ? customToastMsg("Please Enter Date!", 0)
       : tlTtime.trim() === ""
       ? customToastMsg("Please Enter Time!", 0)
-      : // : sign.trim() === ""
-        // ? customToastMsg("Please Enter your Signature!", 0)
-        updateTeamLeaderAttendance();
+      : topic.trim() === ""
+      ? customToastMsg("Please Enter your Topic!", 0)
+      : signurl === undefined || signurl === null
+      ? customToastMsg("Please Enter your Signature!", 0)
+      : updateTeamLeaderAttendance();
   };
 
   const updateTeamLeaderAttendance = async () => {
@@ -230,30 +220,33 @@ const Team_leader = () => {
     const leader_attendance_details = JSON.parse(
       await localStorage.getItem("leader_attendance_details")
     );
-    console.log(leader_attendance_details, "local storage eken ena data");
+
     getLeaderAttendanceByAttendanceId(leader_attendance_details?.id)
       .then(async (res) => {
-        console.log(res.data, "asdfasdfasdfasdfasdfasdfasdfasdf");
-        const oldLeaderAtendance = res.data;
-        const leaderAtendanceById = res.data;
-        console.log("get Team Leader Details by id", res.data);
+        const oldLeaderAtendance = {
+          id: res.data.id,
+          leader_emp_id: res.data.leader_emp_id,
+          execute_date: res.data.execute_date,
+          tool_box_no: res.data.tool_box_no,
+        };
 
-        leaderAtendanceById.tool_box_no = toolBoxNo;
-        leaderAtendanceById.location = location;
-        leaderAtendanceById.execute_date = moment(tLDate).format("yyyy-MM-DD");
-        leaderAtendanceById.execute_time = tlTtime;
-        // leaderAtendanceById.execute_date = tLDate;
-        // leaderAtendanceById.execute_time = tlTtime;
-        leaderAtendanceById.topic = topic;
-        leaderAtendanceById.signature = signurl;
+        const leaderAtendanceById = {
+          tool_box_no: toolBoxNo,
+          location: location,
+          execute_date: moment(tLDate).format("yyyy-MM-DD"),
+          execute_time: tlTtime,
+          topic: topic,
+          signature: signurl,
+        };
 
         console.log("update wena obj eka", leaderAtendanceById);
 
-        const updateLeaderAttendance={
-          oldAttendance : oldLeaderAtendance,
-          updateAttendance : leaderAtendanceById
-        }
+        const updateLeaderAttendance = {
+          oldAttendance: oldLeaderAtendance,
+          updateAttendance: leaderAtendanceById,
+        };
 
+        console.log(updateLeaderAttendance, " new full objef6");
         updateTeamleader(updateLeaderAttendance)
           .then(async (response) => {
             customToastMsg("Successfully Update Your Attendance !", 1);
@@ -269,7 +262,7 @@ const Team_leader = () => {
               leaderAttendance,
               "local storage ekata set krana data eka"
             );
-            // await localStorage.clear("leader_attendance_details");
+
             await localStorage.setItem(
               "leader_attendance_details",
               JSON.stringify(leaderAttendance)
@@ -376,8 +369,6 @@ const Team_leader = () => {
             }}
             placeholder="Project Time"
           />
-
-          
 
           {/* <Flatpickr
             // id="date-picker"

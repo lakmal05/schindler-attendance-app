@@ -16,12 +16,16 @@ const Team_member = () => {
   const [tMemberID, setTMemberID] = useState("");
   const [tMemberName, setTMemberName] = useState("");
   const [tMemberRadio, setTMemberRadio] = useState("unchecked");
-  const [sign, setSign] = useState();
-  const [signurl, setSignUrl] = useState();
+  const [sign, setSign] = useState(undefined);
+  const [signurl, setSignUrl] = useState(undefined);
 
   const [loader, setLoader] = useState(false);
 
   const navigate = useNavigate();
+
+  const onChange = (e) => {
+    setTMemberRadio(e.target.value);
+  };
 
   const handleWheel = (e) => {
     e.preventDefault(); // Prevent default scrolling behavior
@@ -31,27 +35,20 @@ const Team_member = () => {
     const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
     setSignUrl(generatedUrl);
   };
-  const onChange = (e) => {
-    console.log("radio checked", e.target.value);
-    setTMemberRadio(e.target.value);
-  };
 
   const handleClear = () => {
     sign.clear();
-    setSignUrl("");
+    setSignUrl(undefined);
   };
 
   const checkTeamMemberInfo = () => {
-    console.log(tMemberRadio);
     tMemberID.trim() === ""
       ? customToastMsg("Please Enter your Member ID!", 0)
       : tMemberName.trim() === ""
       ? customToastMsg("Please Enter your Name!", 0)
       : tMemberRadio === "unchecked"
       ? customToastMsg("Please Select one option!", 0)
-      : // : sign.trim() === ""
-        // ? customToastMsg("Please Enter your Signature!", 0)
-        markTeamMemberAttendance();
+      : markTeamMemberAttendance();
   };
 
   const markTeamMemberAttendance = async () => {
@@ -66,7 +63,6 @@ const Team_member = () => {
       member_name: tMemberName,
       member_emp_id: tMemberID,
       contract_type: tMemberRadio,
-      // sign: sign,
       signature: signurl,
       execute_date: await leaderObj.execute_date,
       tool_box_no: await leaderObj.tool_box_no,
@@ -76,8 +72,6 @@ const Team_member = () => {
     console.log("Team Member Details", data);
     markTeamMember(data)
       .then((response) => {
-        console.log(response, "teamMember");
-
         if (response.data) {
           customToastMsg("Successfully Mark Your Attendance !", 1);
           navigate("/TeamMemberList");

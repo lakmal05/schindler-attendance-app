@@ -9,20 +9,12 @@ import TeamMemberCard from "../../components/TeamMemberCard";
 import { useNavigate } from "react-router-dom";
 import { getAllMarkedMemberAttendanceList } from "../../services/teamMemberList";
 
-
-
-
 const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(2);
   const [teamMembersArray, setTeamMembersArray] = useState([]);
+
   useEffect(() => {
-    // const attendanceArray = getAllMemberAttendance()
-    // console.log(attendanceArray,"attendanceArray");
-    // setTeamMembersArray(attendanceArray,);
-    // console.log(teamMembersArray,"array in list");
-    // setTeamMembers(attendanceArray.length)
-    // console.log(teamMembers,"array length in list");
-getAllMemberAttendance();
+    getAllMemberAttendance();
   }, []);
 
   const navigate = useNavigate();
@@ -48,7 +40,7 @@ getAllMemberAttendance();
     return members;
   };
 
-   const getAllMemberAttendance = async () => {
+  const getAllMemberAttendance = async () => {
     const local_storage_leader_obj = await localStorage.getItem(
       "leader_attendance_details"
     );
@@ -58,14 +50,12 @@ getAllMemberAttendance();
       tool_box_no: leaderObj.tool_box_no,
       execute_date: leaderObj.execute_date,
     };
-    //send tool_box_num and execute date and leader_emp_id as a parameters or object
+
     await getAllMarkedMemberAttendanceList(data).then((response) => {
       if (response.data) {
-        console.log(response.data,"response");
-        console.log(response.data.length);
+        console.log(response.data, "response");
         setTeamMembersArray(response.data);
         setTeamMembers(response.data.length);
-        // methanin response eken ena data eka   <FirstTeamMemberCard /> mekata yawanna one
       }
     });
   };
@@ -73,11 +63,11 @@ getAllMemberAttendance();
   const genereatePdf = async () => {
     navigate("/GetPdf");
   };
+
   return (
     <>
       <div id="team-member-list">
         <div id="team-member-cnt">
-          
           {renderTeamMembers()}
 
           <Button id="get-pdf-btn" type="primary" onClick={genereatePdf}>
@@ -95,10 +85,16 @@ getAllMemberAttendance();
               <FaMinus />
             </Button>
           </div>
-          <Button id="back-btn" type="primary" onClick={()=>{navigate("/TeamLeader")}}>
-              {" "}
-              <IoCaretBack/>
-            </Button>
+          <Button
+            id="back-btn"
+            type="primary"
+            onClick={() => {
+              navigate("/TeamLeader");
+            }}
+          >
+            {" "}
+            <IoCaretBack />
+          </Button>
         </div>
       </div>
     </>
