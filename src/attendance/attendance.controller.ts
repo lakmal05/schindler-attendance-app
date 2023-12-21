@@ -12,8 +12,6 @@ export class AttendanceController {
 
   @Post('/mark-attendance')
   markAttendance(@Body() data: any) {
-    console.log(data);
-    
     return this.attendanceService.markAttendance(data);
   }
 
@@ -28,14 +26,9 @@ export class AttendanceController {
       execute_date,
       tool_box_no,
     };
+    console.log(data, 'dsfasdfasdfasdf');
 
     return this.attendanceService.findAllMembersAttendance(data);
-  }
-
-  @Put('update')
-  updateAttendance(@Body() data: any) {
-    console.log(data, 'data');
-    return this.attendanceService.updateAttendance(data);
   }
 
   @Get('all-attendance/:leader_emp_id')
@@ -51,5 +44,17 @@ export class AttendanceController {
     };
 
     return this.attendanceService.findAllAttendance(data);
+  }
+
+  
+  @Put('update-teamMember')
+  updateTeamMemberAttendance(@Body() data: any) {
+    console.log(data, 'data');
+    return this.attendanceService.updateTeamMemberAttendance(data);
+  }
+
+  @Put('update-all-attendance')
+  async updateAllAttendance(@Body() data: any) {
+    return await this.attendanceService.updateAllAttendance(data);
   }
 }
