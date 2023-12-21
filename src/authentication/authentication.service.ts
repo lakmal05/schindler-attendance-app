@@ -13,11 +13,12 @@ export class AuthenticationService {
         username: data.username,
       },
     });
-    const password = is_exsist.password;
+
     if (!is_exsist) {
       return false;
     } else {
-      if (is_exsist.password !== incoming_passowrd) {
+      const password = is_exsist.password;
+      if (password !== incoming_passowrd) {
         return false;
       } else {
         const employee = await this.prismaService.employee.findUnique({
