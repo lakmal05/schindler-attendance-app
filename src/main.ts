@@ -17,6 +17,8 @@ async function bootstrap() {
 
   app.enableCors(corsOptions);
 
-  await app.listen(3005);
+ await app.listen(3005);
+console.log("server is running");
+
 }
 bootstrap();
