@@ -1,49 +1,91 @@
-import React, { useRef, useState } from "react";
-import SignatureCanvas from "react-signature-canvas";
-import "./Signature.scss"; 
+import React, { useRef, useState } from 'react';
+import './Signature.scss';
+import SignaturePad from '../../components/SignaturePad';
 
-const Signature = () => {
-  const signatureCanvasRef = useRef();
-  const [signatureData, setSignatureData] = useState(null);
+// function SignaturePad() {
+//   const canvasRef = useRef(null);
+//   let isDrawing = false;
+//   let prevPos = { x: 0, y: 0 };
+//   const [signatureData, setSignatureData] = useState(null);
 
-  const saveSignature = () => {
-    if (signatureCanvasRef.current.isEmpty()) {
-      alert("Please provide a signature before saving.");
-      return;
-    }
+//   const getTouchPos = (e) => {
+//     const rect = canvasRef.current.getBoundingClientRect();
+//     return {
+//       x: e.touches[0].clientX - rect.left,
+//       y: e.touches[0].clientY - rect.top,
+//     };
+//   };
 
-    const dataURL = signatureCanvasRef.current.toDataURL(); 
-    setSignatureData(dataURL);
-    console.log(dataURL,"=============");
-  };
+//   const startDrawing = (e) => {
+//     isDrawing = true;
+//     const canvas = canvasRef.current;
+//     const ctx = canvas.getContext('2d');
+//     prevPos = getTouchPos(e);
+//     ctx.beginPath();
+//     ctx.moveTo(prevPos.x, prevPos.y);
+//   };
 
-  const clearSignature = () => {
-    signatureCanvasRef.current.clear();
-    setSignatureData(null);
-  };
+//   const draw = (e) => {
+//     if (isDrawing) {
+//       const canvas = canvasRef.current;
+//       const ctx = canvas.getContext('2d');
+//       const currentPos = getTouchPos(e);
+//       ctx.lineWidth = 2;
+//       ctx.strokeStyle = 'black';
+//       ctx.lineTo(currentPos.x, currentPos.y);
+//       ctx.stroke();
+//       prevPos = currentPos;
+//     }
+//   };
 
+//   const endDrawing = () => {
+//     isDrawing = false;
+//   };
+
+//   const clearCanvas = () => {
+//     const canvas = canvasRef.current;
+//     const ctx = canvas.getContext('2d');
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     setSignatureData(null); // Clear signature data
+//   };
+
+//   const handleSubmit = () => {
+//     const canvas = canvasRef.current;
+//     const signatureDataURL = canvas.toDataURL(); // Get data URL of the signature
+//     setSignatureData(signatureDataURL); // Save signature data in state
+//     console.log('Signature Data:', signatureDataURL);
+//   };
+
+//   return (
+//     <div>
+//       <canvas
+//         ref={canvasRef}
+//         width={400}
+//         height={200}
+//         className="signatureCanvas"
+//         onMouseDown={startDrawing}
+//         onMouseMove={draw}
+//         onMouseUp={endDrawing}
+//         onMouseOut={endDrawing}
+//         onTouchStart={startDrawing}
+//         onTouchMove={draw}
+//         onTouchEnd={endDrawing}
+//       ></canvas>
+//       <div>
+//         <button onClick={clearCanvas}>Clear</button>
+//         <button onClick={handleSubmit}>Submit</button>
+//       </div>
+//       {signatureData && <img src={signatureData} alt="Signature" />}
+//     </div>
+//   );
+// }
+
+function App() {
   return (
-    <div className="signature-container">
-      <div className="signature-header">Sign Below</div>
-      <SignatureCanvas
-        ref={signatureCanvasRef}
-        penColor="black"
-        canvasProps={{ className: "signature-canvas" }}
-      />
-      <button className="save-button" onClick={saveSignature}>
-        Save Signature
-      </button>
-      <button className="clear-button" onClick={clearSignature}>
-        Clear Signature
-      </button>
-      {/* {signatureData && (
-        <div className="saved-signature">
-          <p>Saved Signature:</p>
-          <img src={signatureData} alt="Saved Signature" />
-        </div>
-      )} */}
+    <div className="App">
+<SignaturePad/>
     </div>
   );
-};
+}
 
-export default Signature;
+export default App;

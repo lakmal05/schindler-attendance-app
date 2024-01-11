@@ -25,7 +25,6 @@ import {
   updateTeamleader,
 } from "../../services/teamLeader";
 import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
-import { async } from "q";
 
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
@@ -34,7 +33,7 @@ const Team_leader = () => {
   const [tLDate, setTLDate] = useState("");
   const [tlTtime, setTLTime] = useState("");
   const [sign, setSign] = useState("");
-  const [signurl, setSignUrl] = useState(undefined);
+  const [signurl, setSignUrl] = useState(null);
 
   const [leaderObj, setLeaderObj] = useState({});
 
@@ -62,16 +61,13 @@ const Team_leader = () => {
     e.preventDefault(); // Prevent default scrolling behavior
   };
 
-  const handleGenerate = () => {
-    // console.log("out generate");
-    /// console.log(signatureRef.current._sigPad._isEmpty, "log1");
-    // console.log(sign, "log2");
+  const handleGenerate = async () => {
+  
     if (sign) {
       console.log("in");
       const generatedUrl = sign?.getTrimmedCanvas().toDataURL("image/png");
-      setSignUrl(generatedUrl);
-      // console.log(signurl, "usestate url1");
-      //  console.log(generatedUrl, "generate url2");
+      await setSignUrl(generatedUrl);
+   
     }
   };
 
@@ -136,6 +132,7 @@ const Team_leader = () => {
 
   // ===============================================Add Leader Attendance=============================================
   const checkTeamLeaderInfo = () => {
+    console.log(signurl);
     toolBoxNo.trim() === ""
       ? customToastMsg("Please Enter your ToolBox No!", 0)
       : location.trim() === ""
@@ -146,7 +143,7 @@ const Team_leader = () => {
       ? customToastMsg("Please Enter Time!", 0)
       : topic.trim() === ""
       ? customToastMsg("Please Enter your Topic!", 0)
-      : signurl === undefined || signurl === null
+      : signurl === undefined || signurl === null  || signurl === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC"
       ? customToastMsg("Please Enter your Signature!", 0)
       : markTeamLeaderAttendance();
   };
@@ -209,7 +206,7 @@ const Team_leader = () => {
       ? customToastMsg("Please Enter Time!", 0)
       : topic.trim() === ""
       ? customToastMsg("Please Enter your Topic!", 0)
-      : signurl === undefined || signurl === null
+      : signurl === undefined || signurl === null || signurl === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC"
       ? customToastMsg("Please Enter your Signature!", 0)
       : updateTeamLeaderAttendance();
   };
@@ -445,6 +442,7 @@ const Team_leader = () => {
                 }}
               />
             </div>
+            {/* <img src={signurl} alt="signature" /> */}
             <Button id="signature-clear-btn" ghost onClick={handleClear}>
               {" "}
               Clear
@@ -454,7 +452,8 @@ const Team_leader = () => {
           {localStorage.getItem("leader_attendance_details") ? (
             <Button
               id="team-leader-btn"
-              type="primary"
+              type="button"
+              style={{color:"white"}}
               onClick={checkUpdateTeamLeaderInfo}
             >
               {" "}
@@ -470,7 +469,8 @@ const Team_leader = () => {
           ) : (
             <Button
               id="team-leader-btn"
-              type="primary"
+              type="button"
+              style={{color:"white"}}
               onClick={checkTeamLeaderInfo}
             >
               {" "}

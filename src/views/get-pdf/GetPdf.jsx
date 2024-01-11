@@ -47,33 +47,15 @@ const GetPdf = () => {
     });
   };
 
-  // const findLeader = () => {
-  //   for (let i = 0; i < attendanceArray?.length; i++) {
-  //     if (attendanceArray[i].type === "LEADER") {
-  //       setLeaderAttendance(attendanceArray[i]);
-  //       console.log(leaderAttendance, "leader attendance", i);
-  //       removeLeader(i);
-  //     }
-  //   }
-  // };
-  // const removeLeader = (indexToRemove) => {
-  //   // const updatedData = attendanceArray.filter((item) => item.id !==indexToRemove);
-  //   const updatedData = attendanceArray.splice(indexToRemove, 1);
-  //   setAttendanceArray(updatedData);
-  //   console.log(attendanceArray, "leaderRemoveArray");
-  //   setAttendanceArray();
-  //   setAttendanceToTable();
-  // };
-
   const findLeader = () => {
     const leaderIndex = attendanceArray.findIndex(
-      (item) => item.type === 'LEADER'
+      (item) => item.type === "LEADER"
     );
-  
+
     if (leaderIndex !== -1) {
       const leader = attendanceArray[leaderIndex];
       setLeaderAttendance(leader);
-  
+
       // Remove leader from attendanceArray and update the state
       const updatedArray = attendanceArray.filter(
         (_, index) => index !== leaderIndex
@@ -86,6 +68,11 @@ const GetPdf = () => {
     return str?.replace(/\b\w/g, function (char) {
       return char.toUpperCase();
     });
+  };
+
+  const clickGeneratePDF = async () => {
+    await localStorage.removeItem("leader_attendance_details");
+    generatePDF();
   };
 
   const generatePDF = useReactToPrint({
@@ -119,38 +106,25 @@ const GetPdf = () => {
       title: "Signature",
       dataIndex: "signature",
       render: (text, record) => (
-        <img src={record.signature} alt="Image" style={{ width: '100px', height: 'auto' }} />
+        <img
+          src={record.signature}
+          alt="Image"
+          style={{ width: "100px", height: "auto" }}
+        />
       ),
 
       fixed: true,
     },
   ];
   let fixedData = [];
-   fixedData = attendanceArray.map((item, index) => ({
-      key: (index + 1).toString(),
-      member_name: item.member_name,
-      contract_type: item.contract_type,
-      member_emp_id: item.member_emp_id,
-      signature: item.signature,
-    }));
-    console.log(fixedData, "fixed data array");
-  
-  // fixedData.push(
-  //   {
-  //     key: "1",
-  //     member_name: attendanceArray[0]?.member_name,
-  //     contract_type: attendanceArray[0]?.contract_type,
-  //     member_emp_id: attendanceArray[0]?.member_emp_id,
-  //     signature: attendanceArray[0]?.signature,
-  //   },
-  //   {
-  //     key: "2",
-  //     member_name: attendanceArray[1]?.member_name,
-  //     contract_type: attendanceArray[1]?.contract_type,
-  //     member_emp_id: attendanceArray[1]?.member_emp_id,
-  //     signature: attendanceArray[1]?.signature,
-  //   }
-  // );
+  fixedData = attendanceArray.map((item, index) => ({
+    key: (index + 1).toString(),
+    member_name: item.member_name,
+    contract_type: item.contract_type,
+    member_emp_id: item.member_emp_id,
+    signature: item.signature,
+  }));
+  console.log(fixedData, "fixed data array");
 
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -365,7 +339,11 @@ const GetPdf = () => {
             </div>
           </div>
 
-          <Button id="genarate-pdf-btn" type="primary" onClick={generatePDF}>
+          <Button
+            id="genarate-pdf-btn"
+            type="primary"
+            onClick={clickGeneratePDF}
+          >
             {" "}
             {!loader ? (
               "Download"
