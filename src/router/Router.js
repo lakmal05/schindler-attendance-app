@@ -47,6 +47,7 @@ const RouterHandler = () => {
               <Header />
               <Routes>
                 <Route path="/Dashboard" element={<Dashboard />} />
+                <Route path="/" element={<Dashboard />} />
                 <Route path="/TeamLeader" element={<Team_leader />} />
                 <Route path="/TeamMember" element={<Team_member />} />
                 <Route path="/TeamMemberList" element={<Team_Member_List />} />
