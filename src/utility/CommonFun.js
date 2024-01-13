@@ -35,9 +35,7 @@ export const getAllAttendance = async () => {
     });
 };
 
-// export const isEmpty = (str) => {
-//   return !str || str.length === 0;
-// };
+
 
 export const ScrollToTop = ({ children }) => {
   const { pathname } = useLocation();
@@ -57,6 +55,7 @@ export const logOutLeader = () => {
   // Cookies.remove(constant.ACCESS_TOKEN);
   localStorage.removeItem("leader_object");
   localStorage.removeItem("leader_attendance_details");
+  localStorage.clear();
   window.location = "/";
 };
 

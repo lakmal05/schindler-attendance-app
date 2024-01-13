@@ -179,7 +179,7 @@ const TeamMemberDrower = ({ isOpen, toggel, teamMemberDetails }) => {
         console.log(response.data, "teamMember");
         customToastMsg("Successfully Update Your Attendance !", 1);
         toggel();
-        window.location.href = "/TeamMemberList";
+        // window.location.href = "/TeamMemberList";
       })
       .catch((c) => {
         customToastMsg("Unsuccessful !", 0);

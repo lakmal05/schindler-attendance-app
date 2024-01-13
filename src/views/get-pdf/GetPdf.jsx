@@ -12,6 +12,11 @@ import { Table } from "antd";
 import { getAllMarkedAttendanceList } from "../../services/teamMemberList";
 import logo from "../../assets/logo.png";
 import "./GetPdf.scss";
+import { useNavigate } from "react-router-dom";
+
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
 
 const GetPdf = () => {
   const [loader, setLoader] = useState(false);
@@ -20,6 +25,7 @@ const GetPdf = () => {
   const [attendanceArray, setAttendanceArray] = useState([]);
   const conponentPDF = useRef();
 
+  const navigate = useNavigate();
   useEffect(() => {
     getAllAttendance();
   }, []);
@@ -47,33 +53,15 @@ const GetPdf = () => {
     });
   };
 
-  // const findLeader = () => {
-  //   for (let i = 0; i < attendanceArray?.length; i++) {
-  //     if (attendanceArray[i].type === "LEADER") {
-  //       setLeaderAttendance(attendanceArray[i]);
-  //       console.log(leaderAttendance, "leader attendance", i);
-  //       removeLeader(i);
-  //     }
-  //   }
-  // };
-  // const removeLeader = (indexToRemove) => {
-  //   // const updatedData = attendanceArray.filter((item) => item.id !==indexToRemove);
-  //   const updatedData = attendanceArray.splice(indexToRemove, 1);
-  //   setAttendanceArray(updatedData);
-  //   console.log(attendanceArray, "leaderRemoveArray");
-  //   setAttendanceArray();
-  //   setAttendanceToTable();
-  // };
-
   const findLeader = () => {
     const leaderIndex = attendanceArray.findIndex(
-      (item) => item.type === 'LEADER'
+      (item) => item.type === "LEADER"
     );
-  
+
     if (leaderIndex !== -1) {
       const leader = attendanceArray[leaderIndex];
       setLeaderAttendance(leader);
-  
+
       // Remove leader from attendanceArray and update the state
       const updatedArray = attendanceArray.filter(
         (_, index) => index !== leaderIndex
@@ -88,10 +76,51 @@ const GetPdf = () => {
     });
   };
 
+  const clickGeneratePDF = async () => {
+    await localStorage.removeItem("leader_attendance_details");
+    navigate("/Dashboard");
+    generatePDF();
+  };
+
+  
+  // const clickGeneratePDF = () => {
+  //   setLoader(true);
+  
+  //   html2canvas(conponentPDF.current).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  
+  //     const pdf = new jsPDF({
+  //       orientation: "portrait",
+  //       unit: "mm",
+  //       format: "a4",
+  //     });
+  
+  //     const imgWidth = 210;
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+  //     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+  //     pdf.save("userdata.pdf");
+  
+  //     setLoader(false);
+
+  //     localStorage.removeItem("leader_attendance_details");
+  //     generatePDF();
+  //   });
+  // };
+  
+
   const generatePDF = useReactToPrint({
     content: () => conponentPDF.current,
     documentTitle: "Userdata",
   });
+  // const generatePDF = useReactToPrint({
+  //   content: () => {
+  //     navigate("/Dashboard");
+  //     // Return the component you want to print
+  //     return conponentPDF.current;
+  //   },
+  //   documentTitle: "Userdata",
+  // });
 
   const fixedColumns = [
     {
@@ -119,38 +148,25 @@ const GetPdf = () => {
       title: "Signature",
       dataIndex: "signature",
       render: (text, record) => (
-        <img src={record.signature} alt="Image" style={{ width: '100px', height: 'auto' }} />
+        <img
+          src={record.signature}
+          alt="Image"
+          style={{ width: "100px", height: "auto" }}
+        />
       ),
 
       fixed: true,
     },
   ];
   let fixedData = [];
-   fixedData = attendanceArray.map((item, index) => ({
-      key: (index + 1).toString(),
-      member_name: item.member_name,
-      contract_type: item.contract_type,
-      member_emp_id: item.member_emp_id,
-      signature: item.signature,
-    }));
-    console.log(fixedData, "fixed data array");
-  
-  // fixedData.push(
-  //   {
-  //     key: "1",
-  //     member_name: attendanceArray[0]?.member_name,
-  //     contract_type: attendanceArray[0]?.contract_type,
-  //     member_emp_id: attendanceArray[0]?.member_emp_id,
-  //     signature: attendanceArray[0]?.signature,
-  //   },
-  //   {
-  //     key: "2",
-  //     member_name: attendanceArray[1]?.member_name,
-  //     contract_type: attendanceArray[1]?.contract_type,
-  //     member_emp_id: attendanceArray[1]?.member_emp_id,
-  //     signature: attendanceArray[1]?.signature,
-  //   }
-  // );
+  fixedData = attendanceArray.map((item, index) => ({
+    key: (index + 1).toString(),
+    member_name: item.member_name,
+    contract_type: item.contract_type,
+    member_emp_id: item.member_emp_id,
+    signature: item.signature,
+  }));
+  console.log(fixedData, "fixed data array");
 
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -365,7 +381,11 @@ const GetPdf = () => {
             </div>
           </div>
 
-          <Button id="genarate-pdf-btn" type="primary" onClick={generatePDF}>
+          <Button
+            id="genarate-pdf-btn"
+            type="primary"
+            onClick={clickGeneratePDF}
+          >
             {" "}
             {!loader ? (
               "Download"

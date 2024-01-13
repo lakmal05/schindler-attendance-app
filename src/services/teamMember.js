@@ -2,6 +2,7 @@ import axios from "axios";
 import { baseUrl } from "./apiConfig";
 
 export const markTeamMember = async (data) => {
+  console.log(data,"============");
   // return true;
   return await axios.post(baseUrl+"attendance/mark-attendance", data)
 };
