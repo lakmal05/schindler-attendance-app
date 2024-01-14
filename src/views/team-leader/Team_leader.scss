@@ -55,19 +55,18 @@
       background-color: #eeeeee;
       margin: 12px 0;
       width: 100%;
-
     }
 
     #date-picker.active {
       align-items: center;
       background-color: #eeeeee !important;
-      border: 1px solid gainsboro !important;  
+      border: 1px solid gainsboro !important;
     }
 
-  //  .flatpickr-calendar .animate .open{
-  //   z-index: 1 !important;
-  //  }
-    
+    //  .flatpickr-calendar .animate .open{
+    //   z-index: 1 !important;
+    //  }
+
     #time-picker {
       font-size: 15px;
       height: 50px;
@@ -75,38 +74,41 @@
       background-color: #eeeeee;
       margin: 12px 0;
       width: 100%;
-     
     }
     #time-picker.active {
       align-items: center;
       background-color: #eeeeee !important;
-      border: 1px solid gainsboro !important;  
+      border: 1px solid gainsboro !important;
     }
     #signature {
       width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: end;
+      align-items: center;
 
       #signature-div {
         border: 1px solid #d1d1d1;
         border-radius: 12px;
-        width: 100%;
-        height: 200px;
-        margin: 50px 0 20px 0;
+        // width: 100%;
+        // height: 200px;
+        margin: 50px 30px 20px 30px;
         background-color: #eeeeee;
-
-        .sigCanvas {
-          width: 100%;
-          height: 100%;
-        }
       }
+      .button-div {
+        width: 100%;
 
-      #signature-clear-btn {
-        color: #ff5252;
-        border: 1px solid #ff5252;
-        width: 70px;
-        margin: 10px 0;
+        #signature-save-btn {
+          color: #ff5252;
+          border: 1px solid #ff5252;
+          width: 50%;
+          margin: 10px 30px 10px 0;
+        }
+        #signature-clear-btn {
+          color: #ff5252;
+          border: 1px solid #ff5252;
+          width: 70px;
+          margin: 10px 0;
+        }
       }
     }
 

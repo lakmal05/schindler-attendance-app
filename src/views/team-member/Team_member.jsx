@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect ,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { Input } from "antd";
@@ -11,13 +11,13 @@ import { customToastMsg } from "../../utility/Utils";
 import "./Team_member.scss";
 import { markTeamMember } from "../../services/teamMember";
 import { MEMBER } from "../../constant/constants";
+import SignaturePad from "signature_pad";
 
 const Team_member = () => {
   const [tMemberID, setTMemberID] = useState("");
   const [tMemberName, setTMemberName] = useState("");
   const [tMemberRadio, setTMemberRadio] = useState("unchecked");
-  const [sign, setSign] = useState(undefined);
-  const [signurl, setSignUrl] = useState(undefined);
+  const [signurl, setSignUrl] = useState(null);
 
   const [loader, setLoader] = useState(false);
 
@@ -27,19 +27,76 @@ const Team_member = () => {
     setTMemberRadio(e.target.value);
   };
 
-  const handleWheel = (e) => {
-    e.preventDefault(); // Prevent default scrolling behavior
-  };
 
-  const handleGenerate = () => {
-    const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
-    setSignUrl(generatedUrl);
-  };
+
+
+  const canvasRef = useRef(null);
+  const signaturePadRef = useRef(null);
+  const [disabledSignaturePad, setDisabledSignaturePad] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const signaturePad = new SignaturePad(canvas, {
+      minWidth: 2,
+      maxWidth: 2,
+      throttle: 16,
+      minDistance: 5,
+      velocityFilterWeight: 0.2,
+    });
+
+    // Save the SignaturePad instance for future use
+    signaturePadRef.current = signaturePad;
+
+    // Set the initial signature if it exists
+   
+
+    // Cleanup on component unmount
+    return () => {
+      signaturePad.off(); // Unbind event handlers
+    };
+  }, []);
 
   const handleClear = () => {
-    sign.clear();
-    setSignUrl(undefined);
+    if (signaturePadRef.current) {
+      signaturePadRef.current.clear();
+      setSignUrl(null);
+      setDisabledSignaturePad(!disabledSignaturePad);
+    }
   };
+
+  useEffect(() => {
+    console.log(signurl, "+++++++++++++++++");
+  }, [signurl]);
+
+  const handleSave = () => {
+    if (signaturePadRef.current) {
+      const signatureDataURL = signaturePadRef.current.toDataURL();
+      console.log(signatureDataURL);
+      setSignUrl(signatureDataURL);
+      setDisabledSignaturePad(!disabledSignaturePad);
+      customToastMsg("Successfully Enterd Signature!", 1);
+    }
+  };
+
+
+
+
+
+
+
+  // const handleWheel = (e) => {
+  //   e.preventDefault(); // Prevent default scrolling behavior
+  // };
+
+  // const handleGenerate = () => {
+  //   const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
+  //   setSignUrl(generatedUrl);
+  // };
+
+  // const handleClear = () => {
+  //   sign.clear();
+  //   setSignUrl(undefined);
+  // };
 
   const checkTeamMemberInfo = () => {
     tMemberID.trim() === ""
@@ -134,20 +191,26 @@ const Team_member = () => {
 
           <div
             id="signature-member"
-            onWheel={handleWheel}
-            onClick={handleGenerate}
+            // onWheel={handleWheel}
+            // onClick={handleGenerate}
           >
-            <div id="signature-div">
-              <SignatureCanvas
-                canvasProps={{ className: "sigCanvas" }}
-                ref={(data) => setSign(data)}
-              />
-            </div>
+           <canvas
+              id="signature-div"
+              width={600}
+              height={200}
+              ref={canvasRef}
+            ></canvas>
 
-            <Button id="signature-clear-btn" ghost onClick={handleClear}>
-              {" "}
-              Clear
-            </Button>
+            <div className="button-div">
+              <Button id="signature-save-btn" ghost onClick={handleSave}>
+                {" "}
+                Save Signature
+              </Button>
+              <Button id="signature-clear-btn" ghost onClick={handleClear}>
+                {" "}
+                Clear
+              </Button>
+            </div>
           </div>
 
           <Button

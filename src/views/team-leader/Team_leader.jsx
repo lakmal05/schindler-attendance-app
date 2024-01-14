@@ -2,15 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Input } from "antd";
 import { FormGroup, Label } from "reactstrap";
-
-// import Flatpickr from "react-flatpickr";
-// import "flatpickr/dist/themes/material_red.css";
 import moment from "moment";
 import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import SignatureCanvas from "react-signature-canvas";
-// import { TimePicker } from "antd";
-// import { DatePicker } from "antd";
 import { LiaToolboxSolid } from "react-icons/lia";
 import { SlLocationPin } from "react-icons/sl";
 import { RiLoader2Line } from "react-icons/ri";
@@ -25,7 +18,8 @@ import {
   updateTeamleader,
 } from "../../services/teamLeader";
 import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
-import SignaturePadModal from "../../components/SignaturePadModal";
+
+import SignaturePad from "signature_pad";
 
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
@@ -33,13 +27,69 @@ const Team_leader = () => {
   const [topic, setTopic] = useState("");
   const [tLDate, setTLDate] = useState("");
   const [tlTtime, setTLTime] = useState("");
-  const [sign, setSign] = useState("");
   const [signurl, setSignUrl] = useState(null);
 
   const [leaderObj, setLeaderObj] = useState({});
 
   const [loader, setLoader] = useState(false);
-  const signatureRef = useRef(null);
+
+  const canvasRef = useRef(null);
+  const signaturePadRef = useRef(null);
+  const [initialSignature, setInitialSignature] = useState("");
+  const [disabledSignaturePad, setDisabledSignaturePad] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const signaturePad = new SignaturePad(canvas, {
+      minWidth: 2,
+      maxWidth: 2,
+      throttle: 16,
+      minDistance: 5,
+      velocityFilterWeight: 0.2,
+    });
+
+    // Save the SignaturePad instance for future use
+    signaturePadRef.current = signaturePad;
+
+    // Set the initial signature if it exists
+    if (initialSignature) {
+      signaturePad.fromDataURL(initialSignature);
+    }
+
+    // Cleanup on component unmount
+    return () => {
+      signaturePad.off(); // Unbind event handlers
+    };
+  }, [initialSignature]);
+
+  const handleClear = () => {
+    if (signaturePadRef.current) {
+      signaturePadRef.current.clear();
+      setSignUrl(null);
+      setDisabledSignaturePad(!disabledSignaturePad);
+    }
+  };
+
+  useEffect(() => {
+    console.log(signurl, "+++++++++++++++++");
+  }, [signurl]);
+
+  const handleSave = () => {
+    if (signaturePadRef.current) {
+      const signatureDataURL = signaturePadRef.current.toDataURL();
+      console.log(signatureDataURL);
+      setSignUrl(signatureDataURL);
+      setDisabledSignaturePad(!disabledSignaturePad);
+      customToastMsg("Successfully Enterd Signature!", 1);
+    }
+  };
+
+  // Set the initial signature value from your state or database response
+  useEffect(() => {
+    if (signurl) {
+      setInitialSignature(signurl);
+    }
+  }, [signurl]);
 
   useEffect(() => {
     const local_storage_leader_obj = localStorage.getItem("leader_object");
@@ -56,35 +106,6 @@ const Team_leader = () => {
   };
   const onChangeTime = async (e) => {
     await setTLTime(e.target.value);
-  };
-
-  const handleWheel = (e) => {
-    e.preventDefault(); // Prevent default scrolling behavior
-  };
-
-  const handleGenerate = async () => {
-  
-    if (sign) {
-      console.log("in");
-      const generatedUrl = sign?.getTrimmedCanvas().toDataURL("image/png");
-      await setSignUrl(generatedUrl);
-   
-    }
-  };
-
-  const handleClear = () => {
-    signatureRef.current.on();
-    signatureRef.current.clear();
-
-    // console.log(signatureRef, "clear krhama");
-    // console.log(signatureRef.current._sigPad._isEmpty, "clear out");
-    // console.log(sign, "sign eka thiynwada");
-
-    if (sign) {
-      console.log("clear in");
-      sign.clear();
-      setSignUrl(undefined);
-    }
   };
 
   const getLeaderMarkedAttendance = async () => {
@@ -105,29 +126,10 @@ const Team_leader = () => {
           setTLDate(moment(leaderAtendance.execute_date).format("yyyy-MM-DD"));
           setTLTime(leaderAtendance.execute_time);
           setSignUrl(leaderAtendance.signature);
-          setSignatureToSignaturepad(leaderAtendance.signature);
         })
         .catch(() => {
           console.log("load All TeamLeader Attendance not working");
         });
-    }
-  };
-
-  const setSignatureToSignaturepad = (signaureURL) => {
-    if (signatureRef.current && signaureURL) {
-      signatureRef.current.clear();
-      signatureRef.current.fromDataURL(signaureURL);
-    }
-  };
-
-  const setSignature = (data) => {
-    if (data) {
-      signatureRef.current = data;
-      //console.log(signatureRef, "set karana hana");
-      //   signatureRef.current.off();
-      setSign(data);
-    } else {
-      setSign(data);
     }
   };
 
@@ -144,7 +146,7 @@ const Team_leader = () => {
       ? customToastMsg("Please Enter Time!", 0)
       : topic.trim() === ""
       ? customToastMsg("Please Enter your Topic!", 0)
-      : signurl === undefined || signurl === null  || signurl === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC"
+      : signurl === undefined || signurl === null
       ? customToastMsg("Please Enter your Signature!", 0)
       : markTeamLeaderAttendance();
   };
@@ -207,7 +209,7 @@ const Team_leader = () => {
       ? customToastMsg("Please Enter Time!", 0)
       : topic.trim() === ""
       ? customToastMsg("Please Enter your Topic!", 0)
-      : signurl === undefined || signurl === null || signurl === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC"
+      : signurl === undefined || signurl === null
       ? customToastMsg("Please Enter your Signature!", 0)
       : updateTeamLeaderAttendance();
   };
@@ -330,17 +332,6 @@ const Team_leader = () => {
               />
             }
           />
-          {/* <DatePicker
-            // id="date-picker"
-            value={tLDate ? moment(tLDate) : null}
-            onChange={onChangeDate}
-            style={{
-              backgroundColor: "#EEEEEE",
-              margin: "12px 0",
-              width: "100%",
-            }}
-            placeholder="Project Date"
-          /> */}
 
           <Input
             id="date-picker"
@@ -372,51 +363,6 @@ const Team_leader = () => {
             placeholder="Project Time"
           />
 
-          {/* <Flatpickr
-            // id="date-picker"
-            placeholder="Project Date"
-            className="form-control"
-            value={tLDate === "" ? null : tLDate}
-            onChange={([date]) => {
-              setTLDate(moment(date).format("yyyy-MM-DD"));
-            }}
-            options={{
-              defaultDate: null,
-              disableMobile: "false"
-            }}
-          />
-          <Flatpickr
-            // id="time-picker"
-            placeholder="Project Time"
-            className="form-control"
-            data-enable-time
-            value={tlTtime === "" ? null : tlTtime}
-            onChange={([time]) => {
-              setTLTime(moment(time).format("HH:MM"));
-            }}
-            options={{
-              enableTime: true,
-              noCalendar: true,
-              dateFormat: "H:i",
-              time_24hr: true,
-              disableMobile: "false"
-            }}
-          /> */}
-
-          {/* <TimePicker
-            id="time-picker"
-            onChange={onChangeTime}
-            value={tlTtime ? moment(tlTtime, format) : null}
-            defaultOpenValue={dayjs("12:08", format)}
-            format={format}
-            style={{
-              backgroundColor: "#EEEEEE",
-              margin: "12px 0",
-              width: "100%",
-            }}
-            placeholder="Project Time"
-          /> */}
-
           <Input
             onChange={async (e) => await setTopic(e.target.value)}
             value={topic}
@@ -433,30 +379,40 @@ const Team_leader = () => {
             }
           />
 
-          <div id="signature" onWheel={handleWheel} onClick={handleGenerate}>
-            <div id="signature-div">
-              <SignatureCanvas
-                canvasProps={{ className: "sigCanvas" }}
-                // ref={(data) => setSign(data)}
-                ref={(ref) => {
-                  setSignature(ref);
-                }}
-              />
-            </div>
-            {/* <img src={signurl} alt="signature" /> */}
-            <Button id="signature-clear-btn" ghost onClick={handleClear}>
-              {" "}
-              Clear
-            </Button>
-          </div>
+          <div id="signature">
+            {/* {disabledSignaturePad && 
+              <canvas
+                id="signature-div"
+                width={600}
+                height={200}
+                ref={canvasRef}
+              ></canvas>
+            } */}
 
-          <SignaturePadModal/>
+            <canvas
+              id="signature-div"
+              width={600}
+              height={200}
+              ref={canvasRef}
+            ></canvas>
+
+            <div className="button-div">
+              <Button id="signature-save-btn" ghost onClick={handleSave}>
+                {" "}
+                Save Signature
+              </Button>
+              <Button id="signature-clear-btn" ghost onClick={handleClear}>
+                {" "}
+                Clear
+              </Button>
+            </div>
+          </div>
 
           {localStorage.getItem("leader_attendance_details") ? (
             <Button
               id="team-leader-btn"
               type="button"
-              style={{color:"white"}}
+              style={{ color: "white" }}
               onClick={checkUpdateTeamLeaderInfo}
             >
               {" "}
@@ -473,7 +429,7 @@ const Team_leader = () => {
             <Button
               id="team-leader-btn"
               type="button"
-              style={{color:"white"}}
+              style={{ color: "white" }}
               onClick={checkTeamLeaderInfo}
             >
               {" "}
