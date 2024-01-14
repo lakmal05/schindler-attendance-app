@@ -1,9 +1,8 @@
-// import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "antd";
 // import { useState } from "react";
 import { RiLoader2Line } from "react-icons/ri";
 import { Document, Text, Page, PDFViewer } from "@react-pdf/renderer";
-import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 // npm install react-to-print (please install)
@@ -16,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import Loader from "../../components/loader/Loader";
 
 const GetPdf = () => {
   const [loader, setLoader] = useState(false);
@@ -34,6 +34,7 @@ const GetPdf = () => {
   }, [attendanceArray]);
 
   const getAllAttendance = async () => {
+    setLoader(true);
     const local_storage_leader_obj = await localStorage.getItem(
       "leader_attendance_details"
     );
@@ -44,12 +45,20 @@ const GetPdf = () => {
       tool_box_no: leaderObj.tool_box_no,
       execute_date: leaderObj.execute_date,
     };
-    await getAllMarkedAttendanceList(data).then((response) => {
-      if (response.data) {
-        console.log(response.data, "response of GenaratePDF");
-        setAttendanceArray(response.data);
-      }
-    });
+    await getAllMarkedAttendanceList(data)
+      .then((response) => {
+        if (response.data) {
+          console.log(response.data, "response of GenaratePDF");
+          setAttendanceArray(response.data);
+          setLoader(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
   };
 
   const findLeader = () => {
@@ -199,6 +208,7 @@ const GetPdf = () => {
 
   return (
     <>
+      <Loader loading={loader} />
       <div id="get-pdf">
         <div id="get-pdf-cnt">
           <h2 id="tl-name">Employee Details</h2>

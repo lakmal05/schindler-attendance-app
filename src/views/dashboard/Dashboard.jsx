@@ -5,6 +5,7 @@ import { Button } from "antd";
 import { getWeekDates } from "../../utility/Utils";
 import "./Dashboard.scss";
 import { logOutLeader } from "../../utility/CommonFun";
+import profileImg from "../../assets/profile.jpg";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -51,13 +52,22 @@ const Dashboard = () => {
       <div id="dashboard">
         <div id="dashboard-profile-div">
           <div id="profile-img">
-            <img src={leader_first_name} alt="profile img"></img>
+            <img
+              src={profileImg}
+              alt="profile img"
+              width={50}
+              height={50}
+            ></img>
           </div>
           <div id="prifile-details">
-            <h4 id="profile-name">Hi {leader_first_name}</h4>
-            <h4 id="profile-postion">Team Leader</h4>
-            <Button id="mt-btn" type="primary" onClick={logout}>
-              LOGoUT
+            <div>
+              {" "}
+              <h4 id="profile-name">Hi {leader_first_name}</h4>
+              <h4 id="profile-postion">Team Leader</h4>
+            </div>
+
+            <Button id="logout-btn" type="primary" onClick={logout}>
+              LogOut
             </Button>
           </div>
         </div>

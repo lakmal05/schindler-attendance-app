@@ -11,6 +11,7 @@ import "./Team_member.scss";
 import { markTeamMember } from "../../services/teamMember";
 import { MEMBER } from "../../constant/constants";
 import SignaturePad from "signature_pad";
+import Loader from "../../components/loader/Loader";
 
 const Team_member = () => {
   const [tMemberID, setTMemberID] = useState("");
@@ -103,6 +104,7 @@ const Team_member = () => {
     markTeamMember(data)
       .then((response) => {
         if (response.data) {
+          setLoader(false);
           customToastMsg("Successfully Mark Your Attendance !", 1);
           navigate("/TeamMemberList");
         }
@@ -118,6 +120,7 @@ const Team_member = () => {
 
   return (
     <>
+    <Loader loading={loader}/>
       <div id="team-member">
         <div id="team-member-form">
           <h2 id="tm-name">{tMemberName ? tMemberName : "Team Member"}</h2>

@@ -9,10 +9,12 @@ import TeamMemberCard from "../../components/TeamMemberCard";
 import { useNavigate } from "react-router-dom";
 import { getAllMarkedMemberAttendanceList } from "../../services/teamMemberList";
 import { customToastMsg } from "../../utility/Utils";
+import Loader from "../../components/loader/Loader";
 
 const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(2);
   const [teamMembersArray, setTeamMembersArray] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     getAllMemberAttendance();
@@ -42,6 +44,7 @@ const Team_Member_List = () => {
   };
 
   const getAllMemberAttendance = async () => {
+    setLoader(true);
     const local_storage_leader_obj = await localStorage.getItem(
       "leader_attendance_details"
     );
@@ -52,13 +55,21 @@ const Team_Member_List = () => {
       execute_date: leaderObj.execute_date,
     };
 
-    await getAllMarkedMemberAttendanceList(data).then((response) => {
-      if (response.data) {
-        console.log(response.data, "response");
-        setTeamMembersArray(response.data);
-        setTeamMembers(response.data.length);
-      }
-    });
+    await getAllMarkedMemberAttendanceList(data)
+      .then((response) => {
+        if (response.data) {
+          console.log(response.data, "response");
+          setTeamMembersArray(response.data);
+          setTeamMembers(response.data.length);
+        }
+        setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
   };
 
   const genereatePdf = async () => {
@@ -80,6 +91,7 @@ const Team_Member_List = () => {
 
   return (
     <>
+      <Loader loading={loader} />
       <div id="team-member-list">
         <div id="team-member-cnt">
           {renderTeamMembers()}

@@ -11,8 +11,9 @@ import { MEMBER } from "../constant/constants";
 import "./DrowerTeamMemberForm.scss";
 
 import SignaturePad from "signature_pad";
+import Loader from "./loader/Loader";
 
-const TeamMemberDrower = ({ isOpen, toggel, teamMemberDetails }) => {
+const DrowerTeamMemberForm = ({ isOpen, toggel, teamMemberDetails }) => {
   const [tMemberID, setTMemberID] = useState("");
   const [tMemberName, setTMemberName] = useState("");
   const [tMemberRadio, setTMemberRadio] = useState("unchecked");
@@ -27,7 +28,7 @@ const TeamMemberDrower = ({ isOpen, toggel, teamMemberDetails }) => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-   
+
     const signaturePad = new SignaturePad(canvas, {
       minWidth: 2,
       maxWidth: 2,
@@ -79,7 +80,6 @@ const TeamMemberDrower = ({ isOpen, toggel, teamMemberDetails }) => {
     }
   }, [signurl]);
 
-
   useEffect(() => {
     const team_member_data = teamMemberDetails.teamMemberData;
     console.log(team_member_data, "card ekata ena team member detail eka");
@@ -96,8 +96,6 @@ const TeamMemberDrower = ({ isOpen, toggel, teamMemberDetails }) => {
   const onChange = (e) => {
     setTMemberRadio(e.target.value);
   };
-
-
 
   // ======================================Add TeamMember=============================================
 
@@ -135,6 +133,7 @@ const TeamMemberDrower = ({ isOpen, toggel, teamMemberDetails }) => {
       .then((response) => {
         console.log(response, "teamMember");
         customToastMsg("Successfully Mark Your Attendance !", 1);
+        setLoader(false);
         toggel();
         window.location.href = "/TeamMemberList";
       })
@@ -178,6 +177,7 @@ const TeamMemberDrower = ({ isOpen, toggel, teamMemberDetails }) => {
       .then((response) => {
         console.log(response.data, "teamMember");
         customToastMsg("Successfully Update Your Attendance !", 1);
+        setLoader(false);
         toggel();
         window.location.href = "/TeamMemberList";
       })
@@ -191,111 +191,110 @@ const TeamMemberDrower = ({ isOpen, toggel, teamMemberDetails }) => {
 
   return (
     <>
-     
-        <div id="team-member-drower">
-          <div id="team-member-form">
-            <h2 id="tm-name">{tMemberName ? tMemberName : "Team Member"}</h2>
-            <h3>Team Member</h3>
-            <p>Mark Your Attendance</p>
-            <Input
-              onChange={(e) => setTMemberID(e.target.value)}
-              value={tMemberID}
-              style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
-              placeholder="ID"
-              type="text"
-              suffix={
-                <HiOutlineIdentification
-                  style={{
-                    color: "#9D9D9D",
-                    fontSize: "18px",
-                  }}
-                />
-              }
-            />
-            <Input
-              style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
-              onChange={(e) => setTMemberName(e.target.value)}
-              value={tMemberName}
-              required
-              placeholder="Name"
-              type="text"
-              suffix={
-                <FaRegUserCircle
-                  style={{
-                    color: "#9D9D9D",
-                    fontSize: "18px",
-                  }}
-                />
-              }
-            />
+      <Loader loading={loader} />
+      <div id="team-member-drower">
+        <div id="team-member-form">
+          <h2 id="tm-name">{tMemberName ? tMemberName : "Team Member"}</h2>
+          <h3>Team Member</h3>
+          <p>Mark Your Attendance</p>
+          <Input
+            onChange={(e) => setTMemberID(e.target.value)}
+            value={tMemberID}
+            style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
+            placeholder="ID"
+            type="text"
+            suffix={
+              <HiOutlineIdentification
+                style={{
+                  color: "#9D9D9D",
+                  fontSize: "18px",
+                }}
+              />
+            }
+          />
+          <Input
+            style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
+            onChange={(e) => setTMemberName(e.target.value)}
+            value={tMemberName}
+            required
+            placeholder="Name"
+            type="text"
+            suffix={
+              <FaRegUserCircle
+                style={{
+                  color: "#9D9D9D",
+                  fontSize: "18px",
+                }}
+              />
+            }
+          />
 
-            <Radio.Group
-              id="team-member-radio-btn"
-              onChange={onChange}
-              value={tMemberRadio}
-            >
-              <Radio value={"EMP"}>Employee</Radio>
-              <Radio value={"SUBCON"}>Sub</Radio>
-            </Radio.Group>
+          <Radio.Group
+            id="team-member-radio-btn"
+            onChange={onChange}
+            value={tMemberRadio}
+          >
+            <Radio value={"EMP"}>Employee</Radio>
+            <Radio value={"SUBCON"}>Sub</Radio>
+          </Radio.Group>
 
-            <div id="signature-member">
-              <canvas
-                id="signature-div"
-                width={600}
-                height={200}
-                ref={canvasRef}
-              ></canvas>
+          <div id="signature-member">
+            <canvas
+              id="signature-div"
+              width={600}
+              height={200}
+              ref={canvasRef}
+            ></canvas>
 
-              <div className="button-div">
-                <Button id="signature-save-btn" ghost onClick={handleSave}>
-                  {" "}
-                  Save Signature
-                </Button>
-                <Button id="signature-clear-btn" ghost onClick={handleClear}>
-                  {" "}
-                  Clear
-                </Button>
-              </div>
+            <div className="button-div">
+              <Button id="signature-save-btn" ghost onClick={handleSave}>
+                {" "}
+                Save Signature
+              </Button>
+              <Button id="signature-clear-btn" ghost onClick={handleClear}>
+                {" "}
+                Clear
+              </Button>
             </div>
-
-            {teamMemberDetails.teamMemberData ? (
-              <Button
-                id="team-member-btn"
-                type="primary"
-                onClick={checkUpdateTeamMemberInfo}
-              >
-                {" "}
-                {!loader ? (
-                  "Update"
-                ) : (
-                  <span>
-                    <RiLoader2Line />
-                    <span style={{ marginLeft: "5px" }}> loading ... </span>
-                  </span>
-                )}
-              </Button>
-            ) : (
-              <Button
-                id="team-member-btn"
-                type="primary"
-                onClick={checkTeamMemberInfo}
-              >
-                {" "}
-                {!loader ? (
-                  "Done"
-                ) : (
-                  <span>
-                    <RiLoader2Line />
-                    <span style={{ marginLeft: "5px" }}> loading ... </span>
-                  </span>
-                )}
-              </Button>
-            )}
           </div>
+
+          {teamMemberDetails.teamMemberData ? (
+            <Button
+              id="team-member-btn"
+              type="primary"
+              onClick={checkUpdateTeamMemberInfo}
+            >
+              {" "}
+              {!loader ? (
+                "Update"
+              ) : (
+                <span>
+                  <RiLoader2Line />
+                  <span style={{ marginLeft: "5px" }}> loading ... </span>
+                </span>
+              )}
+            </Button>
+          ) : (
+            <Button
+              id="team-member-btn"
+              type="primary"
+              onClick={checkTeamMemberInfo}
+            >
+              {" "}
+              {!loader ? (
+                "Done"
+              ) : (
+                <span>
+                  <RiLoader2Line />
+                  <span style={{ marginLeft: "5px" }}> loading ... </span>
+                </span>
+              )}
+            </Button>
+          )}
         </div>
-     
+      </div>
     </>
   );
 };
 
-export default TeamMemberDrower;
+export default DrowerTeamMemberForm;

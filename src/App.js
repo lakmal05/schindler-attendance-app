@@ -1,4 +1,5 @@
 import "./App.css";
+import Loader from "./components/loader/Loader";
 import RouterHandler from "./router/Router";
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
       </head>
 
       <main>
-        <RouterHandler/> 
+        <RouterHandler />
       </main>
     </>
   );

@@ -19,6 +19,7 @@ import {
 import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
 
 import SignaturePad from "signature_pad";
+import Loader from "../../components/loader/Loader";
 
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
@@ -115,6 +116,7 @@ const Team_leader = () => {
     const marked_attendance_obj = JSON.parse(leader_attendance_details);
 
     if (marked_attendance_obj !== null) {
+      setLoader(true);
       getLeaderAttendanceByAttendanceId(marked_attendance_obj?.id)
         .then(async (response) => {
           const leaderAtendance = response.data;
@@ -125,9 +127,13 @@ const Team_leader = () => {
           setTLDate(moment(leaderAtendance.execute_date).format("yyyy-MM-DD"));
           setTLTime(leaderAtendance.execute_time);
           setSignUrl(leaderAtendance.signature);
+          setLoader(false);
         })
         .catch(() => {
           console.log("load All TeamLeader Attendance not working");
+        })
+        .finally(() => {
+          setLoader(false);
         });
     }
   };
@@ -151,12 +157,11 @@ const Team_leader = () => {
   };
 
   const markTeamLeaderAttendance = async () => {
+    setLoader(true);
     const local_storage_leader_obj = await localStorage.getItem(
       "leader_object"
     );
     const leaderObj = JSON.parse(local_storage_leader_obj);
-
-    setLoader(true);
 
     let data = {
       leader_emp_id: await leaderObj.emp_id,
@@ -182,6 +187,7 @@ const Team_leader = () => {
           tool_box_no: response.data.tool_box_no,
           created_at: response.data.created_at,
         };
+        setLoader(false);
         await localStorage.setItem(
           "leader_attendance_details",
           JSON.stringify(leaderAttendance)
@@ -249,7 +255,6 @@ const Team_leader = () => {
         updateTeamleader(updateLeaderAttendance)
           .then(async (response) => {
             customToastMsg("Successfully Update Your Attendance !", 1);
-            console.log(response, "response eka yko");
             const leaderAttendance = {
               id: response.data.id,
               leader_emp_id: response.data.leader_emp_id,
@@ -264,6 +269,8 @@ const Team_leader = () => {
               "leader_attendance_details",
               JSON.stringify(leaderAttendance)
             );
+
+            setLoader(false);
             const update_object = localStorage.getItem(
               "leader_attendance_details"
             );
@@ -282,11 +289,15 @@ const Team_leader = () => {
       .catch((c) => {
         console.log(c, "error");
         console.log("load All TeamLeader Attendance not working");
+      })
+      .finally(() => {
+        setLoader(false);
       });
   };
 
   return (
     <>
+      <Loader loading={loader} />
       <div id="team-leader">
         <div id="team-leader-form">
           <h2 id="tl-name">

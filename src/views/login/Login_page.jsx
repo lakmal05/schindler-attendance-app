@@ -10,6 +10,7 @@ import shadow01 from "../../assets/login-shadow-01.png";
 import shadow02 from "../../assets/login-shadow-02.png";
 import logo from "../../assets/logo.png";
 import { userLogin } from "../../services/auth";
+import Loader from "../../components/loader/Loader";
 
 const Login_page = () => {
   const [username, setUsername] = useState("");
@@ -28,11 +29,12 @@ const Login_page = () => {
 
   const login = async () => {
     setLoader(true);
+
     let credentials = {
       username: username,
       password: password,
     };
-    
+
     await userLogin(credentials)
       .then((response) => {
         // console.log(JSON.stringify(response.data), "reponse.data JSON.stringify");
@@ -48,9 +50,6 @@ const Login_page = () => {
           setLoader(false);
           return;
         }
-
-        // localStorage.setItem("leader_object", JSON.stringify(response.data));
-        //  window.location.href = "/Dashboard";
       })
       .finally((f) => {
         setLoader(false);
@@ -59,6 +58,7 @@ const Login_page = () => {
 
   return (
     <>
+      <Loader loading={loader} />
       <div id="login-page">
         <img id="shadow-01" src={shadow01} alt="shadow-01" />
         <img id="shadow-02" src={shadow02} alt="shadow-02" />
