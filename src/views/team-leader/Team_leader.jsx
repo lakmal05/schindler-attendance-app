@@ -25,6 +25,7 @@ import {
   updateTeamleader,
 } from "../../services/teamLeader";
 import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
+import SignaturePadModal from "../../components/SignaturePadModal";
 
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
@@ -448,6 +449,8 @@ const Team_leader = () => {
               Clear
             </Button>
           </div>
+
+          <SignaturePadModal/>
 
           {localStorage.getItem("leader_attendance_details") ? (
             <Button

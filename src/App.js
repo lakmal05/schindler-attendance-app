@@ -1,4 +1,5 @@
 import "./App.css";
+import SignaturePadModal from "./components/SignaturePadModal";
 import RouterHandler from "./router/Router";
 import Signature from "./views/test/Signature";
 
@@ -28,7 +29,7 @@ function App() {
         {/* <TeamMemberDrower/> */}
         {/* <GetPdf/> */}
         {/* <PdfTest/> */}
-        {/* <Signature></Signature>  */}
+        {/* <SignaturePadModal /> */}
       </main>
     </>
   );
