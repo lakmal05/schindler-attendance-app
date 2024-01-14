@@ -2,11 +2,12 @@ import axios from "axios";
 import { baseUrl } from "./apiConfig";
 
 export const markTeamLeader = async (data) => {
-  return await axios.post(baseUrl + "attendance/mark-attendance", data, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  console.log(data, "==========================");
+  // return await axios.post(baseUrl + "attendance/mark-attendance", data, {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
 };
 
 export const updateTeamleader = async (data) => {

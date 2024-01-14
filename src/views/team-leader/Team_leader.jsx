@@ -25,7 +25,8 @@ import {
   updateTeamleader,
 } from "../../services/teamLeader";
 import { LEADER, CONTRACT_TYPE_EMP } from "../../constant/constants";
-var SignaturePad = require("react-signature-pad");
+
+import { SignaturePad } from "@syncfusion/ej2-react-inputs";
 
 const Team_leader = () => {
   const [toolBoxNo, setToolBoxNo] = useState("");
@@ -34,12 +35,13 @@ const Team_leader = () => {
   const [tLDate, setTLDate] = useState("");
   const [tlTtime, setTLTime] = useState("");
   const [sign, setSign] = useState("");
-  const [signurl, setSignUrl] = useState(null);
+   //const [signurl, setSignUrl] = useState(null);
 
   const [leaderObj, setLeaderObj] = useState({});
 
   const [loader, setLoader] = useState(false);
   const signatureRef = useRef(null);
+  const [signurl, setSignUrl] = useState("");
 
   useEffect(() => {
     const local_storage_leader_obj = localStorage.getItem("leader_object");
@@ -62,11 +64,26 @@ const Team_leader = () => {
     e.preventDefault(); // Prevent default scrolling behavior
   };
 
-  // const handleGenerate = async () => {
+  const handleGenerate = async () => {
+    if (sign) {
+      console.log("in");
+      const generatedUrl = sign?.getTrimmedCanvas().toDataURL("image/png");
+      await setSignUrl(generatedUrl);
+    }
+  };
+
+  // const handleClear = () => {
+  //   signatureRef.current.on();
+  //   signatureRef.current.clear();
+
+  //   // console.log(signatureRef, "clear krhama");
+  //   // console.log(signatureRef.current._sigPad._isEmpty, "clear out");
+  //   // console.log(sign, "sign eka thiynwada");
+
   //   if (sign) {
-  //     console.log("in");
-  //     const generatedUrl = sign?.getTrimmedCanvas().toDataURL("image/png");
-  //     await setSignUrl(generatedUrl);
+  //     console.log("clear in");
+  //     sign.clear();
+  //     setSignUrl(undefined);
   //   }
   // };
 
@@ -104,19 +121,29 @@ const Team_leader = () => {
   };
 
   const handleClear = () => {
-    // Clear the signature pad
-    signatureRef.current.clear();
+    if (signatureRef.current) {
+      signatureRef.current.clear();
+    }
   };
 
-  const handleSave = async () => {
-    // Get the data URL of the signature
-    const signatureDataURL = signatureRef.current.toDataURL();
+  const handleSave = () => {
+    if (signatureRef.current) {
+      const dataURL = signatureRef.current.toDataURL();
+      console.log(dataURL);
+      setSignUrl(dataURL);
+      // You can handle the signature data as needed (e.g., save to a database).
+    }
+  };
 
-    // Log the data URL to the console (you can send it to the server for saving)
-    console.log("Signature Data URL:", signatureDataURL);
-    await setSignUrl(signatureDataURL);
-
-    // You can add logic here to save the signatureDataURL to your backend
+  const setSignature = (data) => {
+    if (data) {
+      signatureRef.current = data;
+      //console.log(signatureRef, "set karana hana");
+      //   signatureRef.current.off();
+      setSign(data);
+    } else {
+      setSign(data);
+    }
   };
 
   // ===============================================Add Leader Attendance=============================================
@@ -158,7 +185,7 @@ const Team_leader = () => {
       topic: topic,
       execute_date: moment(tLDate).format("yyyy-MM-DD"),
       execute_time: tlTtime,
-      signature: await signurl,
+      signature: signurl,
       type: LEADER,
     };
 
@@ -323,7 +350,17 @@ const Team_leader = () => {
               />
             }
           />
-
+          {/* <DatePicker
+            // id="date-picker"
+            value={tLDate ? moment(tLDate) : null}
+            onChange={onChangeDate}
+            style={{
+              backgroundColor: "#EEEEEE",
+              margin: "12px 0",
+              width: "100%",
+            }}
+            placeholder="Project Date"
+          /> */}
           <Input
             id="date-picker"
             name="date"
@@ -370,30 +407,10 @@ const Team_leader = () => {
           />
 
           <div>
-            <div
-              id="signature-div"
-              style={{
-                width: "100%",
-                maxWidth: "400px",
-                margin: "0 auto",
-                border: "1px solid red",
-              }}
-            >
-              <SignatureCanvas
-                canvasProps={{
-                  className: "sigCanvas",
-                  width: "100%",
-                  maxWidth: "100%",
-                }}
-                ref={signatureRef}
-              />
-            </div>
-
-            {/* Save and Clear buttons */}
-            <div>
-              <button onClick={handleSave}>Save</button>
-              <button onClick={handleClear}>Clear</button>
-            </div>
+            <SignaturePad ref={signatureRef} height={200} width={300} />
+            <br />
+            <button onClick={handleClear}>Clear</button>
+            <button onClick={handleSave}>Save</button>
           </div>
           {localStorage.getItem("leader_attendance_details") ? (
             <Button
