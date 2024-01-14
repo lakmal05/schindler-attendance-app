@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Input } from "antd";
-import { FormGroup, Label } from "reactstrap";
 import moment from "moment";
 import dayjs from "dayjs";
 import { LiaToolboxSolid } from "react-icons/lia";
@@ -307,7 +306,7 @@ const Team_leader = () => {
             value={toolBoxNo}
             style={{ backgroundColor: "#EEEEEE", margin: "12px 0" }}
             placeholder="Tool Box Num"
-            type="number"
+            type="text"
             suffix={
               <LiaToolboxSolid
                 style={{

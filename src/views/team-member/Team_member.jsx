@@ -1,9 +1,8 @@
-import React, { useState ,useEffect ,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { Input } from "antd";
 import { Radio } from "antd";
-import SignatureCanvas from "react-signature-canvas";
 import { HiOutlineIdentification } from "react-icons/hi2";
 import { FaRegUserCircle } from "react-icons/fa";
 import { RiLoader2Line } from "react-icons/ri";
@@ -23,13 +22,6 @@ const Team_member = () => {
 
   const navigate = useNavigate();
 
-  const onChange = (e) => {
-    setTMemberRadio(e.target.value);
-  };
-
-
-
-
   const canvasRef = useRef(null);
   const signaturePadRef = useRef(null);
   const [disabledSignaturePad, setDisabledSignaturePad] = useState(false);
@@ -46,9 +38,6 @@ const Team_member = () => {
 
     // Save the SignaturePad instance for future use
     signaturePadRef.current = signaturePad;
-
-    // Set the initial signature if it exists
-   
 
     // Cleanup on component unmount
     return () => {
@@ -78,25 +67,9 @@ const Team_member = () => {
     }
   };
 
-
-
-
-
-
-
-  // const handleWheel = (e) => {
-  //   e.preventDefault(); // Prevent default scrolling behavior
-  // };
-
-  // const handleGenerate = () => {
-  //   const generatedUrl = sign.getTrimmedCanvas().toDataURL("image/png");
-  //   setSignUrl(generatedUrl);
-  // };
-
-  // const handleClear = () => {
-  //   sign.clear();
-  //   setSignUrl(undefined);
-  // };
+  const onChange = (e) => {
+    setTMemberRadio(e.target.value);
+  };
 
   const checkTeamMemberInfo = () => {
     tMemberID.trim() === ""
@@ -189,12 +162,8 @@ const Team_member = () => {
             <Radio value={"SUBCON"}>Sub</Radio>
           </Radio.Group>
 
-          <div
-            id="signature-member"
-            // onWheel={handleWheel}
-            // onClick={handleGenerate}
-          >
-           <canvas
+          <div id="signature-member">
+            <canvas
               id="signature-div"
               width={600}
               height={200}

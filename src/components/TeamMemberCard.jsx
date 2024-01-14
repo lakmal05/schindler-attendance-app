@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { GoDotFill } from "react-icons/go";
 import { IoCaretDown } from "react-icons/io5";
 import { ScrollToTop } from "../utility/CommonFun";
@@ -35,12 +34,7 @@ const TeamMemberCard = (teamMemberDetails) => {
           id="online-offline"
           style={{
             color:
-              signature === null ||
-              signature === undefined ||
-              signature ===
-                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAtJREFUGFdjYAACAAAFAAGq1chRAAAAAElFTkSuQmCC"
-                ? "red"
-                : "green",
+              signature === null || signature === undefined ? "red" : "green",
             margin: "0 20px 0 0",
             fontSize: "20px",
           }}

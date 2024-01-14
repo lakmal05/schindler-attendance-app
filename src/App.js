@@ -1,7 +1,5 @@
 import "./App.css";
-import SignaturePadModal from "./components/SignaturePadModal";
 import RouterHandler from "./router/Router";
-import Signature from "./views/test/Signature";
 
 function App() {
   return (
@@ -25,11 +23,6 @@ function App() {
 
       <main>
         <RouterHandler/> 
-        {/* <Team_Member_List/> */}
-        {/* <TeamMemberDrower/> */}
-        {/* <GetPdf/> */}
-        {/* <PdfTest/> */}
-        {/* <SignaturePadModal /> */}
       </main>
     </>
   );

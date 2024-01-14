@@ -42,32 +42,28 @@ const Dashboard = () => {
     setWeekElements(weekDivs);
   }, []);
 
-  const logout =() => {
+  const logout = () => {
     logOutLeader();
-  }
+  };
 
   return (
     <>
       <div id="dashboard">
         <div id="dashboard-profile-div">
-          <div id="profile-img"></div>
+          <div id="profile-img">
+            <img src={leader_first_name} alt="profile img"></img>
+          </div>
           <div id="prifile-details">
             <h4 id="profile-name">Hi {leader_first_name}</h4>
             <h4 id="profile-postion">Team Leader</h4>
-            <Button
-              id="mt-btn"
-              type="primary"
-              onClick={logout}
-            >
+            <Button id="mt-btn" type="primary" onClick={logout}>
               LOGoUT
             </Button>
           </div>
         </div>
 
         <div id="calander">
-          <div id="calander-div">
-            {weekElements}
-          </div>
+          <div id="calander-div">{weekElements}</div>
         </div>
 
         <div id="mark-attendance">

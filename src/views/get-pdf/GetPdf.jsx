@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-
 const GetPdf = () => {
   const [loader, setLoader] = useState(false);
   const [leaderObj, setLeaderObj] = useState({});
@@ -77,37 +76,37 @@ const GetPdf = () => {
   };
 
   const clickGeneratePDF = async () => {
-    await localStorage.removeItem("leader_attendance_details");
-    navigate("/Dashboard");
     generatePDF();
+    setTimeout(async function () {
+      await localStorage.removeItem("leader_attendance_details");
+      navigate("/Dashboard");
+    }, 5000);
   };
 
-  
   // const clickGeneratePDF = () => {
   //   setLoader(true);
-  
+
   //   html2canvas(conponentPDF.current).then((canvas) => {
   //     const imgData = canvas.toDataURL("image/png");
-  
+
   //     const pdf = new jsPDF({
   //       orientation: "portrait",
   //       unit: "mm",
   //       format: "a4",
   //     });
-  
+
   //     const imgWidth = 210;
   //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
+
   //     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
   //     pdf.save("userdata.pdf");
-  
+
   //     setLoader(false);
 
   //     localStorage.removeItem("leader_attendance_details");
   //     generatePDF();
   //   });
   // };
-  
 
   const generatePDF = useReactToPrint({
     content: () => conponentPDF.current,

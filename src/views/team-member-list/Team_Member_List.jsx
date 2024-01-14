@@ -8,6 +8,7 @@ import { IoCaretBack } from "react-icons/io5";
 import TeamMemberCard from "../../components/TeamMemberCard";
 import { useNavigate } from "react-router-dom";
 import { getAllMarkedMemberAttendanceList } from "../../services/teamMemberList";
+import { customToastMsg } from "../../utility/Utils";
 
 const Team_Member_List = () => {
   const [teamMembers, setTeamMembers] = useState(2);
@@ -61,7 +62,20 @@ const Team_Member_List = () => {
   };
 
   const genereatePdf = async () => {
-    navigate("/GetPdf");
+    let hasNullSignature = false;
+
+    for (const member of teamMembersArray) {
+      if (member.signature === null || member.signature === undefined) {
+        hasNullSignature = true;
+        break;
+      }
+    }
+
+    if (hasNullSignature) {
+      customToastMsg("Please Get All Team Members' Signature", 0);
+    } else {
+      navigate("/GetPdf");
+    }
   };
 
   return (
