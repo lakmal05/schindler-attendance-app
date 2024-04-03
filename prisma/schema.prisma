@@ -7,9 +7,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://tbt_database_user:gNjYVNrHAXAJjOatzbsHNbCenzcbrWSP@dpg-cm1v05un7f5s73epf860-a.singapore-postgres.render.com/tbt_database"
+  url      = env("DATABASE_URL")
 }
-  //  url      = env("DATABASE_URL")
+  // url      = "postgres://tbt_database_user:gNjYVNrHAXAJjOatzbsHNbCenzcbrWSP@dpg-cm1v05un7f5s73epf860-a.singapore-postgres.render.com/tbt_database"
 
 model Employee {
   id         String       @id
